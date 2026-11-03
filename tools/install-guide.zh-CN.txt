@@ -1,0 +1,112 @@
+Sangreal · 圣杯  Obsidian 主题 {version}  手动安装包
+==================================================
+
+这个压缩包给连不上 Obsidian 官方主题商店的用户。能连上的话，直接在
+「设置 → 外观 → 主题 → 管理」里搜索 Sangreal，点「下载并使用」，不需要这个压缩包。
+
+需要 Obsidian {min_app} 或更新的版本，只支持桌面端（Windows / macOS / Linux）。
+主题、插件、片段都是按库安装的，有几个库就要各放一份。
+
+
+压缩包里有什么
+--------------
+
+  Sangreal/          主题本体（必装）：manifest.json、theme.css
+  snippets/          可选的中文字体片段（见第三步）
+  licenses/          许可证和第三方素材声明
+  安装说明.txt       本文件
+
+
+第一步  安装主题
+----------------
+
+1. 打开 Obsidian 的「设置 → 外观」，点「主题」一行右边的文件夹图标（打开主题文件夹），
+   会打开 <你的库>/.obsidian/themes/ 文件夹（没有的话会自动新建）。
+
+2. 把整个 Sangreal 文件夹复制进去。复制完应该是这样：
+
+     <你的库>/.obsidian/themes/Sangreal/manifest.json
+     <你的库>/.obsidian/themes/Sangreal/theme.css
+
+   文件夹名必须是 Sangreal，里面不要再多套一层文件夹。
+
+3. 关掉设置再打开，在「主题」一行的下拉框里选 Sangreal。
+   下拉框里还没有的话，重启 Obsidian。
+
+日间和夜间配色跟随「设置 → 外观 → 基础颜色」。
+
+
+第二步  安装 Style Settings 插件（强烈建议）
+--------------------------------------------
+
+主题的 35 项选项（侧栏布局、代码块样式、任务复选框、大纲样式、标题中文字体等）
+都要在 Style Settings 插件里调。不装也能正常用，全部按默认样式显示。
+
+国内可以从 PKMer 下载：https://pkmer.cn/
+  - 在插件市场 https://pkmer.cn/products/plugin/pluginMarket/ 搜索 Style Settings 下载
+    （网站要求的话，先注册登录）。
+  - PKMer 还有一个「Pkmer Market」插件，装好以后可以在 Obsidian 里直接安装其他插件：
+    https://pkmer.cn/products/market/
+
+手动安装下载到的插件：
+
+1. 打开「设置 → 第三方插件」。第一次用时这一页会显示「允许社区插件」，点「开启」。
+
+2. 点「已安装插件」一行的文件夹图标（打开插件文件夹），在里面新建文件夹
+   obsidian-style-settings，把解压出来的 main.js、manifest.json、styles.css 放进去：
+
+     <你的库>/.obsidian/plugins/obsidian-style-settings/main.js
+     <你的库>/.obsidian/plugins/obsidian-style-settings/manifest.json
+     <你的库>/.obsidian/plugins/obsidian-style-settings/styles.css
+
+3. 点「已安装插件」一行的刷新图标（重新加载插件），打开 Style Settings 的开关。
+
+4. 设置左栏下方会多出「Style Settings」，里面的「Sangreal」就是本主题的选项。
+   最上面的「设置语言」可以切换中文或英文。
+
+
+第三步  中文字体
+----------------
+
+西文字体已经内嵌在主题里，不用另装。中文字体体积太大，没有内嵌，
+主题会使用电脑上安装好的这两款：
+
+  中文标题：寒蝉活宋体（只用 Regular 一款）
+    下载：https://github.com/Warren2060/ChillMovableType/releases/tag/HuoSongv1.000
+    下载 ChillHuoSong_F.zip，里面的 ChillHuoSong_F_Regular.otf 装上就够了。
+    没装时，标题改用正文的中文字体。
+
+  中文正文：思源宋体（Source Han Serif，也叫 Noto Serif SC）
+    下载：https://github.com/adobe-fonts/source-han-serif/releases
+    下载 09_SourceHanSerifSC.zip（简体中文，字最全），或者体积小一半的
+    14_SourceHanSerifCN.zip，里面的字重全部装上。
+    没装时，正文用系统自带的宋体。
+
+安装字体：双击字体文件，在预览窗口里点「安装」（Windows 也可以选中多个文件后右键「安装」）。
+装完要完全退出 Obsidian 再重新打开，新字体才会生效。
+
+不想下载字体的话，用 snippets 文件夹里的可选片段。两个片段各带一套
+6763 个常用汉字（GB2312）的子集：
+
+  sangreal-chinese-heading-font.css   中文标题，寒蝉活宋体，约 10 MB
+  sangreal-chinese-body-font.css      中文正文，思源宋体，约 3.4 MB
+
+1. 打开「设置 → 外观」，点「CSS 样式代码片段」一行的文件夹图标（打开样式代码片段文件夹），
+   会打开 <你的库>/.obsidian/snippets/ 文件夹（没有的话会自动新建）。
+2. 把要用的 .css 文件复制进去。
+3. 点同一行的刷新图标（重新加载样式代码片段），在列表里打开它们的开关。
+
+两个片段互不依赖，可以只开一个。电脑上已经装了对应字体的话，主题优先用装好的，
+就不需要片段了。子集里没有的生僻字、繁体字，会改用正文字体或系统宋体显示。
+
+另外，Style Settings 的「排版 → 标题中文字体」可以把标题换成思源宋体或华文宋体（macOS 自带）。
+
+
+更新和卸载
+----------
+
+- 手动安装不会自动更新。出新版本时，用新的 manifest.json 和 theme.css 覆盖
+  Sangreal 文件夹里的旧文件即可，Style Settings 里的设置不会丢。
+- 卸载：在「主题」下拉框里换回「默认」，再删掉 <你的库>/.obsidian/themes/Sangreal 文件夹。
+
+主题以 MIT 许可发布；字体和图案素材的许可见 licenses 文件夹。

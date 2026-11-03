@@ -1,0 +1,8 @@
+__pycache__/
+preview/
+assets/cache/
+# 示例库：主题副本、插件(从用户库复制)、窗口布局不进仓库
+demo-vault/.obsidian/themes/
+demo-vault/.obsidian/plugins/
+demo-vault/.obsidian/workspace.json
+dist/

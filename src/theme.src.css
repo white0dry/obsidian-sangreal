@@ -1,0 +1,4138 @@
+/* ==========================================================================
+   Sangreal  —  an Obsidian theme inspired by the Blood Angels
+   Day: red chalk, gold leaf and ivory vellum — Renaissance and Baroque.
+   Night: oxblood and the Red Thirst.
+
+   Fonts (embedded, SIL Open Font License 1.1):
+     EB Garamond        — The EB Garamond Project Authors
+     Cormorant Garamond — The Cormorant Project Authors
+     IM FELL English SC — Igino Marini (outlines emboldened, embedded as "BA Heading Latin")
+     Noto Serif SC      — Adobe (CJK punctuation subset only)
+     Manufacturing Consent — The Manufacturing Consent Project Authors (baked into the new-tab inscription image)
+   Chinese fonts are not embedded. Headings: 寒蝉活宋体 / ChillHuoSong (ChillType, OFL 1.1); body text:
+   思源宋体 / Noto Serif SC (Adobe, OFL 1.1). Each comes from the installed font if present, or from the optional
+   snippets in snippets/; otherwise headings fall back to the body font and the body to system 宋体.
+   Silhouettes from game-icons.net (CC BY 3.0), modified — by Lorc: bleeding-heart, book-aura, broken-skull,
+   candle-light, chalice-drops, curly-wing, feather, holy-grail, hourglass, laurels, quill, ringing-bell,
+   scroll-unfurled, sundial, two-feathers, winged-sword; by Delapouite: notebook, tower-flag.
+   The question-callout mark is the question mark of Playfair Display Bold (OFL 1.1) with the chapter emblem.
+   Wings on the properties frame: traced from a public-domain engraving via Heritage Library (HTC Heritage Type).
+   Flourishes and ribbons: modified from frame-illust.com. Failure-callout icon: modified from ICOOON MONO.
+   Adeptus Mechanicus emblem and aquila: from the community "wh_icons" set.
+   Warhammer 40,000, the Blood Angels and the Adeptus Mechanicus are trademarks of Games Workshop.
+   Fan work, not affiliated.
+
+   Built by build.py from src/theme.src.css — edit the source, not theme.css.
+   ========================================================================== */
+
+/* @settings
+
+name: Sangreal
+id: blood-angels
+settings:
+-   id: ba-settings-lang
+    title: Settings language
+    title.zh: 设置语言
+    type: class-select
+    allowEmpty: false
+    default: ba-lang-auto
+    options:
+    -   label: Follow Obsidian
+        label.zh: 跟随 Obsidian
+        value: ba-lang-auto
+    -   label: 中文
+        label.zh: 中文
+        value: ba-lang-zh
+    -   label: English
+        label.zh: English
+        value: ba-lang-en
+-   id: ba-h-atmos
+    title: Atmosphere
+    title.zh: 氛围
+    type: heading
+    level: 2
+    collapsed: false
+-   id: ba-texture-opacity
+    title: Vellum texture strength
+    title.zh: 羊皮纸纹理浓度
+    type: variable-number-slider
+    default: 100
+    min: 0
+    max: 100
+    step: 5
+    format: '%'
+-   id: ba-vignette-opacity
+    title: Corner shading strength
+    title.zh: 四周暗角浓度
+    type: variable-number-slider
+    default: 100
+    min: 0
+    max: 200
+    step: 10
+    format: '%'
+-   id: ba-no-feathers
+    title: Disable the file explorer's animated decoration
+    title.zh: 关闭文件列表动态装饰
+    description: Also hidden when the system asks for reduced motion
+    description.zh: 系统开了「减少动态效果」时也不显示
+    type: class-toggle
+-   id: ba-dark-fall
+    title: File explorer animation in dark mode
+    title.zh: 夜间文件列表动态装饰
+    description: Dark mode only
+    description.zh: 只在暗色模式生效
+    type: class-select
+    allowEmpty: false
+    default: ba-dark-ash
+    options:
+    -   label: Ash and embers
+        label.zh: 灰烬与火星
+        value: ba-dark-ash
+    -   label: Feathers (dark)
+        label.zh: 羽毛(暗色版)
+        value: ba-dark-feathers
+-   id: ba-h-orn
+    title: Ornaments
+    title.zh: 装饰
+    type: heading
+    level: 2
+    collapsed: true
+-   id: ba-no-emblem
+    title: Hide the chapter emblem under the title
+    title.zh: 隐藏标题下的战团徽
+    type: class-toggle
+-   id: ba-no-title-flourish
+    title: Hide the flourishes beside the title
+    title.zh: 隐藏标题两侧的花边
+    type: class-toggle
+-   id: ba-no-heading-orn
+    title: Hide heading ornaments
+    title.zh: 隐藏标题装饰
+    type: class-toggle
+-   id: ba-no-rule-orn
+    title: Plain horizontal rules
+    title.zh: 分隔线用朴素样式
+    type: class-toggle
+-   id: ba-no-table-stripes
+    title: No alternating row shading in tables
+    title.zh: 关闭表格隔行底色
+    type: class-toggle
+-   id: ba-no-callout-latin
+    title: Hide callout Latin labels
+    title.zh: 隐藏 Callout 拉丁铭牌
+    type: class-toggle
+-   id: ba-native-callout-icons
+    title: Native callout icons
+    title.zh: Callout 用原版图标
+    type: class-toggle
+-   id: ba-task-style
+    title: Task checkbox style
+    title.zh: 任务复选框样式
+    type: class-select
+    allowEmpty: false
+    default: ba-task-gem
+    options:
+    -   label: Baal gem
+        label.zh: 巴尔宝石
+        value: ba-task-gem
+    -   label: Wax seal
+        label.zh: 蜡封
+        value: ba-task-seal
+    -   label: Native
+        label.zh: 原版
+        value: ba-task-native
+-   id: ba-image-style
+    title: Image frame
+    title.zh: 图片边框
+    description: Add noframe to the image text (![[image|noframe]]) to leave a single image as is
+    description.zh: 单张保持原样：在图片文字里写 noframe(![[图|noframe]])
+    type: class-select
+    allowEmpty: false
+    default: ba-img-frame
+    options:
+    -   label: Flourish frame
+        label.zh: 卡片花边
+        value: ba-img-frame
+    -   label: Grain fade
+        label.zh: 印痕毛边
+        value: ba-img-vignette
+    -   label: Native
+        label.zh: 原版
+        value: ba-img-native
+-   id: ba-plain-properties
+    title: Plain properties box
+    title.zh: 属性栏用朴素样式
+    type: class-toggle
+-   id: ba-plain-bold
+    title: Bold in ink
+    title.zh: 粗体用墨色
+    type: class-toggle
+-   id: ba-h-code
+    title: Code blocks
+    title.zh: 代码块
+    type: heading
+    level: 2
+    collapsed: true
+-   id: ba-code-style
+    title: Code block style
+    title.zh: 代码块样式
+    type: class-select
+    allowEmpty: false
+    default: ba-code-plate
+    options:
+    -   label: Red plate
+        label.zh: 红头铭板
+        value: ba-code-plate
+    -   label: Cogitator
+        label.zh: 沉思者
+        value: ba-code-cogitator
+-   id: ba-code-line-numbers
+    title: Line numbers
+    title.zh: 显示行号
+    description: In reading view, long lines scroll sideways instead of wrapping
+    description.zh: 阅读视图里长行不再折行，改为横向滚动
+    type: class-toggle
+-   id: ba-h-type
+    title: Typography
+    title.zh: 排版
+    type: heading
+    level: 2
+    collapsed: true
+-   id: ba-heading-cjk
+    title: Chinese heading font
+    title.zh: 标题中文字体
+    description: ChillHuoSong must be installed, or turn on the optional CSS snippet
+    description.zh: 寒蝉活宋体需本机安装，或打开附带的可选 CSS 片段
+    type: class-select
+    allowEmpty: false
+    default: ba-heading-chill
+    options:
+    -   label: ChillHuoSong
+        label.zh: 寒蝉活宋体
+        value: ba-heading-chill
+    -   label: Noto Serif SC
+        label.zh: 思源宋体
+        value: ba-heading-noto
+    -   label: STSong
+        label.zh: 华文宋体
+        value: ba-heading-stsong
+-   id: line-height-normal
+    title: Body line height
+    title.zh: 正文行距
+    type: variable-number-slider
+    default: 1.85
+    min: 1.4
+    max: 2.3
+    step: 0.05
+-   id: file-line-width
+    title: Body width
+    title.zh: 正文宽度
+    description: Maximum width of the note text while Obsidian's "Readable line length" is on
+    description.zh: 打开 Obsidian 的「限制行宽」时，正文的最大宽度
+    type: variable-number-slider
+    default: 46
+    min: 30
+    max: 90
+    step: 1
+    format: rem
+-   id: ba-justify
+    title: Justify body text
+    title.zh: 正文两端对齐
+    type: class-toggle
+-   id: ba-no-autospace
+    title: Disable CJK–Latin auto spacing
+    title.zh: 关闭中西文自动间距
+    type: class-toggle
+-   id: ba-latin-quotes
+    title: Latin curly quotes
+    title.zh: 弯引号用西文字形
+    description: For English-heavy notes
+    description.zh: 适合英文为主的笔记
+    type: class-toggle
+-   id: ba-h-chrome
+    title: Interface
+    title.zh: 界面
+    type: heading
+    level: 2
+    collapsed: true
+-   id: ba-sidebar-layout
+    title: Sidebar layout
+    title.zh: 侧栏布局
+    type: class-select
+    allowEmpty: false
+    default: ba-sidebar-ribbon
+    options:
+    -   label: Plain
+        label.zh: 简洁
+        value: ba-sidebar-plain
+    -   label: Bookmark cards
+        label.zh: 书签卡片
+        value: ba-sidebar-ribbon
+-   id: ba-h-cards
+    title: Bookmark cards
+    title.zh: 书签卡片
+    description: Only applies to the Bookmark cards sidebar layout
+    description.zh: 只在「书签卡片」侧栏布局下有效
+    type: heading
+    level: 3
+    collapsed: false
+-   id: ba-card-frame
+    title: Card frame
+    title.zh: 卡片花边
+    type: class-toggle
+    default: true
+-   id: ba-card-gap
+    title: Gap between cards
+    title.zh: 卡片间距
+    type: variable-number-slider
+    default: 8
+    min: 2
+    max: 16
+    step: 1
+    format: px
+-   id: ba-h-chrome-other
+    title: Other
+    title.zh: 其他
+    type: heading
+    level: 3
+    collapsed: false
+-   id: ba-scrollbar-width
+    title: Scrollbar width
+    title.zh: 滚动条宽度
+    type: variable-number-slider
+    default: 6
+    min: 4
+    max: 20
+    step: 1
+    format: px
+-   id: ba-view-header
+    title: View header
+    title.zh: 标题栏
+    type: class-select
+    allowEmpty: false
+    default: ba-view-header-always
+    options:
+    -   label: Show on hover
+        label.zh: 悬停显示
+        value: ba-autohide-view-header
+    -   label: Always
+        label.zh: 一直显示
+        value: ba-view-header-always
+-   id: ba-vault-profile
+    title: Vault switcher
+    title.zh: 仓库栏
+    type: class-select
+    allowEmpty: false
+    default: ba-vault-hover
+    options:
+    -   label: Show on hover
+        label.zh: 悬停显示
+        value: ba-vault-hover
+    -   label: Always
+        label.zh: 一直显示
+        value: ba-vault-always
+-   id: ba-status-bar
+    title: Status bar
+    title.zh: 状态栏
+    type: class-select
+    allowEmpty: false
+    default: ba-status-hidden
+    options:
+    -   label: Hidden
+        label.zh: 一直隐藏
+        value: ba-status-hidden
+    -   label: Show on hover
+        label.zh: 悬停显示
+        value: ba-status-hover
+    -   label: Always
+        label.zh: 一直显示
+        value: ba-status-always
+-   id: ba-autohide-nav
+    title: Auto-collapse sidebar buttons
+    title.zh: 自动收起侧栏面板按钮行
+    type: class-toggle
+    default: true
+-   id: ba-outline-style
+    title: Outline style
+    title.zh: 大纲样式
+    type: class-select
+    allowEmpty: false
+    default: ba-outline-thread
+    options:
+    -   label: Blood thread
+        label.zh: 血线
+        value: ba-outline-thread
+    -   label: Gold rail
+        label.zh: 金线导轨
+        value: ba-outline-marker
+    -   label: Native
+        label.zh: 原版
+        value: ba-outline-native
+-   id: ba-modal-frame
+    title: Dialog frame
+    title.zh: 弹窗花边
+    type: class-toggle
+    default: true
+-   id: ba-ribbon-visibility
+    title: Ribbon
+    title.zh: 功能栏
+    type: class-select
+    allowEmpty: false
+    default: ba-ribbon-autohide
+    options:
+    -   label: Show on hover
+        label.zh: 悬停显示
+        value: ba-ribbon-autohide
+    -   label: Always
+        label.zh: 一直显示
+        value: ba-ribbon-pinned
+-   id: ba-ribbon-style
+    title: Ribbon style
+    title.zh: 功能栏样式
+    type: class-select
+    allowEmpty: false
+    default: ba-ribbon-seal
+    options:
+    -   label: Purity seal
+        label.zh: 纯洁印记
+        value: ba-ribbon-seal
+    -   label: Plain
+        label.zh: 普通
+        value: ba-ribbon-plain
+*/
+
+/*@@FONTS@@*/
+
+/* ==========================================================================
+   1. Palette
+   日间：羊皮纸 + 金箔 + 圣血红。夜间(2026-11-03)：牛血黑 + 骨白 + 提亮的血红 + 失光的金(血渴)，见 .theme-dark 和 tools/dark.py。
+   第二版：金色从 #b48a3c(偏铜)改成金箔——平涂处用更亮更黄的中间调，线条 / 装饰用多段明暗渐变(--ba-gold-leaf)。
+   装饰 SVG 里的金 / 红是写死的(ornaments.py 色板)，改这里的 --ba-gold / --ba-crimson 要同步
+   ========================================================================== */
+.theme-light {
+  /* dark-twin: skip(夜间色板是下面单写的 .theme-dark) */
+  color-scheme: light;
+  --ba-paper: #f8f1e2;       /* 正文羊皮纸(纹理叠在上面) */
+  --ba-paper-2: #f1e7d3;     /* 侧栏 */
+  --ba-paper-3: #e9dcc3;     /* 标签栏、功能栏、状态栏 */
+  --ba-paper-4: #f2e8d5;     /* 代码块 */
+  --ba-rule: #e0cfb0;        /* 细线 */
+  --ba-rule-strong: #c9ae7e;
+  --ba-ink: #3d2a1f;         /* 墨(棕黑：第九版用户说正文看着是纯黑，原来的 #2b1d16 太深，往棕色挪一档) */
+  --ba-ink-2: #6b5545;
+  --ba-ink-3: #9d8873;
+  --ba-crimson: #a3161f;     /* 圣血红 */
+  --ba-blood: #6e0c12;
+  --ba-rose: #c4424a;
+  --ba-gold: #c9a548;        /* 金(平涂；装饰 SVG 用极缓的缎面过渡，见 ornaments.GOLD_STOPS) */
+  --ba-gold-light: #ecd27f;
+  --ba-gold-pale: #f4e5b4;
+  --ba-gold-deep: #8f6a14;   /* 金色文字(羊皮纸上要深一档才看得清) */
+  --ba-sanguine: #a4442e;
+  /* 文艺复兴颜料：callout 等需要区分的地方用 */
+  --ba-lapis: #2f5091;       /* 青金石群青 */
+  --ba-verdigris: #3f7a5f;   /* 铜绿 */
+  --ba-ochre: #a8761d;       /* 赭黄 */
+  --ba-vermilion: #c2531c;   /* 朱砂 */
+  --ba-tyrian: #7a2f6e;      /* 骨螺紫 */
+  --ba-umber: #7b6553;       /* 赭褐 */
+  /* 关系图谱(第三十五版，用户：笔记点太偏灰、附件的蓝色突兀；从 3 × 3 小样里选 N1 + a)：
+     笔记点 暖褐(ink-2 的色相加饱和)，附件点 灰青金石(青金石降饱和，仍和外链同一色系) */
+  --ba-graph-note: #6e4a33;
+  --ba-graph-attachment: #56698a;
+
+  --color-base-00: var(--ba-paper);
+  --color-base-05: #f5edde;
+  --color-base-10: var(--ba-paper-2);
+  --color-base-20: var(--ba-paper-3);
+  --color-base-25: #e4d6bb;
+  --color-base-30: var(--ba-rule);
+  --color-base-35: #d4bf98;
+  --color-base-40: var(--ba-rule-strong);
+  --color-base-50: var(--ba-ink-3);
+  --color-base-60: #8a7563;
+  --color-base-70: var(--ba-ink-2);
+  --color-base-100: var(--ba-ink);
+  --ba-shadow: 43, 29, 22;   /* 投影色(暖褐) */
+}
+.theme-dark {
+  /* 夜间(2026-11-03)：小样 preview/夜间配色/ 一稿 A 黑甲 / B 血渴 / C 烛下，用户选 B 的色调、嫌底色太红 → 二稿 B2(B 的红度减半)。
+     底色 = OKLCH 色相 22、色度 .0105，明度 .15(标签栏) / .17(侧栏) / .20(正文) / .22(代码块)；墨 = 微粉的骨白；
+     红在黑底上要提亮：圣血红 #de3b40，「暗血红」反过来是最亮的一档(日间它压得最深，对比最强；夜间同样是对比最强的那个红)；
+     金失光、往红褐偏；颜料色提亮到对比度 ≥ 5.5。日间规则里写死的颜色、装饰图里的颜色的夜间版在 tools/dark.py */
+  color-scheme: dark;
+  --ba-paper: #1a1413;
+  --ba-paper-2: #140e0e;
+  --ba-paper-3: #0f0909;
+  --ba-paper-4: #1f1818;
+  --ba-rule: #2e2423;
+  --ba-rule-strong: #4f3c37;
+  --ba-ink: #e9d4cb;
+  --ba-ink-2: #b7a59e;
+  --ba-ink-3: #81726e;
+  --ba-crimson: #de3b40;
+  --ba-blood: #e74d51;
+  --ba-rose: #e56d7a;
+  --ba-gold: #c29563;
+  --ba-gold-light: #deb67f;
+  --ba-gold-pale: #513721;
+  --ba-gold-deep: #d7a672;
+  --ba-sanguine: #c36953;
+  --ba-lapis: #829fd4;
+  --ba-verdigris: #70ae93;
+  --ba-ochre: #d5a051;
+  --ba-vermilion: #db7b4d;
+  --ba-tyrian: #b87aab;
+  --ba-umber: #a18e80;
+  --ba-graph-note: #ab8b75;
+  --ba-graph-attachment: #8293b2;
+
+  --color-base-00: var(--ba-paper);
+  --color-base-05: #171111;
+  --color-base-10: var(--ba-paper-2);
+  --color-base-20: var(--ba-paper-3);
+  --color-base-25: #251d1c;
+  --color-base-30: var(--ba-rule);
+  --color-base-35: #3d302f;
+  --color-base-40: var(--ba-rule-strong);
+  --color-base-50: var(--ba-ink-3);
+  --color-base-60: #9a8a85;
+  --color-base-70: var(--ba-ink-2);
+  --color-base-100: var(--ba-ink);
+  --ba-shadow: 0, 0, 0;
+}
+
+/* ==========================================================================
+   2. Obsidian variables (both modes, from the palette above)
+   ========================================================================== */
+.theme-light,
+.theme-dark {
+  /* ---- fonts ---- */
+  --ba-font-latin: "BA Garamond";
+  --ba-font-display-latin: "BA Cormorant";
+  --ba-font-caps: "BA Heading Latin";   /* 第十八版：IM Fell English SC 轮廓加粗 +64(Cinzel → Cormorant SC → 它) */
+  --ba-font-cjk: "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif", "思源宋体", "BA Noto Serif SC", "Songti SC", "STSong", "SimSun";
+  --ba-punct: "BA CJK Punct";
+  --ba-font-display: var(--ba-punct), var(--ba-font-display-latin), var(--ba-font-cjk), serif;
+  --font-text-theme: var(--ba-punct), var(--ba-font-latin), var(--ba-font-cjk), serif;
+  --font-interface-theme: var(--ba-punct), var(--ba-font-latin), var(--ba-font-cjk), serif;
+  --font-monospace-theme: "JetBrains Mono", "Cascadia Mono", "Cascadia Code", Consolas, "Sarasa Mono SC", "Noto Sans Mono CJK SC", monospace;
+
+  --ba-emblem-h: @@SIZE:crest-h@@;
+  --ba-glyph-size: 18px;
+  --ba-seal-size: 30px;           /* callout 图标蜡封(第二十版) */
+
+  --color-red: var(--ba-crimson);
+  --color-orange: var(--ba-vermilion);
+  --color-yellow: var(--ba-ochre);
+  --color-green: var(--ba-verdigris);
+  --color-cyan: #3d7c86;
+  --color-blue: var(--ba-lapis);
+  --color-purple: var(--ba-tyrian);
+  --color-pink: #b5577a;
+  --color-red-rgb: 163, 22, 31;
+  --color-orange-rgb: 194, 83, 28;
+  --color-yellow-rgb: 168, 118, 29;
+  --color-green-rgb: 63, 122, 95;
+  --color-cyan-rgb: 61, 124, 134;
+  --color-blue-rgb: 47, 80, 145;
+  --color-purple-rgb: 122, 47, 110;
+  --color-pink-rgb: 181, 87, 122;
+
+  --color-accent: var(--ba-crimson);
+  --color-accent-1: var(--ba-rose);
+  --color-accent-2: var(--ba-blood);
+  --color-accent-hsl: 356, 76%, 36%;
+
+  /* ---- surfaces ---- */
+  --background-primary: var(--ba-paper);
+  --background-primary-alt: var(--ba-paper-4);
+  --background-secondary: var(--ba-paper-2);
+  --background-secondary-alt: var(--ba-paper-3);
+  --background-modifier-border: var(--ba-rule);
+  --background-modifier-border-hover: var(--ba-rule-strong);
+  --background-modifier-border-focus: var(--ba-gold);
+  --background-modifier-hover: color-mix(in srgb, var(--ba-gold) 12%, transparent);
+  --background-modifier-active-hover: color-mix(in srgb, var(--ba-crimson) 12%, transparent);
+  --background-modifier-form-field: var(--ba-paper);
+  --background-modifier-form-field-hover: var(--ba-paper);
+  --background-modifier-cover: rgba(var(--ba-shadow), 0.35);
+  --background-modifier-box-shadow: rgba(var(--ba-shadow), 0.12);
+  --background-modifier-error: var(--ba-crimson);
+  --background-modifier-error-hover: var(--ba-blood);
+  --background-modifier-success: var(--ba-verdigris);
+  --interactive-normal: var(--ba-paper);
+  --interactive-hover: var(--ba-paper-2);
+  /* 第四十五版(用户：设置界面的重点红太刺眼，要和设计好的其他红色重点色对齐)：开关、主按钮、拖动整条、拖放指示线这些
+     大面积填色从圣血红换成标签红(书签丝带、表头、蜡封、滚动条同一个红)，填色上的字换成标签的奶油色；
+     文字、细线上的红(链接、页内标题、当前文件、血线……)不动，细笔画在羊皮纸上要饱和一点才看得清。比过 A / A2 / B(preview/红色对齐/) */
+  --interactive-accent: var(--tag-background);
+  --interactive-accent-hover: var(--tag-background-hover);
+  --interactive-accent-hsl: 354, 59%, 40%;
+
+  /* ---- text ---- */
+  --text-normal: var(--ba-ink);
+  --text-muted: var(--ba-ink-2);
+  --text-faint: var(--ba-ink-3);
+  --text-on-accent: var(--tag-color);
+  --text-on-accent-inverted: var(--ba-ink);
+  --text-accent: var(--ba-crimson);
+  --text-accent-hover: var(--ba-blood);
+  --text-error: var(--ba-crimson);
+  --text-warning: var(--ba-vermilion);
+  --text-success: var(--ba-verdigris);
+  --text-selection: color-mix(in srgb, var(--ba-crimson) 22%, transparent);   /* 第十九版(用户：选中的文字变成红色)：原来是淡金 */
+  --text-highlight-bg: color-mix(in srgb, var(--ba-gold-light) 55%, transparent);
+  --text-highlight-bg-active: color-mix(in srgb, var(--ba-rose) 35%, transparent);
+  --highlight-background: color-mix(in srgb, var(--ba-gold-light) 55%, transparent);
+  --caret-color: var(--ba-crimson);
+
+  /* ---- typography ---- */
+  --line-height-normal: 1.85;
+  --line-height-tight: 1.35;
+  --p-spacing: 1.1rem;
+  --heading-spacing: calc(var(--p-spacing) * 2.4);
+  --file-line-width: 46rem;
+  --bold-weight: 650;
+  --bold-color: var(--ba-blood);
+  --italic-color: inherit;
+
+  /* 标题字体：西文 IM Fell English SC(17 世纪 Fell 铅字复刻，小型大写)轮廓加粗 +64，内嵌名 "BA Heading Latin"；
+     中文寒蝉活宋体 Regular——两边都是活字印刷的毛边质感。
+     第十五版 Cormorant SC 700 太细、加描边又糊(第十六版)；Fell 本来没有粗体，build.EMBOLDEN 构建时把轮廓外扩。原来是 Cinzel + 思源宋体粗体。
+     第五十二版(发布前减体积)：寒蝉不再内嵌——先找本机装的("BA Chill"，build.font_faces 按名字取 Regular)，
+     再找可选 CSS 片段里的子集("BA Heading Song"，snippets/)，都没有就用正文的思源宋体；Style Settings「标题中文字体」可改 */
+  --ba-heading-cjk: "BA Chill", "BA Heading Song", var(--ba-font-cjk);
+  --ba-font-roman: var(--ba-punct), var(--ba-font-caps), var(--ba-heading-cjk), serif;
+  /* 第二十五版(用户：英文 H4–H6 还是很小)：西文换成同一字体放大 116% 的别名，中文不变；
+     第二十六版(用户：这样 H2、H3 的英文显小了)：H1–H6 都用它，英文按各级字号依次递减(笔记标题不变) */
+  --ba-font-roman-l: var(--ba-punct), "BA Heading Latin L", var(--ba-heading-cjk), serif;
+  --h1-font: var(--ba-font-roman-l);
+  --h1-size: 1.62em;
+  --h1-weight: 700;
+  --h1-color: var(--ba-blood);
+  --h1-letter-spacing: 0.06em;
+  --h1-line-height: 1.3;
+  --h2-font: var(--ba-font-roman-l);
+  --h2-size: 1.42em;
+  --h2-weight: 600;
+  --h2-color: #8c1820;              /* 第二十七版(用户：标题颜色和界面色调更一致；H1 不变)：H2 圣血红深一档(原来和 H1 同为暗血红) */
+  --h2-letter-spacing: 0.04em;
+  --h2-line-height: 1.35;
+  /* 第二十一版(用户：4–6 级标题和正文差不多大甚至更小，尤其英文)：正文 EB Garamond 有 112% size-adjust，小型大写的标题字
+     又只有大写一半高，原来 H4 1.04 / H5 0.98 / H6 0.9em 看着都比正文小。参考 PaperK(H4 1.08 / H5 1.12 / H6 0.95，
+     但它的标题是全尺寸字形)，按 H3 → H6 每级约 0.92 倍递减，H6 也比正文大一点。
+     二稿(用户：H6 还是太小，H3–H6 再加大，H1 / H2 不动)：H3 1.36 / H4 1.29 / H5 1.22 / H6 1.16em(H2 1.42) */
+  --h3-font: var(--ba-font-roman-l);
+  --h3-size: 1.36em;
+  --h3-weight: 600;
+  --h3-color: var(--ba-gold-deep);
+  --h3-letter-spacing: 0.04em;
+  --h3-line-height: 1.4;
+  --h4-font: var(--ba-font-roman-l);
+  --h4-size: 1.29em;
+  --h4-weight: 600;
+  --h4-color: #5b3a26;              /* 第二十七版：暖赭，和正文墨色拉开(原来 = 正文墨色) */
+  --h4-letter-spacing: 0.12em;
+  --h4-line-height: 1.45;
+  --h5-font: var(--ba-font-roman-l);
+  --h5-size: 1.22em;
+  --h5-weight: 600;
+  --h5-color: var(--ba-ink-2);
+  --h5-letter-spacing: 0.08em;
+  --h6-font: var(--ba-font-roman-l);
+  --h6-size: 1.16em;
+  --h6-weight: 500;
+  --h6-color: #7d6a58;              /* 第二十七版：原来 #9d8873 对页面只有 3.0:1，压深到 4.6:1 */
+  --h6-letter-spacing: 0.1em;
+
+  --inline-title-font: var(--ba-font-roman);
+  --inline-title-size: 2.25em;
+  --inline-title-weight: 700;
+  --inline-title-color: var(--ba-crimson);
+  --inline-title-line-height: 1.25;
+  --inline-title-margin-bottom: 1.4rem;
+
+  /* ---- links & tags ---- */
+  --link-color: var(--ba-crimson);
+  --link-color-hover: var(--ba-blood);
+  --link-decoration: none;          /* 下划线是背景画的金线 + 悬停时划过的红线(见 3. 链接)；原版的文字下划线关掉，悬停时不叠成双线 */
+  --link-decoration-hover: none;
+  /* 外链另有一套：实时预览里悬停时原版给外层 span.cm-link 加文字下划线，外层的下划线子元素去不掉，叠成两道线(第十版用户看到的) */
+  --link-external-decoration: none;
+  --link-external-decoration-hover: none;
+  --link-decoration-thickness: 1px;
+  --link-external-color: var(--ba-lapis);
+  --link-external-color-hover: var(--ba-crimson);
+  --link-unresolved-color: var(--ba-crimson);
+  --link-unresolved-opacity: 0.6;
+  --link-unresolved-decoration-style: dotted;
+  --link-unresolved-decoration-color: color-mix(in srgb, var(--ba-crimson) 50%, transparent);
+
+  /* 第十二版(用户：标签和页面上其他元素比太刺眼)：圣血红底 + 近白字 → 降饱和的红 + 奶油色字。
+     一稿砖红 #9c3b35 被嫌太棕、不够红 → #a8302d 又被嫌偏橘 → 往冷一点的血红挪：#a32a35(比过更深的 #9c2531，发暗) */
+  --tag-color: #f4e6c9;
+  --tag-color-hover: #f4e6c9;
+  --tag-background: #a32a35;
+  --tag-background-hover: #8c2330;
+  --ba-tag-grain: @@RASTER:tag-grain@@;   /* 标签、表头红底上的磨损质感(第十五版) */
+  --tag-border-color: transparent;
+  --tag-border-color-hover: transparent;
+  --tag-border-width: 0;
+  --tag-radius: 0;
+  --tag-padding-x: 0.6em;
+  --tag-padding-y: 0.2em;      /* 第九版 0.1 → 0.2：g、p 的下伸部分不再顶到红底下沿被燕尾裁切裁掉 */
+  --tag-size: 0.8em;
+
+  /* ---- blocks ---- */
+  --blockquote-border-thickness: 0;
+  --blockquote-border-color: var(--ba-gold);
+  --blockquote-color: var(--ba-ink-2);
+  --blockquote-background-color: transparent;
+  --blockquote-font-style: normal;
+
+  --callout-border-width: 0;
+  --callout-radius: 0;
+  --callout-padding: 20px 36px 18px 36px;   /* 第十九版：花角框，给四角让出地方 */
+  --callout-title-size: 0.92em;
+  --callout-title-weight: 700;
+  --callout-blend-mode: normal;
+  /* 第三十版(用户：红色类别的底色、花框和主题对齐，且要分得开)：原来笔记 / 失败 / 危险同为圣血红、重要是暗血红，底色都偏粉。
+     现在三档：笔记(及自定义类型)= 提示同款赭黄；重要 = 强调色圣血红；危险 / 失败 = 不妙的暗血红。底色、实色花框见第 8 节。
+     彩色类(用户：警告的橘色显得更鲜艳、绿蓝紫也稍微降低饱和度)按同一比例降饱和：oklch 里色度 ×0.8，明度、色相不变，
+     警告也在内(它本身没变，是旁边换成发暗的暗血红后被衬得跳)；圣血红、暗血红是主题色，不动。比过 ×0.65(preview/callout降饱和对比.png) */
+  --callout-default: oklch(from var(--ba-ochre) l calc(c * 0.8) h);
+  --callout-info: oklch(from var(--ba-lapis) l calc(c * 0.8) h);
+  --callout-todo: oklch(from var(--ba-lapis) l calc(c * 0.8) h);
+  --callout-tip: oklch(from var(--ba-ochre) l calc(c * 0.8) h);
+  --callout-summary: oklch(from var(--ba-umber) l calc(c * 0.8) h);
+  --callout-important: var(--ba-crimson);
+  --callout-success: oklch(from var(--ba-verdigris) l calc(c * 0.8) h);
+  --callout-question: oklch(from var(--ba-lapis) l calc(c * 0.8) h);
+  --callout-warning: oklch(from var(--ba-vermilion) l calc(c * 0.8) h);
+  --callout-error: var(--ba-blood);
+  --callout-fail: var(--ba-blood);
+  --callout-bug: oklch(from var(--ba-tyrian) l calc(c * 0.8) h);
+  --callout-example: oklch(from var(--ba-tyrian) l calc(c * 0.8) h);
+  --callout-quote: oklch(from var(--ba-umber) l calc(c * 0.8) h);
+
+  --code-background: var(--ba-paper-4);
+  --code-border-width: 1px;
+  --code-border-color: var(--ba-rule);
+  --code-radius: 1px;
+  --code-size: 0.86em;
+  --code-normal: var(--ba-ink);
+  --code-comment: #806a54;           /* 第二十七版：代码区换成白羊皮纸，偏浅的四种压深(对比度 ≥ 4.9:1) */
+  --code-function: #7d5c10;
+  --code-important: var(--ba-crimson);
+  --code-keyword: var(--ba-crimson);
+  --code-operator: #a8461a;
+  --code-property: var(--ba-lapis);
+  --code-punctuation: var(--ba-ink-2);
+  --code-string: #356b52;
+  --code-tag: var(--ba-crimson);
+  --code-value: var(--ba-tyrian);
+
+  --table-border-color: var(--ba-rule);
+  --table-header-background: var(--tag-background);
+  --table-header-background-hover: var(--tag-background);
+  --table-header-color: var(--tag-color);
+  --table-header-font: var(--ba-font-display);
+  --table-header-weight: 700;
+  --table-header-size: 1em;
+  --table-text-size: 0.95em;
+  --table-line-height: 1.6;
+  --table-row-alt-background: transparent;
+  --table-row-alt-background-hover: color-mix(in srgb, var(--ba-gold) 8%, transparent);
+  --table-row-background-hover: color-mix(in srgb, var(--ba-gold) 8%, transparent);
+  --table-selection: color-mix(in srgb, var(--ba-gold-light) 30%, transparent);
+  --table-selection-border-color: var(--ba-gold);
+
+  --hr-color: var(--ba-gold);
+  --hr-thickness: 1px;
+
+  --list-marker-color: var(--ba-gold);
+  --list-marker-color-hover: var(--ba-crimson);
+  --list-marker-color-collapsed: var(--ba-crimson);
+  --list-bullet-radius: 0;
+  --list-bullet-size: 0.3em;
+  --list-bullet-transform: rotate(45deg);
+  --list-spacing: 0.12em;
+
+  --checkbox-radius: 1px;
+  --checkbox-color: var(--tag-background);   /* 第四十五版：勾选后的填色同开关，换标签红 + 奶油色勾 */
+  --checkbox-color-hover: var(--tag-background-hover);
+  --checkbox-border-color: var(--ba-gold);
+  --checkbox-border-color-hover: var(--ba-gold-deep);
+  --checkbox-marker-color: var(--tag-color);
+  --checklist-done-color: var(--ba-ink-3);
+  --checklist-done-decoration: line-through;
+
+  /* 列表缩进竖线：第二十七版(用户：太淡，和链接下划线不是一个颜色)金 22% → 55%，光标所在那层 50% → 100%(= 链接下划线的金) */
+  --indentation-guide-color: color-mix(in srgb, var(--ba-gold) 55%, transparent);
+  --indentation-guide-color-active: var(--ba-gold);
+
+  /* 嵌入笔记：第三十版先把左竖线改金 2px、再改成列表缩进线(用户：太深 / 又太不明显)，三稿(用户：嵌入笔记有没有别的设计)
+     比过衬纸卡片 / 摘录带 / 书签缎带 / 卷草角花 / 来源签条(preview/嵌入设计稿.png)，用户定衬纸卡片去掉金细框(A2)：不画竖线，样式见第 7 节图片后面 */
+  --embed-border-start: none;
+  --embed-padding: 0;              /* 内边距改在卡片自己身上(Obsidian 把它加在标题行和正文上，会各多出一截) */
+
+  /* ---- chrome ---- */
+  --radius-s: 2px;
+  --radius-m: 3px;
+  --radius-l: 5px;
+  --radius-xl: 8px;
+  /* 第十九版(用户：滚动条太细，要能在 Style Settings 调宽度)：--ba-scrollbar-width 由 Style Settings 写；第二十一版默认 10 → 8px，第二十二版 → 6px */
+  --ba-sb-gap: 3px;                /* 第二十五版：滑块和窗口右边之间的空隙 */
+  --scrollbar-width: calc(var(--ba-scrollbar-width, 6px) + var(--ba-sb-gap));
+  --scrollbar-height: calc(var(--ba-scrollbar-width, 6px) + var(--ba-sb-gap));
+  --scrollbar-radius: 0;
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: color-mix(in srgb, #a32a35 75%, transparent);   /* 第二十一版：金 → 圣血红；第二十四版：标签红 75%(用户：常态太淡) */
+  --scrollbar-active-thumb-bg: color-mix(in srgb, #a32a35 92%, transparent);
+  --divider-color: var(--ba-rule);
+  --divider-color-hover: var(--ba-gold);
+
+  --ribbon-background: var(--ba-paper-3);
+  --ribbon-background-collapsed: var(--ba-paper-3);
+  --titlebar-background: var(--ba-paper-3);
+  --titlebar-background-focused: var(--ba-paper-3);
+  --titlebar-border-color: var(--ba-rule);
+  --titlebar-text-color: var(--ba-ink-3);
+  --titlebar-text-color-focused: var(--ba-ink-2);
+  --status-bar-background: var(--ba-paper-3);
+  --status-bar-border-color: var(--ba-rule);
+  --status-bar-text-color: var(--ba-ink-3);
+
+  --tab-container-background: var(--ba-paper-3);
+  --tab-background-active: var(--ba-paper);
+  --tab-text-color: var(--ba-ink-3);
+  --tab-text-color-active: var(--ba-ink-2);
+  --tab-text-color-focused: var(--ba-ink-2);
+  --tab-text-color-focused-active: var(--ba-ink);
+  --tab-text-color-focused-active-current: var(--ba-crimson);
+  --tab-text-color-focused-highlighted: var(--ba-crimson);
+  --tab-outline-color: var(--ba-rule);
+  --tab-divider-color: var(--ba-rule-strong);
+
+  --nav-item-size: 14px;
+  --nav-item-color: var(--ba-ink-2);
+  --nav-item-color-hover: var(--ba-ink);
+  --nav-item-color-active: var(--ba-crimson);
+  --nav-item-color-selected: var(--ba-crimson);
+  --nav-item-color-highlighted: var(--ba-crimson);
+  /* 当前文件加粗走变量：原版「当前 + 悬停」那条规则(body:not(.is-grabbing) .tree-item-self.is-active:hover)取的是这个变量，
+     原来只写死 .tree-item-self.is-active { font-weight: 600 }，一悬停就被那条盖回 400，字变细(用户发现) */
+  --nav-item-weight-active: 600;
+  --nav-item-background-hover: color-mix(in srgb, var(--ba-gold) 12%, transparent);
+  --nav-item-background-active: color-mix(in srgb, var(--ba-crimson) 9%, transparent);
+  --nav-item-background-selected: color-mix(in srgb, var(--ba-crimson) 13%, transparent);
+  --nav-heading-color: var(--ba-gold-deep);
+  --nav-heading-color-hover: var(--ba-ink);
+  --nav-collapse-icon-color: var(--ba-gold);
+  --nav-collapse-icon-color-collapsed: var(--ba-ink-3);
+  --nav-indentation-guide-color: color-mix(in srgb, var(--ba-gold) 22%, transparent);
+  --nav-tag-background: transparent;
+  --nav-tag-color: var(--ba-gold-deep);
+  --nav-tag-color-hover: var(--ba-crimson);
+  --nav-tag-color-active: var(--ba-crimson);
+  --collapse-icon-color: var(--ba-gold);
+  --collapse-icon-color-collapsed: var(--ba-crimson);
+
+  --icon-color: var(--ba-ink-3);
+  --icon-color-hover: var(--ba-ink);
+  --icon-color-active: var(--ba-crimson);
+  --icon-color-focused: var(--ba-ink);
+
+  --modal-background: var(--ba-paper);
+  --modal-border-color: var(--ba-gold-light);
+  --modal-border-width: 1px;
+  --modal-radius: 3px;
+  --modal-shadow: 0 2px 6px rgba(var(--ba-shadow), 0.08), 0 24px 70px rgba(var(--ba-shadow), 0.22);
+  --menu-background: var(--ba-paper);
+  --menu-border-color: var(--ba-rule-strong);
+  --menu-radius: 3px;
+  --menu-shadow: 0 12px 34px rgba(var(--ba-shadow), 0.18);
+  --prompt-background: var(--ba-paper);
+  --prompt-border-color: var(--ba-gold-light);
+  --suggestion-background: var(--ba-paper);
+  /* tooltip(第三十版，用户比过印章红签 / 羊皮纸笺 / 墨底金框 / 燕尾缎带 / 金箔铭牌 / 封蜡纸条 / 绶带小卷轴，定金线纸笺 N2)：
+     半透明羊皮纸 + 背后模糊，上下两道金细线、金色小箭头，见第 10 节 */
+  --tooltip-background: color-mix(in srgb, var(--ba-paper) 82%, transparent);
+  --tooltip-color: var(--ba-ink);
+  --tooltip-radius: 0;
+  --tooltip-padding: 6px 16px;
+  --tooltip-shadow: 0 4px 14px rgba(var(--ba-shadow), 0.14);
+  --notice-background: var(--ba-paper);
+  --notice-color: var(--ba-ink);
+  --notice-border: 1px solid var(--ba-gold-light);
+  --settings-background: var(--ba-paper);
+  --setting-items-background: color-mix(in srgb, var(--ba-gold) 5%, transparent);
+  --setting-items-border-color: var(--ba-rule);
+  --setting-group-heading-color: var(--ba-gold-deep);
+  --pill-background: color-mix(in srgb, var(--ba-gold) 10%, transparent);
+  --pill-border-color: color-mix(in srgb, var(--ba-gold) 40%, transparent);
+  --pill-color: var(--ba-ink);
+
+  --metadata-label-text-color: var(--ba-gold-deep);
+  --metadata-label-font: var(--font-interface);
+  --metadata-label-font-size: 0.88em;
+  --metadata-input-text-color: var(--ba-ink);
+  --metadata-border-color: var(--ba-rule);
+  --metadata-divider-color: transparent;
+  --metadata-property-background-hover: color-mix(in srgb, var(--ba-gold) 7%, transparent);
+
+  --graph-line: var(--ba-rule-strong);
+  --graph-node: var(--ba-graph-note);
+  --graph-node-unresolved: var(--ba-ink-3);
+  --graph-node-focused: var(--ba-crimson);
+  --graph-node-tag: var(--ba-gold);
+  --graph-node-attachment: var(--ba-graph-attachment);
+  --graph-text: var(--ba-ink-2);
+
+  --canvas-background: var(--ba-paper);
+  --canvas-dot-pattern: var(--ba-rule-strong);
+  --pdf-background: var(--ba-paper-2);
+  --pdf-page-background: #fffdf8;
+}
+.theme-dark {
+  /* 上面共用变量块里写死的日间颜色 → 夜间版(同 tools/dark.py 的色板) */
+  --color-cyan: #67abb3;
+  --color-pink: #c97e9b;
+  --color-red-rgb: 222, 59, 64;
+  --color-orange-rgb: 219, 123, 77;
+  --color-yellow-rgb: 213, 160, 81;
+  --color-green-rgb: 112, 174, 147;
+  --color-cyan-rgb: 103, 171, 179;
+  --color-blue-rgb: 130, 159, 212;
+  --color-purple-rgb: 184, 122, 171;
+  --color-pink-rgb: 201, 126, 155;
+  --color-accent-hsl: 358, 71%, 55%;
+  --interactive-accent-hsl: 354, 70%, 38%;
+  --h1-color: #f1ddce;               /* 骨白字(横幅是血色，三稿 b) */
+  --h2-color: #d53c40;
+  --h4-color: #c4a394;
+  --h6-color: #a08d87;
+  --tag-color: #f1ddce;
+  --tag-color-hover: #f1ddce;
+  --tag-background: #a51d2b;
+  --tag-background-hover: #8f1423;
+  --code-comment: #8e7d6a;
+  --code-function: #deb866;
+  --code-operator: #da8757;
+  --code-string: #77b493;
+  --scrollbar-thumb-bg: color-mix(in srgb, #a51d2b 75%, transparent);
+  --scrollbar-active-thumb-bg: color-mix(in srgb, #a51d2b 92%, transparent);
+  --pdf-page-background: var(--ba-paper-4);
+  /* 投影：黑底上同样的不透明度几乎看不出，加深 */
+  --background-modifier-cover: rgba(0, 0, 0, 0.6);
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.3);
+  --modal-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 24px 70px rgba(0, 0, 0, 0.55);
+  --menu-shadow: 0 12px 34px rgba(0, 0, 0, 0.5);
+  --tooltip-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+/* ==========================================================================
+   3. Base typography — 中西混排(同 Nox Aeterna)
+   ========================================================================== */
+body {
+  font-variant-numeric: lining-nums;
+  font-kerning: normal;
+}
+/* 正文用旧式数字(文艺复兴印本的样子)，界面、表格、日历保持等高数字 */
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content {
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+body:not(.ba-no-autospace) .markdown-rendered,
+body:not(.ba-no-autospace) .markdown-source-view.mod-cm6 .cm-content {
+  text-autospace: normal;
+}
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  letter-spacing: 0.012em;
+}
+body.ba-justify .markdown-rendered p,
+body.ba-justify .markdown-rendered li,
+body.ba-justify .markdown-rendered blockquote,
+body.ba-justify .markdown-source-view.mod-cm6 .cm-content > .cm-line:not(.HyperMD-header):not(.HyperMD-codeblock):not(.HyperMD-table-row) {
+  text-align: justify;
+}
+body.ba-latin-quotes {
+  --ba-punct: "BA CJK Punct Lite";
+}
+/* 标题中文字体(Style Settings；默认寒蝉活宋体 = 上面变量块里的 --ba-heading-cjk，不靠类名) */
+body.ba-heading-noto {
+  --ba-heading-cjk: var(--ba-font-cjk);
+}
+body.ba-heading-stsong {
+  --ba-heading-cjk: "BA STSong", var(--ba-font-cjk);
+}
+/* 表格、界面里的数字用等高数字(旧式数字只放在正文) */
+.markdown-rendered table,
+.markdown-source-view.mod-cm6 .cm-table-widget,
+.metadata-container {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+::selection {
+  background: var(--text-selection);
+}
+
+/* 滚动条(第十九版)。原版给 body.styled-scrollbars 设了标准属性 scrollbar-width: thin / scrollbar-color(会继承)：
+   新版 Chromium 里只要元素上有这两个非 auto 的值，::-webkit-scrollbar 的样式整个不生效——之前怎么设宽度都是一根细线。
+   这里还原成 auto，宽度走 --scrollbar-width。
+   第二十一版(用户：还是红色就行，两端渐隐是沿长度方向的上下两头而不是左右；宽度默认 8；悬停、拖动时不要变成方块)：
+   滑块是一段圣血红，竖条上下两头、横条左右两头渐隐；悬停 / 拖动只把红色加深，形状不变——
+   第十九版写的 :is(:hover, :active) 对滚动条伪元素不生效，悬停时落回原版那条实心方块，这里 :hover / :active 分开写。
+   第二十二版(用户：滑块短的时候渐隐也跟着变短)：两头渐隐从 18% 改成固定 16px(原版滑块最短 45px) */
+body.styled-scrollbars {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+body.styled-scrollbars ::-webkit-scrollbar-thumb,
+body.styled-scrollbars ::-webkit-scrollbar-thumb:hover,
+body.styled-scrollbars ::-webkit-scrollbar-thumb:active {
+  border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+/* 第二十三版(用户：渐隐范围太短，加长，并且逐渐变细，像一笔)：两头各一段笔锋图，中间实色。
+   第二十四版(用户：过渡还是不自然，有没有更符合主题的设计；常态太淡)：两头改成燕尾绶带的端头(ornaments.scrollbar_cap：
+   V 形缺口，同标签的燕尾)，各 8px；颜色换成标签红，平时 75%、悬停 / 拖动 92%。
+   第二十五版(用户：选笔锋 B 更饱满；右边太贴边，整体往左挪一点)：两头换回笔锋(饱满的尖拱 + 渐隐，36px)；
+   滑块右侧(横条是下侧)留 3px 透明边框，背景只画在内边距盒里——滚动条总宽 = 设置的宽度 + 3px */
+body.styled-scrollbars ::-webkit-scrollbar-thumb:vertical,
+body.styled-scrollbars ::-webkit-scrollbar-thumb:horizontal {
+  border-style: solid !important;
+  border-color: transparent !important;
+}
+body.styled-scrollbars ::-webkit-scrollbar-thumb:vertical {
+  border-width: 0 var(--ba-sb-gap) 0 0 !important;
+}
+body.styled-scrollbars ::-webkit-scrollbar-thumb:horizontal {
+  border-width: 0 0 var(--ba-sb-gap) 0 !important;
+}
+body.styled-scrollbars ::-webkit-scrollbar-thumb:vertical {
+  --ba-sb-cap: @@SIZE:sb-cap@@;
+  background:
+    @@ORN:sb-top@@ center top / 100% var(--ba-sb-cap) no-repeat,
+    @@ORN:sb-bottom@@ center bottom / 100% var(--ba-sb-cap) no-repeat,
+    linear-gradient(var(--scrollbar-thumb-bg), var(--scrollbar-thumb-bg)) center / 100% max(0px, calc(100% - 2 * var(--ba-sb-cap))) no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+body.styled-scrollbars ::-webkit-scrollbar-thumb:horizontal {
+  --ba-sb-cap: @@SIZE:sb-cap@@;
+  background:
+    @@ORN:sb-left@@ left center / var(--ba-sb-cap) 100% no-repeat,
+    @@ORN:sb-right@@ right center / var(--ba-sb-cap) 100% no-repeat,
+    linear-gradient(var(--scrollbar-thumb-bg), var(--scrollbar-thumb-bg)) center / max(0px, calc(100% - 2 * var(--ba-sb-cap))) 100% no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+body.styled-scrollbars ::-webkit-scrollbar-thumb:vertical:hover,
+body.styled-scrollbars ::-webkit-scrollbar-thumb:vertical:active {
+  background:
+    @@ORN:sb-top-h@@ center top / 100% var(--ba-sb-cap) no-repeat,
+    @@ORN:sb-bottom-h@@ center bottom / 100% var(--ba-sb-cap) no-repeat,
+    linear-gradient(var(--scrollbar-active-thumb-bg), var(--scrollbar-active-thumb-bg)) center / 100% max(0px, calc(100% - 2 * var(--ba-sb-cap))) no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+body.styled-scrollbars ::-webkit-scrollbar-thumb:horizontal:hover,
+body.styled-scrollbars ::-webkit-scrollbar-thumb:horizontal:active {
+  background:
+    @@ORN:sb-left-h@@ left center / var(--ba-sb-cap) 100% no-repeat,
+    @@ORN:sb-right-h@@ right center / var(--ba-sb-cap) 100% no-repeat,
+    linear-gradient(var(--scrollbar-active-thumb-bg), var(--scrollbar-active-thumb-bg)) center / max(0px, calc(100% - 2 * var(--ba-sb-cap))) 100% no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+
+/* 粗体：朱红墨(手抄本的 rubrication，用红墨写重点)；Style Settings 可改回墨色 */
+body.ba-plain-bold {
+  --bold-color: inherit;
+}
+.markdown-rendered em,
+.markdown-source-view .cm-em {
+  font-style: italic;
+  font-synthesis-style: auto;
+}
+.markdown-rendered del,
+.markdown-rendered s,
+.markdown-source-view .cm-strikethrough {
+  color: var(--text-faint);
+  text-decoration-color: color-mix(in srgb, var(--ba-crimson) 70%, transparent);
+  text-decoration-thickness: 1.3px;
+}
+/* 高亮：金色刷痕。第十九版(用户：原来的淡金底不明显)做成一整笔拉伸的刷痕；第二十版(用户：太深太土，还不如原来的；
+   多行、长文字的渐变判定要注意)：颜色回到原来那种浅金(#f0d46e 60%)，不叠颗粒；改用 border-image 九宫格——
+   两端的圆头固定宽度(第二十一版 7 → 11px)，中间一段毛边色带横向平铺(ornaments.highlight_brush2)，文字多长、折几行，每段的圆头和毛边都一样，
+   第二十一版(用户：还是原来低饱和的淡金好看，加一点微妙的渐变)：淡金上浅下深的竖直渐变、55% 不透明；
+   第二十三版(用户：两端太圆、渐变要左右)：圆角方头，中段改拉伸、左浓右淡的横向渐变贯穿整段，
+   不再被拉宽。折行时每一行各一笔(box-decoration-break: clone)。比过的几种见 preview/高亮对比/ */
+.markdown-rendered mark,
+.markdown-source-view .cm-highlight,
+body .cm-s-obsidian span.cm-highlight {   /* 原版 .cm-s-obsidian span.cm-highlight 铺一层实色底，编辑视图里圆头被盖成方块 */
+  color: inherit;
+  background: none;
+  border-radius: 0;
+  padding: 0.06em 0.04em;
+  border-style: solid;
+  border-width: 0 9px;
+  border-image: @@ORN:hl-brush@@ 0 18 fill / 0 9px / 0 stretch stretch;   /* 第二十三版：中段拉伸，左右渐变贯穿整段 */
+  margin-inline: -3px;           /* 笔头往外让一点，字和前后文的距离不变 */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* 编辑视图里高亮中间夹着粗体之类的格式会拆成几段(段与段之间隔着隐藏标记留下的空 widget)：只有首尾两段画圆头 */
+.markdown-source-view .cm-highlight:is(.cm-highlight + .cm-highlight,
+    .cm-highlight + .cm-widgetBuffer + [contenteditable="false"] + .cm-widgetBuffer + .cm-highlight) {
+  border-left-width: 0;
+  margin-left: 0;
+}
+.markdown-source-view .cm-highlight:has(+ .cm-highlight,
+    + .cm-widgetBuffer + [contenteditable="false"] + .cm-widgetBuffer + .cm-highlight) {
+  border-right-width: 0;
+  margin-right: 0;
+}
+
+/* 链接：圣血红字 + 金色细下划线。
+   悬停(第九版重做，用户：原来金线升成半个字高的淡金底，只盖住下半截字，像 bug)：金线不动，
+   一道圣血红的线从左往右划过去盖住它(两层背景，上层红线的宽度 0 → 100% 过渡)，字同时变深。
+   外部链接后面一枚金色小箭头(原版的外链图标也是 background-image，一起重写) */
+.markdown-rendered a.internal-link,
+.markdown-rendered a.external-link,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link .cm-underline,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline,
+.markdown-source-view.mod-cm6 .cm-url .cm-underline {
+  --ba-link-sweep: linear-gradient(var(--ba-crimson), var(--ba-crimson));
+  --ba-link-line: linear-gradient(var(--ba-gold), var(--ba-gold));
+  text-decoration: none;
+  background-image: var(--ba-link-sweep), var(--ba-link-line);
+  background-size: 0% 1.5px, 100% 1px;
+  background-position: 0 calc(100% - 0.06em);
+  background-repeat: no-repeat;
+  transition: background-size 0.32s ease, color 0.15s ease;
+}
+.markdown-rendered a.internal-link:hover,
+.markdown-rendered a.external-link:hover,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link .cm-underline:hover,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline:hover,
+.markdown-source-view.mod-cm6 .cm-url .cm-underline:hover {
+  color: var(--ba-blood);
+  text-decoration: none;
+  background-size: 100% 1.5px, 100% 1px;
+}
+.markdown-rendered a.external-link {
+  padding-inline-end: 0.85em;
+  background-image: var(--ba-link-sweep), var(--ba-link-line), @@ORN:ext@@;
+  background-size: 0% 1.5px, calc(100% - 0.85em) 1px, 0.62em 0.62em;
+  background-position: 0 calc(100% - 0.06em), 0 calc(100% - 0.06em), right 0.05em top 0.2em;
+}
+.markdown-rendered a.external-link:hover {
+  background-size: calc(100% - 0.85em) 1.5px, calc(100% - 0.85em) 1px, 0.62em 0.62em;
+}
+.markdown-rendered a.internal-link.is-unresolved {
+  --ba-link-line: repeating-linear-gradient(90deg, var(--ba-gold) 0 2px, transparent 2px 4px);
+}
+
+/* inline code */
+.markdown-rendered :not(pre) > code,
+.markdown-source-view.mod-cm6 .cm-inline-code {
+  color: var(--ba-blood);
+  background: var(--code-background);
+  border: 1px solid var(--code-border-color);
+  border-radius: 1px;
+  padding: 0.06em 0.34em;
+  letter-spacing: 0;
+}
+/* 第二十三版(用户：高亮里的代码没有高亮)：行内代码自带不透明的底色，会盖住外面的高亮(原版和多数主题都这样)——
+   高亮里的代码换成半透明的金底，看着还是同一笔 */
+.markdown-rendered mark code,
+.markdown-source-view.mod-cm6 .cm-inline-code.cm-highlight {
+  background: color-mix(in srgb, #e6c66c 34%, transparent);
+  border-color: color-mix(in srgb, #c9a548 45%, transparent);
+}
+
+/* tags：朱红燕尾小绶带(第一版的样式，第六版用户说还是这个好看)：右端剪一个燕尾缺口。
+   第四版用户嫌属性栏里的标签是生硬的红色方块——那里原来没有燕尾，现在属性栏的标签也剪成同样的小绶带 */
+.markdown-rendered a.tag,
+.markdown-source-view.mod-cm6 .cm-hashtag,
+.metadata-property[data-property-key="tags"] .multi-select-pill {
+  /* 第十四版(用户：标签背景也该有点质感)：红底上叠一层奶油色半透明小图；第十五版改成区域磨损(见 build.tag_grain) */
+  background-image: var(--ba-tag-grain);
+  background-size: 256px 256px;
+}
+.markdown-rendered a.tag,
+.markdown-source-view.mod-cm6 .cm-hashtag {
+  font-family: var(--font-interface);
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  text-autospace: no-autospace;     /* 中文标签：「#」和汉字之间不要自动加空隙(第九版) */
+  /* 第十版(用户：中文标签的字比周围正文下沉)：标签字小一号、和正文同一条基线，墨迹中线就比正文低约 1.5 设备像素，
+     红底也偏下；整个标签往上提 0.1em(标签字号的，约 1.3px)，字和红底都落在正文行的中线上 */
+  vertical-align: 0.1em;
+}
+.markdown-rendered a.tag,
+.markdown-source-view.mod-cm6 .cm-hashtag-end {
+  padding-inline-end: calc(var(--tag-padding-x) + 0.45em);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.42em) 50%, 100% 100%, 0 100%);
+}
+/* 编辑视图里「#」和标签文字是两个 span，各画各的底色，交界落在半个像素上就透出一道浅缝(第九版用户看到的"拼接裂缝")：
+   「#」的底色往右多伸 1px 垫在交界下面(右边距 −1px 抵消，排版不变) */
+.markdown-source-view.mod-cm6 .cm-hashtag-begin {
+  padding-inline-end: 1px;
+  margin-inline-end: -1px;
+}
+.metadata-property[data-property-key="tags"] .multi-select-pill {
+  border-radius: 0;
+  padding-inline-end: 0.7em;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.5em) 50%, 100% 100%, 0 100%);
+}
+/* 属性栏标签的文字盒行高只有 1em 又是 overflow: hidden(长标签要省略号)，g、p 的下伸部分被裁掉：上下各加一点内边距，
+   裁切范围跟着变大(第九版) */
+.metadata-property[data-property-key="tags"] .multi-select-pill-content {
+  padding-block: 0.1em 0.22em;
+}
+.metadata-property[data-property-key="tags"] .multi-select-pill-remove-button {
+  color: color-mix(in srgb, #f4e6c9 70%, transparent);
+}
+
+/* ==========================================================================
+   4. Atmosphere — 纸面：一层很细的暖褐颗粒 + 很缓的大尺度浓淡 + 四边内阴影暗角(第三版参考 PaperK 的思路：
+   纸纹是底色上的一点质感，不抢字；之前的大块斑驳 / 长纤维 / 霉斑太脏、像木纹，已去掉)。
+   纹理是构建时预渲染的 WebP，画在不滚动的 .view-content 上，里面的滚动容器透明(Nox Aeterna 的性能结论)
+   ========================================================================== */
+/* 第二十七版六轮(用户：纹理不要直接开关，改成透明度滑块)：纹理上面盖一层和底色同色的「纱」，纱的不透明度 = 100% − 设置里的纹理浓度
+   (--ba-texture-opacity，Style Settings 滑块，默认 100%)；0% 时整块是纯底色。
+   四边的暗角另有一个滑块(用户：暗角要单独调)：--ba-vignette-opacity，0–200%，乘在暗角的不透明度 0.13 上。
+   每块区域的纱用它自己的底色(--ba-veil-c) */
+.theme-light .workspace-split.mod-root .view-content {
+  --ba-veil-c: var(--background-primary);
+  background-color: var(--background-primary);
+  box-shadow: inset 0 0 110px 8px rgb(120 82 38 / calc(var(--ba-vignette-opacity, 100%) * 0.13));
+}
+.theme-light .workspace-ribbon {
+  --ba-veil-c: var(--ribbon-background);
+}
+.theme-light .workspace-split.mod-sidedock .workspace-leaf-content {
+  --ba-veil-c: var(--background-secondary);
+}
+.theme-light .workspace-tab-header-container {
+  --ba-veil-c: var(--tab-container-background);
+}
+/* 第三十六版(用户：标题栏文件名居中、加纹理，再加阴影，其他不动)：主区的视图标题栏和当前标签也铺纸纹——
+   当前标签和标题栏连成一块，只铺标题栏的话接口处有色差。
+   第三十八版起主区标签栏是 T4 象牙衬签(第 10 节)，当前标签浮在标签栏里、不再和标题栏相连，透出标签栏自己的纸；只剩堆叠标签还铺 */
+.theme-light .workspace-split.mod-root .view-header {
+  --ba-veil-c: var(--file-header-background);
+}
+.theme-light .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-header.is-active {
+  --ba-veil-c: var(--tab-background-active);
+}
+/* 侧栏「书签卡片」布局(第 10 节)：纸铺在每个标签组(卡片)上，卡片之间露出侧栏自己的纸(同标签栏)；侧栏的面板和标签栏不铺 */
+.theme-light:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock {
+  --ba-veil-c: var(--tab-container-background);
+  background-color: var(--tab-container-background);
+}
+.theme-light:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tabs,
+.theme-light:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  --ba-veil-c: var(--background-secondary);
+}
+/* 右栏开着时的状态栏(第 10 节)：「右栏开着」看前面那个兄弟 .horizontal-main-container(不写 body:has()，原因见第 10 节标题栏按钮那里)；
+   纸纹规则也单列一条，进不了下面那个 :is() */
+.theme-light:not(.ba-sidebar-plain):not(.is-mobile) .horizontal-main-container:has(> .workspace.is-right-sidedock-open) + .status-bar {
+  --ba-veil-c: var(--background-secondary);
+  --ba-veil: color-mix(in srgb, var(--ba-veil-c) calc(100% - var(--ba-texture-opacity, 100%)), transparent);
+  background-image: linear-gradient(var(--ba-veil), var(--ba-veil)), @@RASTER:tone@@, @@RASTER:grain@@;
+  background-size: auto, 1024px 1024px, 320px 320px;
+  background-repeat: repeat;
+}
+/* 最后一个选择器：标题栏自动隐藏时被推下来的 Editing Toolbar 工具栏的纸(见第 10 节)；伪元素进不了 :is()，单列出来，免得纸纹位图再嵌一份。
+   功能栏、书签卡片布局的侧栏底不在这里，单列在下一条(第四十八版) */
+.theme-light :is(.workspace-split.mod-root .view-content,
+                 body:not(:not(.ba-sidebar-plain):not(.is-mobile)) .workspace-split.mod-sidedock .workspace-leaf-content,
+                 body:not(:not(.ba-sidebar-plain):not(.is-mobile)) .workspace-tab-header-container, .workspace-split.mod-root .workspace-tab-header-container,
+                 :not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tabs,
+                 :not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile,
+                 .workspace-split.mod-root .view-header, .workspace-split.mod-root .workspace-tabs.mod-stacked .workspace-tab-header.is-active),
+.theme-light.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top::before {
+  --ba-veil: color-mix(in srgb, var(--ba-veil-c) calc(100% - var(--ba-texture-opacity, 100%)), transparent);
+  background-image: linear-gradient(var(--ba-veil), var(--ba-veil)), @@RASTER:tone@@, @@RASTER:grain@@;
+  background-size: auto, 1024px 1024px, 320px 320px;
+  background-repeat: repeat;
+}
+/* 功能栏、书签卡片布局的侧栏底(卡片之间露出的纸)单列(第四十八版)：功能栏自动隐藏时这两个元素一悬停就要重算样式(滑出 / 把左栏推开)，
+   而 background-image 里只要有一个 var()，整条值连同两张几百 KB 的纸纹位图每次重算都要重新代入解析——实测一次 25~45ms、掉好几帧
+   (上一条规则带纱 linear-gradient(var(--ba-veil))，build 去重又把位图换成了 var(--ba-uN))。这里背景只写纸纹(LIT 占位符 = 字面值，
+   不参与 build.dedupe_uris 去重；字面值只解析一次、所有匹配的元素共用)，纱改用铺满的内阴影画：内阴影画在背景之上、内容和负 z-index 子层
+   (纯洁印记的纸条)之下，和原来最上面那层纱一样。代价是两张纸纹在 theme.css 里多嵌一份(约 480KB) */
+.theme-light .workspace-ribbon,
+.theme-light:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock {
+  --ba-veil: color-mix(in srgb, var(--ba-veil-c) calc(100% - var(--ba-texture-opacity, 100%)), transparent);
+  background-image: @@LIT:RASTER:tone@@, @@LIT:RASTER:grain@@;
+  background-size: 1024px 1024px, 320px 320px;
+  background-repeat: repeat;
+  box-shadow: inset 0 0 0 100vmax var(--ba-veil);
+}
+.workspace-split.mod-root .view-content > .markdown-reading-view,
+.workspace-split.mod-root .view-content > .markdown-reading-view > .markdown-preview-view,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6 > .cm-editor,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller,
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6 .cm-gutters {
+  background-color: transparent;
+}
+/* 编辑区的滚动容器单独成合成层(第三十七版性能，用户：编辑视图滚动还卡)：容器透明(纸纹在外面不滚动的 .view-content 上)，
+   DPR < 1.5(本机 125%)时 Chromium 为保 LCD 次像素文字不让透明滚动容器走合成器滚动，每滚一帧主线程整屏重画(纸纹 + 暗角 + 正文)。
+   加了以后编辑视图滚动 p95 帧间隔 15 → 6ms(同无主题)、超 16.7ms 的帧 30 → 14。代价同 Nox Aeterna 的文件列表：这层里的字改走灰度抗锯齿——
+   本机正文本来就是灰度抗锯齿，前后截图放大的正文逐像素相同、整窗最大色差 2/255(preview/滚动性能/滚动层/)。
+   阅读视图试过同样处理：平均帧、p95 变好，可超 33ms 的帧反而变多，没加 */
+.workspace-split.mod-root .view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller {
+  will-change: transform;
+}
+
+/* ==========================================================================
+   5. Title & headings
+   ========================================================================== */
+/* 笔记标题：居中朱红，下方圣血天使战团徽(完整徽记，金箔双翼 + 血滴)。
+   第十版(用户：徽记太简陋，要配新标签页的美术风格和配色，可以把新标签页的缎带放在两边)：同新标签页的套色画法，
+   身后横穿新标签页那条绶带(不带字)，两端在翼尖外侧翘起(ornaments.title_crest，图高由 build.py 算好填进 --ba-emblem-h) */
+.inline-title:not([data-level]) {
+  text-align: center;
+}
+/* 第十二版(用户：标题文字两边空空的，加装饰花边)：标题框收成文字的宽度(fit-content，居中)，两侧内边距里画卷草花边
+   (ornaments.title_flourish)；徽记比标题框宽，改成 ::after 绝对定位挂在框底正中，不受框宽限制 */
+body:not(.ba-no-emblem) .inline-title:not([data-level]) {
+  position: relative;
+  padding-bottom: calc(var(--ba-emblem-h) + 4px);    /* 第十一版二稿：0.7rem → 4px，徽记贴近标题(用户嫌中间空白太多、构图割裂) */
+}
+body:not(.ba-no-emblem) .inline-title:not([data-level])::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: @@SIZE:crest-w@@;
+  height: var(--ba-emblem-h);
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: @@ORN:emblem@@ center / 100% 100% no-repeat;
+}
+/* 第十五版(用户：第十三版竖着的莨苕叶会和下面的缎带重合，标题太长、折成几行时也不自然；叶子躺平不够，或者用分割线的样式)：
+   花边画在 ::before 上——这一层只盖住标题框里文字那一块(底边让出徽记的高度)，左右两片在这一块的竖直方向上居中：
+   不会伸进缎带，标题折成几行也对着整段文字的中间。花边用分割线同款(ornaments.title_rule_arm)：「∞」卷草 + 金线向外渐隐 +
+   下面一道更短的细线。比过的叶子平躺四种摆法、素材原样的箭头菱形版见 scratchpad ba_flpv2.py
+   第三十七版(用户：窄窗口下标题被挤成一字一行)：两侧花边位原来写死 137 + 8px，正文行宽约 400px 时只剩一个字宽。
+   改成行宽够「5 个字 + 两侧花边位」(标题 36px 时约 471px)才留花边位，不够就整对不要、文字拿全宽——内边距 = clamp(0, (行宽 − 门槛) × 1000, 花边位)，
+   百分比按包含块(行宽)算，过门槛就是一个台阶。不按比例缩：花边外端是渐隐金线，裁短会变成齐头、缩放会让卷草忽大忽小。
+   花边从 ::before 挪到标题自己的背景上，定位框 = 内容框(文字块)：左右两片贴在文字框外 8px，竖直居中在文字块上(内容框不含底下徽记的位置，
+   和原来 ::before 让出徽记高度一样)；绘制框 = 边框框，内边距为 0 时两片整个落在框外、不画。行宽够时位置和原来一模一样 */
+body:not(.ba-no-title-flourish) .inline-title:not([data-level]) {
+  --ba-fl-w: @@SIZE:fl-w@@;
+  --ba-fl-h: @@SIZE:fl-h@@;
+  position: relative;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-top: 6px;
+  padding-inline: clamp(0px, calc((100% - 5em - 2 * (var(--ba-fl-w) + 8px)) * 1000), calc(var(--ba-fl-w) + 8px));
+  background:
+    @@ORN:flourish-l@@ calc(-8px - var(--ba-fl-w)) center / var(--ba-fl-w) var(--ba-fl-h) no-repeat content-box border-box,
+    @@ORN:flourish-r@@ right calc(-8px - var(--ba-fl-w)) center / var(--ba-fl-w) var(--ba-fl-h) no-repeat content-box border-box;
+}
+
+.markdown-rendered div.el-div + div > :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: var(--heading-spacing);
+}
+
+/* H1：绶带横幅(第四版)。第三版把整条绶带切成三块拼，接缝看得见、字长了会跑出横幅、多行字放不下。
+   现在：正面宽带是一张不定尺寸的 SVG(ribbons.band_svg：羊皮纸底 + 深褐描边，上下沿往下垂的平缓弧线，垂度固定像素)，
+   拉到标题内边距盒大小——字多长、几行，宽带都跟着变宽变高，没有切块拼接；
+   两端是用户给的 f0208 绶带的燕尾 + 卷边(ribbons.tail，去掉了原图的正面宽带)，贴在宽带左右两个下角——
+   燕尾区 = 左右透明边框，卷边从宽带下沿垂下去的那段 = 下内边距里多出的 --ba-td。
+   端头图按 --ba-ts 缩放：原图里宽带左端在 x 151、下沿在 y 83.5、图高 123.8。
+   背景叠放次序：宽带 → 两端(卷边绕到宽带后面，被宽带盖住的部分看不见) */
+.markdown-rendered h1,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  text-align: center;
+}
+body:not(.ba-no-heading-orn) :is(.markdown-rendered h1, .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1) {
+  --ba-ts: 0.55;
+  --ba-tz: calc(151px * var(--ba-ts));        /* 燕尾区宽 = 左右透明边框 */
+  --ba-td: calc(40.3px * var(--ba-ts));       /* 宽带下沿到标题底边：卷边垂下去的高度 */
+  --ba-tw: calc(200px * var(--ba-ts));
+  --ba-th: calc(123.8px * var(--ba-ts));
+  --ba-sag: 7px;                               /* 宽带上下沿正中下垂的深度(= ribbons.band_svg 的 sag) */
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-inline: auto;
+  min-height: var(--ba-th);
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--ba-tz);
+  padding: calc(6px + var(--ba-sag)) 22px calc(var(--ba-td) - var(--ba-sag) + 7px);
+  /* 宽带盒：两个下角在标题底边往上 --ba-td 处(两端卷边接在这里)，正中下沿再往下垂 --ba-sag。
+     两端燕尾(第三十七版，用户：一级标题占了多行，两边的缎带也要一起加高)：在宽带下沿切成两段，上段(燕尾旗面)从框顶纵向拉到宽带下角，
+     宽带几行高它就多高；下段(卷边)原尺寸贴在框底，高正好 = 卷边区 --ba-td，接缝就在宽带下角。单行时上段比原图高不到 1px */
+  background:
+    @@ORN:band@@ left var(--ba-tz) top 0 / calc(100% - 2 * var(--ba-tz)) calc(100% - var(--ba-td) + var(--ba-sag)),
+    @@ORN:tail-l-top@@ left top / var(--ba-tw) calc(100% - var(--ba-td)),
+    @@ORN:tail-l-bot@@ left bottom / var(--ba-tw) var(--ba-td),
+    @@ORN:tail-r-top@@ right top / var(--ba-tw) calc(100% - var(--ba-td)),
+    @@ORN:tail-r-bot@@ right bottom / var(--ba-tw) var(--ba-td);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-clip: border-box;
+}
+/* 第三十七版(用户：一级标题变窄时横幅会变得超高)：两端燕尾区各 83px + 内边距 22px，正文栏窄时字被挤成好几行、宽带越撑越高。
+   正文栏窄于 24em(正文字号 16px 时 384px)就不要燕尾。容器查询只知道栏宽、不知道标题多长，门槛只能折中：
+   32em(512px)时「一、永夜之城」这种短标题(带燕尾也只要 ~366px)在 500px 宽就丢了燕尾，用户嫌判定宽度太宽；
+   24em 让短标题的燕尾留到很窄，更宽时长标题折成几行、燕尾跟着加高(见上)。
+   不要燕尾时：透明边框归零，宽带铺满整个框，燕尾图尺寸归零(只改尺寸 / 位置，
+   不再嵌一份宽带图)；下面卷边垂下去的那段也不要，下内边距收回 7px。
+   要按正文栏宽度判断，只能用容器查询：燕尾图比燕尾区宽 27px(伸到宽带端头后面、底下还垂着一截卷边)，又必须跟着宽带端头走，
+   光靠背景定位，窄时那截卷边总会露在宽带角下面；边框宽度也不能写百分比。
+   容器 = 编辑视图的 .cm-sizer / 阅读视图的 .markdown-preview-sizer(嵌入笔记、悬停预览各有自己的一个)；
+   声明容器带布局隔离，实测编辑视图 .cm-scroller 底下 459 个元素宽窄视口下位置尺寸一个没变(scratchpad _container_probe.py) */
+.markdown-source-view.mod-cm6 .cm-sizer,
+.markdown-preview-sizer {
+  container: ba-page / inline-size;
+}
+@container ba-page (width < 24em) {
+  body:not(.ba-no-heading-orn) :is(.markdown-rendered h1, .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1) {
+    min-height: 0;
+    border-width: 0;
+    padding-bottom: 7px;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+    background-size: 100% 100%, 0 0, 0 0, 0 0, 0 0;
+  }
+}
+/* 编辑视图：原版 .cm-content > * 写死 margin: 0 !important(每一行都不许有外边距)，横幅居中只能同样用 !important 盖过去；
+   标题字号挂在行里面的 span 上，行本身是正文字号，这里把字号和行高统一放到行上 */
+body:not(.ba-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 {
+  font-size: var(--h1-size);
+  line-height: var(--h1-line-height);
+  margin-inline: auto !important;
+}
+body:not(.ba-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-1 > .cm-header-1 {
+  font-size: 1em;
+  line-height: inherit;
+}
+
+/* H2：血红，前面一组巴尔宝石(圣吉列斯胸甲上的那组：上圆宝石 + 三颗小宝石 + 下面的大宝石，猫眼缝，金托连成一体)，下方金色细线向右渐隐。
+   阅读视图 1em = 标题字号；编辑视图的行 1em = 正文字号，标题字号 = var(--h2-size)。
+   CodeMirror 的行不加伪元素(会让点击和光标错位)，两边都画成背景；编辑视图从底边定位(按截图实测) */
+/* 第二十一版(用户：H2 左边的宝石太靠下，没和标题字对齐)：换成 IM Fell / 寒蝉后字的视觉中心比行框中心高，宝石整体上移 0.1em */
+body:not(.ba-no-heading-orn) .markdown-rendered h2 {
+  padding-inline-start: 0.86em;
+  padding-bottom: 0.18em;
+  background:
+    @@ORN:h2@@ left 0 top calc((var(--h2-line-height) * 1em - 1.04em) / 2 - 0.08em) / 0.554em 1.04em no-repeat,
+    linear-gradient(90deg, var(--ba-gold), color-mix(in srgb, var(--ba-gold) 35%, transparent) 55%, transparent 90%) left bottom / 100% 1px no-repeat;
+}
+/* 编辑视图(第九版修正：标题行自己的字号已经是标题字号，原来再乘 var(--h2-size) 等于多乘一次 1.42，宝石比阅读视图大四成)：
+   和阅读视图同一套 em 尺寸；行顶上有原版的段距，所以从底边定位 = 下内边距 + 行内居中 */
+body:not(.ba-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-2 {
+  padding-inline-start: 0.86em;
+  padding-bottom: 0.18em;
+  background:
+    @@ORN:h2@@ left 0 bottom calc(0.18em + (var(--h2-line-height) * 1em - 1.04em) / 2 + 0.08em) / 0.554em 1.04em no-repeat,
+    linear-gradient(90deg, var(--ba-gold), color-mix(in srgb, var(--ba-gold) 35%, transparent) 55%, transparent 90%) left bottom / 100% 1px no-repeat;
+}
+
+/* H3：深金，前面一枚小太阳光环(圣吉列斯的光环：弯曲的火焰光芒与直光芒交替；小尺寸专用画法) */
+/* 第二十二版(用户：H3 的装饰也要上抬、放大，和字对齐)：0.7 → 0.88em，上移 0.1em(同 H2 宝石，小型大写 / 寒蝉的视觉中心比行框中心高) */
+body:not(.ba-no-heading-orn) .markdown-rendered h3 {
+  padding-inline-start: 1.14em;    /* 第二十三版：小太阳再放大(0.88 → 1em) */
+  background: @@ORN:h3@@ left -0.06em top calc((var(--h3-line-height) * 1em - 1em) / 2 - 0.1em) / 1em 1em no-repeat;
+}
+body:not(.ba-no-heading-orn) .markdown-source-view.mod-cm6 .cm-line.HyperMD-header-3 {
+  padding-inline-start: 1.14em;
+  background: @@ORN:h3@@ left -0.06em bottom calc((var(--h3-line-height) * 1em - 1em) / 2 + 0.1em) / 1em 1em no-repeat;
+}
+
+
+.markdown-source-view.mod-cm6 .cm-formatting-header {
+  color: color-mix(in srgb, var(--ba-gold) 80%, transparent);
+}
+.view-header-title,
+.workspace-tab-header-inner-title {
+  font-family: var(--ba-font-display);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   6. Horizontal rule — 中央套色战团徽，两侧用户给的 f1090_1 卷草组，金线从卷草外端接出、一路渐隐到两端
+      (整条一张不定宽 SVG，见 ornaments.rule_center；第十二版去掉了线头的两枚小血滴)
+   ========================================================================== */
+body:not(.ba-no-rule-orn) .markdown-rendered hr,
+body:not(.ba-no-rule-orn) .markdown-source-view.mod-cm6 hr {
+  border: none;
+  height: 36px;                     /* 第十二版：32 → 36(中央徽记放大到 31px 高) */
+  margin-block: 2.2rem;
+  background: @@ORN:rule@@ center / 100% 36px no-repeat;
+}
+body:not(.ba-no-rule-orn) .markdown-source-view.mod-cm6 hr {
+  margin-block: 0.6rem;
+}
+
+/* ==========================================================================
+   7. Lists, blockquote, tables, code, images
+   ========================================================================== */
+/* 无序列表符号：一级宝石红血滴 / 二级金箔空心血滴 / 三级金箔小铁光环，往下循环 */
+/* 第二十二版(用户：列表符号稍微大一点；能折叠的列表项悬停时符号变成红色方块)：放大约 1.2 倍；原版悬停折叠箭头 / 折叠状态时
+   给 ::after 铺 background-color(+ 一圈 box-shadow)，我们的符号是背景图，底色就成了图后面的方块——底色和阴影清掉，
+   悬停改成符号放大一点，折叠状态改成符号外一圈淡金光晕 */
+.markdown-rendered .list-bullet::after,
+.markdown-source-view.mod-cm6 .list-bullet::after {
+  width: 0.41em;
+  height: 0.62em;
+  border-radius: 0;
+  transform: none;
+  background: @@ORN:bul1@@ center / contain no-repeat;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  transition: transform 0.22s ease, filter 0.22s ease;
+}
+/* 悬停折叠箭头时符号微微浮起(上移 1px + 一道淡淡的投影)。第二十三版的金色描边太糊(用户)；
+   第二十四版(用户：阅读视图里不显示)：阅读视图的 li 里符号在折叠箭头前面，「箭头:hover ~ 符号」只能往后找、匹配不到 → 用 li:has() */
+:is(.list-collapse-indicator, .cm-fold-indicator):hover ~ .list-bullet::after,
+:is(.list-collapse-indicator, .cm-fold-indicator):hover ~ .cm-formatting-list .list-bullet::after,
+.markdown-rendered li:has(> .list-collapse-indicator:hover) > .list-bullet::after {
+  transform: translateY(-1.5px);
+  filter: drop-shadow(0 2px 1.5px rgba(70, 35, 15, 0.42));
+}
+/* 标题折叠的动画(第二十五版，用户：阅读视图里收起 / 展开各级标题很突兀)：阅读视图折叠标题时，Obsidian 直接把这一节的块从页面里删掉，
+   展开时再插回来，CSS 没法拦住删除。
+   - 展开：鼠标停在某个标题的折叠箭头上时，新插进来的块从 @starting-style 过渡进来(高度 0 → auto、淡入)。只在悬停箭头时生效——
+     阅读视图滚动时也会往页面里插块，平时不挂这条，滚动就不会跟着动；悬停但没点时没有新块，也什么都不发生
+   - 收起：折叠后紧跟在下面、被提上来的那一块播一次「落位」(从下方 0.5em 处浮上来、淡入)
+   性能(第三十七版，用户：滚动变卡)：原来写成 .markdown-preview-sizer:has(… .heading-collapse-indicator:hover) > div——主体是整个阅读视图，
+   滚动时每插进来一块带标题的块(里面就有折叠箭头)，浏览器都要重新核对这条 :has、把所有块重算一遍样式。
+   现在主体缩到「标题所在的那一块」(div:has(> 标题 折叠箭头:hover))，展开插进来的块都在它后面，用 ~ 选中 */
+.markdown-preview-sizer > div:has(> :is(h1, h2, h3, h4, h5, h6) .heading-collapse-indicator:hover) ~ div:not(.markdown-preview-pusher, .mod-header, .mod-footer) {
+  interpolate-size: allow-keywords;
+  overflow-y: clip;
+  transition: height 200ms cubic-bezier(0.2, 0.7, 0.3, 1), opacity 220ms ease;
+}
+@starting-style {
+  .markdown-preview-sizer > div:has(> :is(h1, h2, h3, h4, h5, h6) .heading-collapse-indicator:hover) ~ div:not(.markdown-preview-pusher, .mod-header, .mod-footer) {
+    height: 0;
+    opacity: 0;
+  }
+}
+.markdown-preview-sizer > .is-collapsed + div:not(.mod-footer) {
+  animation: ba-fold-settle 240ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+@keyframes ba-fold-settle {
+  from { translate: 0 0.5em; opacity: 0.25; }
+}
+/* 编辑视图(实时预览)的标题 / 列表折叠：CodeMirror 把折起来的行整行删掉，只在标题后留「…」；它还要实时量每行的高度，
+   动高度或位移会让光标、滚动错位——所以这里只做透明度：展开时新出现的行淡入(同样只在悬停折叠箭头时挂上)，
+   收起时折叠行下面那一行淡入一下。
+   性能(第三十七版)：原来是 .cm-content:has(.cm-fold-indicator:hover) > .cm-line(主体 = 整片正文，滚动插进来的标题行里就有折叠箭头，
+   每次都要重新核对、所有行重算)；现在主体缩到箭头所在的那一行(折叠箭头是行的直接子元素)，展开出来的行都在它后面，用 ~ 选中 */
+.markdown-source-view.mod-cm6 .cm-line:has(> .cm-fold-indicator:hover) ~ .cm-line {
+  transition: opacity 220ms ease;
+}
+@starting-style {
+  .markdown-source-view.mod-cm6 .cm-line:has(> .cm-fold-indicator:hover) ~ .cm-line {
+    opacity: 0;
+  }
+}
+.markdown-source-view.mod-cm6 .cm-line:has(> .cm-fold-indicator.is-collapsed) + .cm-line {
+  animation: ba-fold-fade 240ms ease;
+}
+@keyframes ba-fold-fade {
+  from { opacity: 0.3; }
+}
+/* 列表折叠的动画(第二十三版，用户：要和 callout 展开收起一样的动态；无序、有序列表都是这一条)：原版阅读视图里折叠就是 display: none，瞬间消失。
+   改成高度在 0 和 auto 之间过渡(interpolate-size)，同时淡出淡入；只裁竖直方向，左边伸出去的列表符号不受影响。
+   编辑视图的折叠是 CodeMirror 直接把行拿掉，CSS 做不了动画 */
+.markdown-preview-view li > :is(ul, ol) {
+  interpolate-size: allow-keywords;
+  overflow-y: clip;
+  transition: height 160ms cubic-bezier(0.2, 0.7, 0.3, 1), opacity 160ms ease;
+}
+.markdown-preview-view li.is-collapsed > :is(ul, ol) {
+  display: block;
+  height: 0;
+  opacity: 0;
+}
+li.is-collapsed .list-bullet::after,
+.is-collapsed ~ .cm-formatting-list .list-bullet::after {
+  filter: drop-shadow(0 0 1.5px var(--ba-gold)) drop-shadow(0 0 3px color-mix(in srgb, var(--ba-gold) 70%, transparent));
+}
+.markdown-rendered ul ul .list-bullet::after,
+.markdown-rendered ul ul ul ul .list-bullet::after,
+.markdown-source-view.mod-cm6 :is(.HyperMD-list-line-2, .HyperMD-list-line-5) .list-bullet::after {
+  background-image: @@ORN:bul2@@;
+}
+.markdown-rendered ul ul ul .list-bullet::after,
+.markdown-rendered ul ul ul ul ul ul .list-bullet::after,
+.markdown-source-view.mod-cm6 :is(.HyperMD-list-line-3, .HyperMD-list-line-6) .list-bullet::after {
+  width: 0.8em;                    /* 第二十三版：小太阳再放大(0.67 → 0.8em) */
+  height: 0.8em;
+  background-image: @@ORN:h3@@;
+}
+.markdown-rendered ul ul ul ul .list-bullet::after,
+.markdown-source-view.mod-cm6 .HyperMD-list-line-4 .list-bullet::after {
+  width: 0.41em;
+  height: 0.62em;
+  background-image: @@ORN:bul1@@;
+}
+
+/* 引用块：左边一道金箔粗线 + 一道细金线贯穿整段，线的右边钉一枚纯洁封印(红蜡封压浅金战团徽 + 两条垂下的羊皮纸条)，
+   底色一层由左往右淡去的金色。第七版(用户：竖线一粗一细被封印挡住一截，像出 bug)：竖线挪到最左边，封印整个在线的右边。
+   第九版(用户：封印在阅读和编辑视图位置不一样)：两边同一套排版——上下不留内边距(编辑视图的引用就是一行行贴着排)，
+   封印顶在第一行顶下 2px。
+   第十版(用户：只有一行的引文也被撑成两行高，想一行时只露封蜡、不要纸条)：封印拆成两层——纸条一层被引文的高度裁切，
+   蜡一层盖在上面、不裁；纸条根部收窄藏在蜡底下(ornaments.SEAL_STRIPS：纸条在整枚图里 y 27.9 以下才露出来，最低到 54.4)。
+   第十一版二稿(用户：封蜡底边还是像被裁掉，要两种样式切换——一行时封蜡上下有适当留白，多于一行换成带纸条的)：
+   引文上下各留 --ba-q-pad，封印顶 = 上内边距(蜡的墨迹正好和第一行文字上下居中)；
+   纸条层 bottom = 1lh + pad − 27px：一行时纸条层只有 27px 高(全在蜡底下，一点不露)，两行时 1lh + 27 ≈ 56.6px(整条露全)。
+   用 lh 单位，字号变了照样成立(行高 ≥ 27.4px 都对，16px 正文是 29.6)。
+   阅读视图：纸条 blockquote::before、蜡 ::after；编辑视图的引用是一行行 .HyperMD-quote：第一行加上内边距、最后一行加下内边距，
+   第一行的 ::before 画蜡、::after 画纸条(绝对定位、不吃点击、盖住后面几行的底色)；只有一行(一个 .HyperMD-quote)时纸条按这一行裁，
+   多行时总高至少两行，纸条整条画出 */
+.markdown-rendered blockquote,
+.markdown-source-view.mod-cm6 .HyperMD-quote {
+  --ba-q-rules:
+    linear-gradient(var(--ba-gold), var(--ba-gold)) left 0 top 0 / 2.5px 100% no-repeat,
+    linear-gradient(var(--ba-gold-light), var(--ba-gold-light)) left 5.5px top 0 / 1px 100% no-repeat,
+    linear-gradient(90deg, color-mix(in srgb, var(--ba-gold) 13%, transparent), color-mix(in srgb, var(--ba-gold) 4%, transparent) 55%, transparent 85%);
+  --ba-q-wax: @@ORN:seal-wax@@;
+  --ba-q-strips: @@ORN:seal-strips@@;
+  --ba-q-seal-x: 10px;
+  --ba-q-pad: 0.45em;
+}
+.markdown-rendered blockquote {
+  position: relative;
+  box-sizing: border-box;
+  margin-inline-start: 0;
+  padding: var(--ba-q-pad) 1.2em var(--ba-q-pad) calc(var(--ba-q-seal-x) + 38px + 0.75em);
+  border-inline-start: none;
+  background: var(--ba-q-rules);
+}
+.markdown-rendered blockquote::before,
+.markdown-rendered blockquote::after,
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::before,
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: var(--ba-q-seal-x);
+  top: var(--ba-q-pad);
+  z-index: 1;                       /* 编辑视图：盖在后面几行的底色上 */
+  width: 38px;
+  height: 62px;
+  border: none;
+  pointer-events: none;
+  background: var(--ba-q-wax) center top / 38px 62px no-repeat;
+}
+/* 纸条层：高度跟着引文走(最多整枚 62px)，一行时被裁光 */
+.markdown-rendered blockquote::before,
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::after {
+  background-image: var(--ba-q-strips);
+}
+.markdown-rendered blockquote::before,
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote):not(:has(+ .HyperMD-quote))::after {
+  height: auto;
+  bottom: calc(1lh + var(--ba-q-pad) - 27px);
+  max-height: 62px;
+}
+.markdown-source-view.mod-cm6 .HyperMD-quote {
+  background: var(--ba-q-rules);
+  /* 原版把悬挂缩进写在行内样式里(text-indent: -74px; padding-inline-start: 74px)，要 !important 才盖得住。
+     行首的「> 」(> 透明 + 一个空格)还占着约 0.875em：首行往左缩回这么多，首行正文和折行对齐，「>」落进左边留白 */
+  padding-inline-start: calc(var(--ba-q-seal-x) + 38px + 0.75em) !important;
+  text-indent: -0.875em !important;
+}
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote) {
+  position: relative;
+  padding-top: var(--ba-q-pad);
+}
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(:has(+ .HyperMD-quote)) {
+  padding-bottom: var(--ba-q-pad);
+}
+.markdown-source-view.mod-cm6 .HyperMD-quote::before {
+  display: none;
+}
+/* 第二十一版(用户：callout 一点进去编辑就变成引文块的样式，是不是 bug)：实时预览里光标进到 callout 里，它会展开成
+   「> [!note] …」源码——这几行本来就是引文行，是 Obsidian 的正常行为；但主题给引文第一行盖了纯洁封印，看着像变成了引文。
+   callout 源码的第一行带 .HyperMD-callout：不盖封印 */
+.markdown-source-view.mod-cm6 .HyperMD-quote.HyperMD-callout:not(.HyperMD-quote + .HyperMD-quote)::before,
+.markdown-source-view.mod-cm6 .HyperMD-quote.HyperMD-callout:not(.HyperMD-quote + .HyperMD-quote)::after {
+  display: none;
+}
+
+/* 表格：朱红表头(第十五版，见下)、末行一道金线。
+   第十二版(用户：表格没有竖线，也没有单双行区分颜色——要能在 Style Settings 里开关)：列与列之间加淡金细竖线(最外两侧第二十五版也加上了)；偶数行铺一层很淡的金底(ba-no-table-stripes 关掉)。编辑视图的表格(.cm-table-widget)同一套 */
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) table {
+  border-collapse: collapse;
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) :is(th, td) {
+  border-inline: none;
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) :is(th, td) + :is(th, td) {
+  border-inline-start: 1px solid color-mix(in srgb, var(--ba-gold) 45%, transparent);
+}
+/* 第二十五版(用户：表格左右边缘也要细线边框)：最外两侧一道和末行同色的金线，和顶部表头、底部金线围成一圈 */
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) :is(th, td):first-child {
+  border-inline-start: 1px solid var(--ba-gold);
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) :is(th, td):last-child {
+  border-inline-end: 1px solid var(--ba-gold);
+}
+/* 第十五版(用户：表头没有竖线、不好看，重新设计)：第十四版的淡金底上 45% 的金竖线几乎看不见。改成和标签同一套的
+   朱红色块：奶油色字、同一张磨损质感图；列与列之间是漏出来的纸色缝(套色印刷的留白，不画线)；下沿一道金线 */
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) thead th {
+  border-top: none;
+  border-bottom: 2px solid var(--ba-gold);
+  background: var(--tag-background) var(--ba-tag-grain) 0 0 / 256px 256px;
+  color: var(--tag-color);
+  letter-spacing: 0.04em;
+}
+/* 第十六版(用户：缝有点粗，要和下面的竖线对上)：2px → 和正文竖线同宽的 1px，合并边框模型里两段落在同一条列线上 */
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) thead th + th {
+  border-inline-start: 1px solid var(--background-primary);
+}
+:is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) tbody tr:last-child td {
+  border-bottom: 1px solid var(--ba-gold);
+}
+body:not(.ba-no-table-stripes) :is(.markdown-rendered, .markdown-source-view.mod-cm6 .cm-table-widget) tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--ba-gold) 9%, transparent);
+}
+
+/* 代码块(第二十七版：原来的 neumorphism 内凹太现代，不合巴洛克 / 圣血天使的调子，重做)。两套，Style Settings 切换：
+   · 红头铭板(默认)：圣血红铭牌(标签同款红底 + 磨损颗粒)，左边奶白机械教徽、右边语言名，铭牌下一道金线；金框；
+     代码区是比页面更亮的白羊皮纸(用户：代码底色要和页面拉开；比过两档深底——字的可读性变差，定白羊皮纸)
+   · 沉思者(ba-code-cogitator，40K 的 cogitator 终端)：同一块红铭牌，下面是带扫描线的暗屏、琥珀色字微微发光；
+     黄铜框 + 内侧一道亮金细线；机械教徽、语言名、铭牌下沿那道线同一种奶白(用户：三样三种颜色看着杂乱)；
+     铭牌右端一组蜡烛(机械教的机器上常点着蜡烛)，在铭牌里四周留空、不伸出框外——伸出框外要在代码块上方让出位置，离上一段字太远
+   各种尺寸都放在 body 的变量里(两套各一组)，下面的规则两套共用。
+   编辑视图没有整块的盒子(每行是一个 .cm-line，开头、结尾的 ``` 各占一整行)：开头行往下补到「铭牌 + 线 + 留白」高、
+   结尾行压成「下内边距 + 边框」高、左右边框用 inset 阴影画；两个视图实测文字位置、行号竖线、上下留白一致。
+   背景图位置按边框外沿算(background-origin: border-box)，阅读视图的 pre(有边框)和编辑视图的行(没有边框)用同一组坐标。
+   行号(ba-code-line-numbers)：编辑视图是 CSS 计数器(别的主题都这么做，阅读视图没有一个主题用 CSS 做)；
+   阅读视图另外画一列：pre::after 放一长串 "1\A 2\A …"，裁到代码区的高度——所以开行号时代码不折行(折行会和行号错开)，长行横向滚动 */
+body.theme-light {
+  --cb-bw: round(down, 1px, var(--ba-dp, 1px));   /* 边框：取整到物理像素(阅读视图的边框浏览器会自己吸附，编辑视图的阴影跟着取整才对得齐) */
+  --cb-hh: 26px;                                   /* 铭牌高(不含下沿的线) */
+  --cb-pt: 12px;                                   /* 线下到第一行代码 */
+  --cb-pb: 14px;                                   /* 最后一行代码到底边 */
+  --cb-px: 18px;                                   /* 左右内边距 */
+  --cb-frame: var(--ba-gold);
+  --cb-line: var(--ba-gold);                       /* 铭牌下沿的线 */
+  --cb-bg: #fffaf0;
+  --cb-scan: none;                                 /* 代码区上面叠的一层(沉思者：扫描线) */
+  --cb-label: var(--tag-color);
+  --cb-mech: 18px;                                 /* 机械教徽 */
+  --cb-num: color-mix(in srgb, var(--code-comment) 75%, transparent);
+  --cb-num-rule: color-mix(in srgb, var(--ba-gold) 60%, transparent);
+  --cb-inner: none;                                /* 阅读视图 pre 的内阴影 */
+  --cb-side: inset var(--cb-bw) 0 var(--cb-frame), inset calc(-1 * var(--cb-bw)) 0 var(--cb-frame);
+  --cb-top: 0 0 transparent;
+  --cb-bottom: inset 0 calc(-1 * var(--cb-bw)) var(--cb-frame);
+  --cb-art: @@ORN:mech@@ left 10px top calc((var(--cb-hh) - var(--cb-mech)) / 2) / var(--cb-mech) var(--cb-mech) no-repeat;
+  --cb-veil: linear-gradient(color-mix(in srgb, var(--cb-bg) calc(100% - var(--ba-texture-opacity, 100%)), transparent),
+    color-mix(in srgb, var(--cb-bg) calc(100% - var(--ba-texture-opacity, 100%)), transparent));
+}
+/* 纸纹 --cb-paper、铭牌 --cb-plate 引用两张大图(展开后 ~1MB)，不放在 body 上，放在代码块所在的阅读 / 编辑视图容器上(第四十七版)：
+   body 上的变量里有 var() 时，body 每重算一次都要把引用展开、复制一遍——原来这两条让单独重算 body 一个元素要 9.5ms(没主题 0.8ms)，
+   拖动文件树时 body 每帧被 :has 重查两次，就卡在这里。写在 :root 上的大图原样共享，不受影响。
+   代码区的纸纹(第二十七版六轮，用户：红头铭板的白色部分缺纹理质感)：页面同一套纸纹(大尺度浓淡 + 细颗粒)，按视口固定——
+   和页面纸纹一样不随滚动；编辑视图每行各画各的背景，不固定的话每行都从纹理图顶上重新开始、一行行重复成横条。
+   上面同样盖一层代码底色的纱(--cb-veil)，浓淡跟着设置里的纹理浓度。
+   铭牌：红底和它的磨损颗粒只铺铭牌那一截(颗粒图的底边对齐铭牌底)，压在代码区的纸纹、底色上面；底色 = 代码区底色——
+   原来「整行红底 + 盖一层代码底色」在编辑视图开头那行的底边落在小数像素上时会漏出一线红 */
+body.theme-light :is(.markdown-rendered, .markdown-source-view.mod-cm6) {
+  --cb-paper: @@RASTER:tone@@ 0 0 / 1024px 1024px fixed, @@RASTER:grain@@ 0 0 / 320px 320px fixed;
+  --cb-plate: linear-gradient(var(--cb-line), var(--cb-line)) 0 var(--cb-hh) / 100% 2px no-repeat,
+    var(--ba-tag-grain) 0 calc(var(--cb-hh) + 1px - 256px) / 256px 256px repeat-x,
+    linear-gradient(var(--tag-background), var(--tag-background)) 0 0 / 100% calc(var(--cb-hh) + 1px) no-repeat,
+    var(--cb-scan) 0 calc(var(--cb-hh) + 2px) / 100% 100% no-repeat,
+    var(--cb-veil), var(--cb-paper);
+}
+body.theme-light.ba-code-cogitator :is(.markdown-rendered, .markdown-source-view.mod-cm6) {
+  --cb-paper: none;
+}
+body.theme-light.ba-code-cogitator {
+  /* 第二十七版六轮(用户：背景太黑、外框太暗沉太粗；比过暖深褐 + 2px 亮黄铜 / 再亮一档 + 2px 金，选这一版)：
+     屏幕 #1c1411 → 暖深褐 #31251e；外框黄铜 #6e5220 3px + 内侧亮金细线 → 红头铭板同一道 1px 金框 */
+  --cb-hh: 24px;
+  --cb-pt: 14px;
+  --cb-pb: 16px;
+  --cb-px: 20px;
+  --cb-line: var(--tag-color);
+  --cb-bg: #31251e;
+  --cb-scan: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.26) 0 1px, transparent 1px 3px);
+  --cb-veil: none;                                 /* 纸纹 --cb-paper: none 在视图容器那一层(见上) */
+  --cb-mech: 15px;
+  --cb-num: #93774f;                               /* 屏幕变亮后行号、注释各提亮一档(对比度回到 3.5 / 4.6) */
+  --cb-num-rule: rgba(201, 165, 72, 0.4);
+  /* 蜡烛(ornaments.cog_candles)：铭牌里上下居中、离右边 12px */
+  --cb-art: @@ORN:mech@@ left 10px top calc((var(--cb-hh) - var(--cb-mech)) / 2) / var(--cb-mech) var(--cb-mech) no-repeat,
+    @@ORN:cog-candles@@ right 12px top calc((var(--cb-hh) - @@SIZE:cog-candles-h@@) / 2) / @@SIZE:cog-candles-w@@ @@SIZE:cog-candles-h@@ no-repeat;
+}
+/* 沉思者的墨色：琥珀荧光屏(keyword 等用偏红的琥珀，注释压暗)，字带一点光晕 */
+body.theme-light.ba-code-cogitator :is(.markdown-rendered pre, .markdown-source-view.mod-cm6 .HyperMD-codeblock) {
+  --code-normal: #e9b96c;
+  --code-comment: #a88a60;
+  --code-function: #ffd98c;
+  --code-keyword: #f0705a;
+  --code-important: #f0705a;
+  --code-operator: #d9a35c;
+  --code-property: #e6aa60;
+  --code-punctuation: #b8915f;
+  --code-string: #f4dca8;
+  --code-tag: #f0705a;
+  --code-value: #ffca7c;
+  color: var(--code-normal);
+  caret-color: #ffd98c;
+  text-shadow: 0 0 3px rgba(255, 168, 64, 0.38);
+}
+body.theme-light.ba-code-cogitator :is(.markdown-rendered pre, .markdown-source-view.mod-cm6 .HyperMD-codeblock) ::selection {
+  background: rgba(255, 190, 90, 0.3);
+}
+
+/* ---- 阅读视图 ---- */
+body.theme-light .markdown-rendered pre {
+  padding: calc(var(--cb-hh) + 2px + var(--cb-pt)) var(--cb-px) var(--cb-pb) !important;
+  border: var(--cb-bw) solid var(--cb-frame) !important;
+  border-top: none !important;
+  border-radius: 0 !important;
+  box-shadow: var(--cb-inner) !important;
+  background: var(--cb-art), var(--cb-plate), var(--cb-bg) !important;
+  background-origin: border-box !important;
+}
+body.theme-light .markdown-rendered pre > code {
+  display: block;
+}
+/* 语言名：pre 的 class 是 "language-xxx"，attr(class) 整串写出来，text-indent 往左推出 "language-" 的宽度(这个字体、字号下实测 6.28875em)、
+   被 overflow 裁掉，只剩语言名 */
+body.theme-light .markdown-rendered pre[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  z-index: 1;
+  top: 1px;
+  right: 18px;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  font: 400 13px/var(--cb-hh) "BA Heading Latin L";
+  letter-spacing: 0.12em;
+  text-indent: -6.28875em;
+  color: var(--cb-label);
+  text-shadow: none;
+  transition: opacity 120ms;
+}
+body.theme-light:not(.ba-code-cogitator) .markdown-rendered pre:hover::before {
+  opacity: 0;                                      /* 红头铭板：悬停时复制按钮出现在同一个位置 */
+}
+body.theme-light.ba-code-cogitator .markdown-rendered pre[class*="language-"]::before {
+  left: 30px;
+  right: auto;
+}
+body.theme-light .markdown-rendered pre .copy-code-button {
+  top: 0 !important;
+  right: 6px !important;
+  height: var(--cb-hh) !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  color: var(--cb-label) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none;
+}
+body.theme-light.ba-code-cogitator .markdown-rendered pre .copy-code-button {
+  right: calc(16px + @@SIZE:cog-candles-w@@) !important;
+}
+
+/* ---- 编辑视图 ---- */
+body.theme-light .markdown-source-view.mod-cm6 .HyperMD-codeblock-bg {
+  padding-left: calc(var(--cb-bw) + var(--cb-px)) !important;
+  padding-right: calc(var(--cb-bw) + var(--cb-px)) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: var(--cb-scan) 0 0 / 100% 100%, var(--cb-veil), var(--cb-paper), var(--cb-bg) !important;
+  box-shadow: var(--cb-side);
+}
+/* 开头的 ``` 行 = 铭牌：往下补到「铭牌 + 线 + 留白」，和阅读视图 pre 的上内边距一样高 */
+body.theme-light .markdown-source-view.mod-cm6 .HyperMD-codeblock-begin {
+  padding-bottom: calc(var(--cb-hh) + 2px + var(--cb-pt) - 1lh) !important;
+  background: var(--cb-art), var(--cb-plate), var(--cb-bg) !important;
+  background-origin: border-box !important;
+  box-shadow: var(--cb-side), var(--cb-top);
+  text-shadow: none;
+}
+body.theme-light .markdown-source-view.mod-cm6 .HyperMD-codeblock-begin :is(span, .cm-formatting-code-block) {
+  color: var(--cb-label) !important;
+}
+/* 结尾的 ``` 行 = 下内边距 + 边框 */
+body.theme-light .markdown-source-view.mod-cm6 .HyperMD-codeblock-end {
+  line-height: calc(var(--cb-pb) + var(--cb-bw)) !important;
+  box-shadow: var(--cb-side), var(--cb-bottom);
+}
+body.theme-light .markdown-source-view.mod-cm6 .code-block-flair {
+  top: 0;
+  right: 12px;
+  padding: 0 6px;
+  font-family: "BA Heading Latin L" !important;
+  font-size: 13px !important;
+  line-height: calc(var(--cb-hh) - 0.6px);
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--cb-label) !important;
+  text-shadow: none;
+}
+body.theme-light.ba-code-cogitator .markdown-source-view.mod-cm6 .code-block-flair {
+  left: calc(var(--cb-bw) + 24px);
+  right: auto;
+}
+/* 编辑器的缩进参考线：阅读视图的代码块里没有，代码块里也不画 */
+body.theme-light .markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-indent::before {
+  display: none;
+}
+
+/* ---- 行号 ---- */
+body.theme-light.ba-code-line-numbers .markdown-rendered pre {
+  padding-left: 54px !important;                   /* 行号栏 40 + 竖线到字 14 */
+  overflow: hidden !important;
+}
+body.theme-light.ba-code-line-numbers .markdown-rendered pre > code {
+  white-space: pre !important;
+  overflow-x: auto;
+}
+body.theme-light.ba-code-line-numbers .markdown-rendered pre::after {
+  content: @@SIZE:code-nums@@;
+  position: absolute;
+  top: calc(var(--cb-hh) + 2px + var(--cb-pt));
+  bottom: var(--cb-pb);
+  left: 0;
+  width: 40px;
+  box-sizing: border-box;
+  padding-right: 9px;
+  overflow: hidden;
+  pointer-events: none;
+  white-space: pre;
+  text-align: right;
+  font-family: var(--font-monospace);
+  font-size: var(--code-size);
+  color: var(--cb-num);
+  border-right: 1px solid var(--cb-num-rule);
+}
+body.theme-light.ba-code-line-numbers .markdown-source-view.mod-cm6 .HyperMD-codeblock-begin {
+  counter-reset: ba-ln;
+}
+body.theme-light.ba-code-line-numbers .markdown-source-view.mod-cm6 .HyperMD-codeblock-bg:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end) {
+  counter-increment: ba-ln;
+  position: relative;
+  padding-left: calc(var(--cb-bw) + 54px) !important;
+}
+body.theme-light.ba-code-line-numbers .markdown-source-view.mod-cm6 .HyperMD-codeblock-bg:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end)::before {
+  content: counter(ba-ln);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--cb-bw);
+  width: 40px;
+  box-sizing: border-box;
+  padding-right: 9px;
+  pointer-events: none;
+  text-align: right;
+  color: var(--cb-num);
+  border-right: 1px solid var(--cb-num-rule);
+}
+
+/* ---- 沉思者黑屏幕里的滚动条：羊皮纸色(用户：在暗底里红色发暗)，形状同全局的燕尾缎带滑块 ---- */
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre::-webkit-scrollbar-thumb:horizontal,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre > code::-webkit-scrollbar-thumb:horizontal {
+  background:
+    @@ORN:sb-left-p@@ left center / @@SIZE:sb-cap@@ 100% no-repeat,
+    @@ORN:sb-right-p@@ right center / @@SIZE:sb-cap@@ 100% no-repeat,
+    linear-gradient(color-mix(in srgb, #f3e8d0 85%, transparent), color-mix(in srgb, #f3e8d0 85%, transparent)) center / max(0px, calc(100% - 2 * @@SIZE:sb-cap@@)) 100% no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre::-webkit-scrollbar-thumb:horizontal:hover,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre::-webkit-scrollbar-thumb:horizontal:active,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre > code::-webkit-scrollbar-thumb:horizontal:hover,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre > code::-webkit-scrollbar-thumb:horizontal:active {
+  background:
+    @@ORN:sb-left-ph@@ left center / @@SIZE:sb-cap@@ 100% no-repeat,
+    @@ORN:sb-right-ph@@ right center / @@SIZE:sb-cap@@ 100% no-repeat,
+    linear-gradient(color-mix(in srgb, #f3e8d0 97%, transparent), color-mix(in srgb, #f3e8d0 97%, transparent)) center / max(0px, calc(100% - 2 * @@SIZE:sb-cap@@)) 100% no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre::-webkit-scrollbar-thumb:vertical,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre > code::-webkit-scrollbar-thumb:vertical {
+  background:
+    @@ORN:sb-top-p@@ center top / 100% @@SIZE:sb-cap@@ no-repeat,
+    @@ORN:sb-bottom-p@@ center bottom / 100% @@SIZE:sb-cap@@ no-repeat,
+    linear-gradient(color-mix(in srgb, #f3e8d0 85%, transparent), color-mix(in srgb, #f3e8d0 85%, transparent)) center / 100% max(0px, calc(100% - 2 * @@SIZE:sb-cap@@)) no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre::-webkit-scrollbar-thumb:vertical:hover,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre::-webkit-scrollbar-thumb:vertical:active,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre > code::-webkit-scrollbar-thumb:vertical:hover,
+body.theme-light.ba-code-cogitator.styled-scrollbars .markdown-rendered pre > code::-webkit-scrollbar-thumb:vertical:active {
+  background:
+    @@ORN:sb-top-ph@@ center top / 100% @@SIZE:sb-cap@@ no-repeat,
+    @@ORN:sb-bottom-ph@@ center bottom / 100% @@SIZE:sb-cap@@ no-repeat,
+    linear-gradient(color-mix(in srgb, #f3e8d0 97%, transparent), color-mix(in srgb, #f3e8d0 97%, transparent)) center / 100% max(0px, calc(100% - 2 * @@SIZE:sb-cap@@)) no-repeat;
+  background-origin: padding-box;
+  background-clip: padding-box;
+}
+
+/* 图片(第四十六版，外框二稿 D、宽度用二稿 C1 的；Style Settings「图片样式」)：
+   卡片花边(默认)：侧栏书签卡片那副金色花角双线框(f1509_4)整副缩小(角 22.8px，图边离外框外缘 14.6px)套在图外，
+   框里不铺底、直接露纸(用户：不要一圈白边。原来是细金框 + 5px 象牙衬边)。同 Nox Aeterna 的铜框画匾：框画在 img 自己的边框上——
+   img 是替换元素没有伪元素，外链图片外面也没有包装。纸底没有底色，box-shadow 会投出一个空盒子的影子，图片投影画进外框 SVG(ornaments.image_frame)。
+   content-box：图本身保持原尺寸(![[图|220]] 的 220 是图宽)，框加在外面；最大宽度扣掉两边外框，满宽的图连框一起仍是正文栏宽，
+   实时预览里没写宽度的图原版给 width: 100%，同样扣掉。表格里的小图、表情不加(同永夜)；单张不要框就在 alt 里写 noframe(![[图|noframe]])。
+   印痕毛边：见下一条。原版：Obsidian 原样 */
+body:not(.ba-img-native, .ba-img-vignette) .markdown-rendered img[src]:not(.emoji, :is(td, th) img, [alt*="noframe"]),
+body:not(.ba-img-native, .ba-img-vignette) .markdown-source-view.mod-cm6 .image-embed img[src]:not(.emoji, :is(td, th) img, [alt*="noframe"]) {
+  box-sizing: content-box;
+  max-width: calc(100% - @@SIZE:img-x@@);
+  padding: @@SIZE:img-pad@@;
+  border: 1px solid transparent;
+  border-image: @@ORN:img-frame@@ @@SIZE:img-slice@@ / @@SIZE:img-slice@@px stretch;
+  border-radius: 0;
+}
+body:not(.ba-img-native, .ba-img-vignette) .markdown-source-view.mod-cm6 .image-embed img[src]:not(.emoji, :is(td, th) img, [alt*="noframe"], [width]) {
+  width: calc(100% - @@SIZE:img-x@@);
+}
+/* 印痕毛边(晕边样稿 V3；同永夜「夜色晕边」的日间版)：不加框，图片四边按细颗粒渐隐进纸——像套色印刷的墨边、印章的毛边。
+   二稿(用户：太生硬、颗粒粗，要过渡柔和 → 样稿 S1)：圈宽 24px 不变，颗粒细一半、边上带半透明过渡(一稿每个像素非全显即全透)，四角成软角。
+   两层遮罩相乘(上下渐隐 × 左右渐隐，ornaments.image_grain；颗粒按 1:1 渲染，不随图片大小拉伸)，静态遮罩，滚动时不重画。
+   画面加一点暖色，和纸同一个色温。不加的图同卡片花边 */
+body.ba-img-vignette .markdown-rendered img[src]:not(.emoji, :is(td, th) img, [alt*="noframe"]),
+body.ba-img-vignette .markdown-source-view.mod-cm6 .image-embed img[src]:not(.emoji, :is(td, th) img, [alt*="noframe"]) {
+  border-radius: 0;
+  -webkit-mask-image: @@ORN:img-grain@@;
+  -webkit-mask-position: @@SIZE:img-grain-pos@@;
+  -webkit-mask-size: @@SIZE:img-grain-size@@;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  filter: sepia(0.12) saturate(0.92);
+}
+/* 嵌入笔记(![[笔记]]、![[笔记#标题]])：一页象牙衬纸，和图片同样的柔和投影，不画框线——像贴进来的一页新纸(第三十版 A2；
+   比过加金细框、投影再重一档，preview/嵌入A样式对比.png)。只认正文里的嵌入，悬停预览的弹窗不受影响 */
+.internal-embed.markdown-embed {
+  padding: 14px 24px;
+  /* 二稿(用户：太白了，和 callout 一样加纹理)：象牙底上铺页面同一套纸纹(同 callout、代码块，按视口固定、跟纹理浓度设置) */
+  --ba-emb-tint: color-mix(in srgb, #fffdf8 70%, var(--background-primary));
+  --ba-emb-veil: color-mix(in srgb, var(--ba-emb-tint) calc(100% - var(--ba-texture-opacity, 100%)), transparent);
+  background:
+    linear-gradient(var(--ba-emb-veil), var(--ba-emb-veil)),
+    @@RASTER:tone@@ 0 0 / 1024px 1024px fixed,
+    @@RASTER:grain@@ 0 0 / 320px 320px fixed,
+    linear-gradient(var(--ba-emb-tint), var(--ba-emb-tint));
+  box-shadow: 0 1px 2px rgba(var(--ba-shadow), 0.08), 0 8px 24px rgba(var(--ba-shadow), 0.12);
+}
+
+/* 复选框：金框、勾选后标签红(第四十五版前是朱红；设置面板、属性里的复选框；原版任务复选框也是这样) */
+input[type="checkbox"] {
+  border-width: 1.5px;
+}
+/* 任务复选框(第二十八版，Style Settings「任务复选框样式」)：
+   巴尔宝石(默认)：未完成 = 空金托(圆托 + 四爪)；完成 = 嵌一颗砖红宝石(竖直猫眼，同 H2)；进行中 [/] = 托里一滴血(还没凝成宝石)；
+   蜡封：未完成 = 金双圈；完成 = 红蜡封镂空战团徽(同 callout 图标的蜡封)；进行中 = 金双圈里一滴红蜡(还没盖印)；
+   扩展状态 [-] [>] [<] [!] [?] [*] ["] [i] [b] [l] [I](同 Minimal / Nox Aeterna)= 金托里一枚着色符号 / 换色蜡封镂空符号：
+   碎颅骨(取消)、沙漏(推迟)、日晷(排期)、圣杯(重要)、徽记问号(疑问)、八芒星、引号、卷轴(信息)、燕尾书签、插旗塔楼(地点)、火苗(想法)。
+   颜色只三类：红(重要、书签)、金(其余)、灰(取消)。只有完成和取消划线变灰。规则由 build.py task_css 生成 */
+/*@@TASK-CHECKBOX@@*/
+
+/* ---- Mermaid(第二十九版，同 Nox Aeterna 的做法) ----
+   Obsidian 一律用 Mermaid 的浅色默认配色出图(淡紫 #ECECFF 底、紫边、深灰字，注释淡黄、思维导图荧光色)，深色模式再套反色滤镜。
+   十三种图(流程、状态、时序、类、ER、甘特、饼、思维导图、时间线、旅程、git、象限、XY)按元素改成主题色并去掉滤镜(规则由 build.py mermaid_css 生成)：
+   节点 = 象牙底 + 金边(第四十六版前图片衬边的配色)，连线 = 红粉笔(sanguine)，标题 = 圣血红，注释 = 纯洁封印纸条的淡金，
+   分组色 = callout 那套文艺复兴颜料。其余类型(桑基、块图、C4 等)只用滤镜把淡紫压成暖色。
+   用户在图里写的 classDef / style 照样优先(选择器的特异性见 mermaid_css) */
+.mermaid {
+  /* Mermaid 在正文之外量好文字宽度再定框的大小：正文的字距、中西文自动间距会让字比框宽，末尾被裁掉 */
+  letter-spacing: normal;
+  text-autospace: no-autospace;
+  --ba-mm-fill: #fffdf8;
+  --ba-mm-line: var(--ba-gold);
+  --ba-mm-line-soft: color-mix(in srgb, var(--ba-gold) 45%, transparent);
+  --ba-mm-text: var(--ba-ink);
+  --ba-mm-title: var(--h2-color);
+  --ba-mm-label: var(--ba-ink-2);
+  --ba-mm-edge: var(--ba-sanguine);
+  --ba-mm-bg: var(--background-primary);
+  --ba-mm-group: color-mix(in srgb, var(--ba-gold-pale) 32%, transparent);
+  --ba-mm-group-line: var(--ba-rule-strong);
+  --ba-mm-note: var(--ba-gold-pale);
+  --ba-mm-note-line: var(--ba-gold);
+  --ba-mm-note-text: var(--ba-ink);
+  --ba-mm-accent: var(--ba-crimson);
+  --ba-mm-loop: var(--ba-lapis);
+  /* 分组色(思维导图分支、时间线时段、饼图扇区)：颜料原色画线，淡的一档铺底 */
+  --ba-mm-c0: var(--ba-crimson);
+  --ba-mm-c1: var(--ba-gold-deep);
+  --ba-mm-c2: var(--ba-lapis);
+  --ba-mm-c3: var(--ba-verdigris);
+  --ba-mm-c4: var(--ba-vermilion);
+  --ba-mm-c5: var(--ba-tyrian);
+}
+.theme-light .mermaid > svg {
+  filter: sepia(0.3) saturate(0.75);
+}
+/*@@MERMAID@@*/
+
+/* ==========================================================================
+   8. Callouts — 柔和浮起的纸面卡片(第三版：参考 neumorphism / soft UI——同色卡片靠一明一暗两道柔和投影浮起来，
+   不靠描边和金属质感)；左侧一道细的类型色，标题按类型着色(文艺复兴颜料)，前面一行深金拉丁铭牌
+   ========================================================================== */
+.theme-light {
+  --ba-raise: 6px 6px 16px rgba(130, 92, 46, 0.17), -5px -5px 14px rgba(255, 252, 244, 0.85);
+  --ba-inset: inset 3px 3px 8px rgba(130, 92, 46, 0.16), inset -3px -3px 8px rgba(255, 252, 244, 0.8);
+}
+@property --ba-co-c {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 50px;
+}
+/* 一个物理像素是多少 CSS 像素(按常见的缩放比)：callout 双线这类细线取整用，免得落在半个像素上忽粗忽细 */
+body { --ba-dp: 1px; }
+@media (min-resolution: 1.2dppx) and (max-resolution: 1.3dppx) { body { --ba-dp: 0.8px; } }
+@media (min-resolution: 1.4dppx) and (max-resolution: 1.6dppx) { body { --ba-dp: 0.6667px; } }
+@media (min-resolution: 1.7dppx) and (max-resolution: 1.8dppx) { body { --ba-dp: 0.5714px; } }
+@media (min-resolution: 1.9dppx) and (max-resolution: 2.1dppx) { body { --ba-dp: 0.5px; } }
+@media (min-resolution: 2.4dppx) and (max-resolution: 2.6dppx) { body { --ba-dp: 0.4px; } }
+@media (min-resolution: 2.9dppx) and (max-resolution: 3.1dppx) { body { --ba-dp: 0.3333px; } }
+/* 第十九版(用户：callout 太现代，重新设计，可以自由用边框花纹，不必拘泥左边一条竖线)：去掉圆角卡片 + 柔和投影 + 左竖线，
+   改成证书式的花角框——四角是素材库 f1527_0 的卷草花角(::after，遮罩)，四边是双线(::before，八条 linear-gradient 遮罩)，
+   底色是类型颜色 5%。原版 .callout 是 overflow: hidden，框线、花角都画在框内。
+   第二十版(用户：角花要跟边框一起变色；连接处有点错位)：花角也用类型颜色(原来是金色)；双线按原图里边线的位置换算——
+   中心线 = 原图坐标 / 110 × 花角边长(原图单位见 ornaments.FRAME_LINES)，细线正好接在卷草末端那道卷须上；
+   原图的线按比例只有 0.9 / 0.2px，加粗成 1.3 / 0.7px，中心不动。折起来的 callout 只有一行高：花角 30px，只留粗线。
+   比过的粗花角(f1502)、印章色块标题条见 preview/callout对比/ */
+.callout {
+  --ba-co-c: 50px;                                   /* 花角边长 */
+  /* 双线(第二十三版，用户：callout 展开后上面的双线间距莫名其妙变大)：原来线的位置按花角大小换算，展开 / 折叠时落在不同的
+     小数像素上，1.2px 的间隙一会儿画成 1 个物理像素、一会儿 2 个。现在位置固定(按 50px 花角的原图比例)，不随折叠变；
+     粗细、位置、间隙都取整到物理像素(--ba-dp = 1 / 缩放比，见 body)。折叠时花角小一号，和线的接口差不到 1px */
+  --ba-co-w1: round(1.3px, var(--ba-dp, 1px));                                  /* 粗线 */
+  --ba-co-w2: max(var(--ba-dp, 1px), round(0.7px, var(--ba-dp, 1px)));        /* 细线 */
+  --ba-co-gap: max(var(--ba-dp, 1px), round(down, 1.2px, var(--ba-dp, 1px)));  /* 两线之间 */
+  --ba-co-h1: round(0.99px, var(--ba-dp, 1px));                                 /* 上 / 下边粗线离边(50 × 0.03273 − 0.65) */
+  --ba-co-h2: calc(var(--ba-co-h1) + var(--ba-co-w1) + var(--ba-co-gap));
+  --ba-co-v1: round(1.67px, var(--ba-dp, 1px));                                 /* 左 / 右边(50 × 0.04636 − 0.65) */
+  --ba-co-v2: calc(var(--ba-co-v1) + var(--ba-co-w1) + var(--ba-co-gap));
+  /* 展开 / 收起时花角跟着 Obsidian 的高度动画(约 100ms)一起缩放(--ba-co-c 在下面用 @property 注册成可过渡的长度) */
+  transition: --ba-co-c 160ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ba-co-s: calc(var(--ba-co-c) - 0.5px);          /* 边线从花角边缘起(和原图一样)，往里压半个像素免得露缝 */
+  position: relative;
+  /* 底色 = 类型色 8%，和正文是同一张纸(第二十一、二十二版是单独的灰度纹理；第三十版用户嫌纹理淡，换成页面同一套纸纹)。
+     第三十七版(用户：滚动卡顿)：原来 callout 自己再铺一遍纸纹(两张位图，background-attachment: fixed 对齐页面)——
+     fixed 让每个 callout 每滚一帧都重画，实测 callout 纸纹一项占掉滚动开销的大半(帧间隔 12.7 → 8.8ms，样式重算也少 ~370ms)，
+     Nox Aeterna 的性能铁律也写着不要用 fixed。现在底色改成半透明(类型色 8% 混透明，不再混纸色)，
+     下面正文 .view-content 上那张不滚动的纸纹直接透上来——本来就和页面严丝合缝，纹理浓度设置也照样管得到 */
+  --ba-co-tint: color-mix(in srgb, var(--callout-color) 8%, transparent);
+  background: var(--ba-co-tint);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.callout.is-collapsed {
+  --ba-co-c: 34px;                 /* 第二十二版(用户：折起来的双线被压成一条粗线)：保留细线，花角 30 → 34px */
+}
+.callout::before,
+.callout::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* 四边双线(第三十七版性能，用户：滚动卡顿)：原来是整块铺类型色、再用 8 层渐变遮罩抠出八条线——遮罩盖满整个 callout，滚动重画时很贵
+   (Nox Aeterna 性能铁律：重复元素别加 mask)。现在直接把八条线画成八层彩色渐变背景，位置、粗细不变，不用遮罩 */
+.callout::before {
+  --ba-co-lc: color-mix(in srgb, var(--callout-color) 75%, transparent);
+  --ba-co-l: linear-gradient(var(--ba-co-lc), var(--ba-co-lc));
+  background:
+    var(--ba-co-l) left var(--ba-co-s) top var(--ba-co-h1) / calc(100% - 2 * var(--ba-co-s)) var(--ba-co-w1) no-repeat,
+    var(--ba-co-l) left var(--ba-co-s) bottom var(--ba-co-h1) / calc(100% - 2 * var(--ba-co-s)) var(--ba-co-w1) no-repeat,
+    var(--ba-co-l) left var(--ba-co-v1) top var(--ba-co-s) / var(--ba-co-w1) calc(100% - 2 * var(--ba-co-s)) no-repeat,
+    var(--ba-co-l) right var(--ba-co-v1) top var(--ba-co-s) / var(--ba-co-w1) calc(100% - 2 * var(--ba-co-s)) no-repeat,
+    var(--ba-co-l) left var(--ba-co-s) top var(--ba-co-h2) / calc(100% - 2 * var(--ba-co-s)) var(--ba-co-w2) no-repeat,
+    var(--ba-co-l) left var(--ba-co-s) bottom var(--ba-co-h2) / calc(100% - 2 * var(--ba-co-s)) var(--ba-co-w2) no-repeat,
+    var(--ba-co-l) left var(--ba-co-v2) top var(--ba-co-s) / var(--ba-co-w2) calc(100% - 2 * var(--ba-co-s)) no-repeat,
+    var(--ba-co-l) right var(--ba-co-v2) top var(--ba-co-s) / var(--ba-co-w2) calc(100% - 2 * var(--ba-co-s)) no-repeat;
+}
+/* 四角卷草：遮罩要留着(按类型着色、自定义类型的颜色事先不知道)；第三十七版加 will-change，每个 callout 的花角单独成一个合成层，
+   栅格化一次，滚动时不跟着正文重画(同 Nox Aeterna 的暗角层) */
+.callout::after {
+  will-change: transform;
+  background: var(--ba-tag-grain) 0 0 / 256px 256px, color-mix(in srgb, var(--callout-color) 85%, transparent);
+  --ba-co-mask:
+    @@ORN:co-tl@@ top left / var(--ba-co-c) var(--ba-co-c) no-repeat,
+    @@ORN:co-tr@@ top right / var(--ba-co-c) var(--ba-co-c) no-repeat,
+    @@ORN:co-bl@@ bottom left / var(--ba-co-c) var(--ba-co-c) no-repeat,
+    @@ORN:co-br@@ bottom right / var(--ba-co-c) var(--ba-co-c) no-repeat;
+  -webkit-mask: var(--ba-co-mask);
+  mask: var(--ba-co-mask);
+}
+/* 第三十版：红色系不再用类型色 8% 的底(圣血红偏冷，混进米黄羊皮纸成了粉色)，花框改实色(半透明的红叠在底上发亮)。
+   重要 = 圣血红框 + 象牙白底；危险 / 失败 = 暗血红框 + 暗红褐底，只有这组带红底，一眼看出不妙。
+   比过的方案见 preview/callout红色对比.png(用户定 K + L，笔记改成和提示同色) */
+.callout[data-callout="important"] {
+  /* 二稿(用户：重要的底色有点太黄)：淡金 30% → 象牙白(同图片衬边 #fffdf8)；三稿(用户：又太亮)象牙白只混 30%，介于纸色和象牙白之间 */
+  --ba-co-tint: color-mix(in srgb, #fffdf8 30%, transparent);
+}
+.callout:is([data-callout="danger"], [data-callout="error"], [data-callout="failure"], [data-callout="fail"], [data-callout="missing"]) {
+  --ba-co-tint: color-mix(in srgb, var(--callout-color) 11%, transparent);
+}
+.callout:is([data-callout="important"], [data-callout="danger"], [data-callout="error"], [data-callout="failure"], [data-callout="fail"], [data-callout="missing"])::before {
+  --ba-co-lc: var(--callout-color);
+}
+.callout:is([data-callout="important"], [data-callout="danger"], [data-callout="error"], [data-callout="failure"], [data-callout="fail"], [data-callout="missing"])::after {
+  background: var(--ba-tag-grain) 0 0 / 256px 256px, var(--callout-color);
+}
+.callout-title {
+  font-family: var(--ba-font-display);
+  color: var(--callout-color);
+  letter-spacing: 0.02em;
+  align-items: center;
+}
+.callout:not(.is-collapsed) .callout-title {
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  /* 标题下一道类型颜色的细线，往右渐隐(第十九版；原来是一道满宽的淡金线) */
+  background: linear-gradient(to right, color-mix(in srgb, var(--callout-color) 45%, transparent), transparent 85%) left bottom / 100% 1px no-repeat;
+}
+body:not(.ba-no-callout-latin) .callout[data-callout] .callout-title-inner::before {
+  content: var(--ba-latin, "");
+  margin-inline-end: 0.7em;
+  font-family: var(--ba-font-caps);
+  font-size: 0.8em;      /* 第十五版：换成小型大写字体后矮一截，0.72em → 0.8em */
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--ba-gold-deep);
+  vertical-align: 0.12em;
+}
+.callout-content > :first-child {
+  margin-top: 0.4em;
+}
+/*@@CALLOUT-ICONS@@*/
+
+/* ==========================================================================
+   9. Properties
+   ========================================================================== */
+/* 第二十七版(用户定十稿 A)：属性栏 = 四角双翼花框(ornaments.props_frame)，九宫格 border-image，只拉长中段直线、线宽不变。
+   框比两个切片(2 × 79px)矮时浏览器把四角按比例整体缩小，不会变形——属性只有一条时约 0.9；折叠时把上下留白加大，
+   角花基本原大(用户：折叠时角花太小)。右侧栏属性面板里整套缩到 0.75：栏窄，左右留白超过 20px 原版就会把属性名和值改成上下排。
+   试过给花框和花边加浮空阴影(列表符号悬停那道)，用户嫌脏 */
+body:not(.ba-plain-properties) .metadata-container {
+  border: 1px solid transparent;
+  border-image: @@ORN:props-frame@@ @@SIZE:props-slice@@ / @@SIZE:props-c@@ stretch;
+  padding: 42px 56px 36px;
+}
+body:not(.ba-plain-properties) .metadata-container.is-collapsed {
+  padding-block: @@SIZE:props-coll@@;
+}
+/* 折叠 / 展开的过渡(用户：折叠时跳一下，角花不会丝滑地变大小，整个窗口也跳一下；展开和收起速度要对称一致)：
+   原版折叠时 JS 往内容上写行内样式(overflow-y、height、transition: overflowY 100ms …, height、最后 display: none)，每条属性 display: none，
+   展开时那条行内 transition 把高度过渡的时长顶成 0，内容一帧就弹回全高。这里全部用 !important 接管：内容一直渲染，
+   高度在 0 和 auto 之间过渡(interpolate-size，同列表折叠)并淡出淡入，上下留白同时过渡——同一个时长、同一条时间对称的 ease-in-out，
+   展开正好是收起的倒放；框高连续变化，九宫格四角跟着连续缩放，下面的正文滑下去而不是跳 */
+body:not(.ba-plain-properties) .metadata-container {
+  --ba-props-ease: 240ms cubic-bezier(0.45, 0, 0.55, 1);
+  interpolate-size: allow-keywords;
+  transition: padding var(--ba-props-ease);
+}
+/* 竖直方向裁切会把第一条属性悬停 / 聚焦时那圈描边(1 / 2px，画在行外)的上沿裁掉(用户发现)：上下各留 2px 内边距、再用负外边距抵掉，
+   裁切线往外让出 2px，排版不变 */
+body:not(.ba-plain-properties) .metadata-container > .metadata-content {
+  height: auto !important;
+  overflow-y: clip !important;
+  padding-block: 2px;
+  margin-block: -2px;
+  transition: height var(--ba-props-ease), opacity var(--ba-props-ease), visibility var(--ba-props-ease) !important;
+}
+body:not(.ba-plain-properties) .metadata-container.is-collapsed > .metadata-content {
+  display: block !important;
+  height: 0 !important;
+  opacity: 0;
+  visibility: hidden;
+}
+body:not(.ba-plain-properties) .metadata-container.is-collapsed .metadata-property {
+  display: flex;
+}
+/* 花框左右多占的留白从属性名那一栏扣(9em → 7.5em)，值那一栏和朴素样式一样宽：窄侧栏里日期 + 链接图标(131px)才放得下 */
+body:not(.ba-plain-properties) .workspace-leaf-content[data-type="file-properties"] .metadata-container {
+  --metadata-label-width: 7.5em;
+  border-image-width: @@SIZE:props-c-side@@;
+  padding: @@SIZE:props-side-pad@@;
+}
+/* 标题「笔记属性」居中，两侧卷草花边(十一稿；十二稿比过骨白绶带 / 标题同款「∞」卷草 / 朱红燕尾铭牌，用户定维持卷草)：
+   花框上去掉的那段 f0566 卷草(ornaments.props_heading_arm) + 一根金线，左边那片水平翻转。线落在文字行高的正中，花叶墨迹的重心也压在线上
+   (花叶全在线上方时重心偏高，用户：像标题错位了)。十三稿(用户：卷草和末端横线接得不自然；横线换成 f1090_1 的箭头菱形)：
+   线在花叶墨迹的重心高度、从卷叶中间穿过(c，留最高的两片长叶)，出了花叶接 f1090_1 的「直线 + 菱形 + 箭头」，不再渐隐；
+   比过花叶照原画坐在线上(a)、a 沿横线上下镜像(十四稿)，用户定 c。
+   标题行 flex 居中、不折行，宽度收到内容(太窄时以容器为限，花边整只等比缩小，箭头不被裁掉)；.metadata-properties-title 设成 display: contents，
+   花边(title 的 ::before / ::after)、折叠箭头、文字都成了标题行的直接子项——标题自己的 ::before 原版占着(点击区)。
+   折叠箭头(图标 10px)排在文字前面，宽度 0、往左挪进空隙：展开时它透明，文字仍居中；花边离字 14px */
+body:not(.ba-plain-properties) .metadata-properties-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-inline: auto;
+}
+body:not(.ba-plain-properties) .metadata-properties-title {
+  display: contents;
+}
+body:not(.ba-plain-properties) .metadata-properties-title::before,
+body:not(.ba-plain-properties) .metadata-properties-title::after {
+  content: "";
+  flex: 0 1 auto;
+  width: @@SIZE:props-arm-w@@;      /* 写明宽度：标题行宽度收到内容，空的花边按 flex-basis 算会是 0 */
+  min-width: 0;
+  height: @@SIZE:props-arm-h@@;
+  margin-block: calc((1lh - @@SIZE:props-arm-h@@) / 2);
+  background: @@ORN:props-arm@@ left center / contain no-repeat;
+}
+body:not(.ba-plain-properties) .metadata-properties-title::before {
+  order: -1;
+  margin-inline-end: 14px;
+  transform: scaleX(-1);
+}
+body:not(.ba-plain-properties) .metadata-properties-title::after {
+  order: 1;
+  margin-inline-start: 14px;
+}
+body:not(.ba-plain-properties) .metadata-properties-heading > .collapse-indicator {
+  position: relative;
+  left: auto;
+  width: 0;
+  padding: 0;
+  overflow: visible;
+  translate: -12px 0;
+}
+body:not(.ba-plain-properties) .metadata-properties-heading > .collapse-indicator > svg {
+  flex: none;
+}
+/* Style Settings「属性栏用朴素样式」：第一版的上下两道金线 */
+body.ba-plain-properties .metadata-container {
+  padding: 4px 10px 6px;
+  border-top: 1px solid var(--ba-gold);
+  border-bottom: 1px solid var(--ba-gold);
+}
+/* 「笔记属性」字样用笔记标题的圣血红(十二稿后用户定；原来是深金) */
+.metadata-properties-heading .metadata-properties-title {
+  font-family: var(--ba-font-display);
+  color: var(--inline-title-color);
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   10. Chrome — 侧栏、标签、按钮、弹窗
+   ========================================================================== */
+.workspace-split.mod-left-split .workspace-leaf-content {
+  box-shadow: inset -14px 0 22px -20px rgba(var(--ba-shadow), 0.35);
+}
+.workspace-split.mod-right-split .workspace-leaf-content {
+  box-shadow: inset 14px 0 22px -20px rgba(var(--ba-shadow), 0.35);
+}
+/* 文件列表的飘落羽毛(第三十二版，用户：文件树加羽毛背景、动态飘落的羽毛)：十二根白羽(三种形状，几根被血晕染——羽梢 / 侧面 / 根部；
+   印章套色，见 ornaments.falling_feather)从顶上飘到底，边落边像钟摆一样左右摇(转轴在羽毛上方)；分远 / 中 / 近三层做出景深。
+   每根的参数、远近三层在 build.py FEATHERS / FEATHER_DEPTH，规则由 feathers_css 生成。
+   伪元素宿主：文件列表这一格里不在滚动容器里的叶子、顶栏、顶栏按钮组、前三个顶栏按钮，各 ::before / ::after；都相对叶子绝对定位
+   (叶子本来就是 relative，宿主都是 static)。叶子 isolation: isolate 自成层叠上下文，z-index 为负的羽毛画在叶子的纸纹之上、
+   按钮和文件名之下；pointer-events: none 不挡点击。落到底的距离 = 叶子的高度：叶子 container-type: size，关键帧里用 100cqh。
+   只动 translate / rotate(合成线程跑，不重绘)，模糊烘进位图；系统设了「减少动态效果」时不显示；Style Settings「关闭飘落羽毛」。
+   一稿在 Obsidian 窗口不在前台时暂停，用户要像 Momiji Autumn 主题的落叶那样一直飘(切换窗口不停)，已去掉。
+   第三十三版：从文件列表一格扩到「文件列表所在的那一组侧栏标签」(搜索、书签……拖进来的任何面板都算)。
+   (试过加万神殿穹顶洞口那样的天光，用户看了说效果很差，删了)
+   纸纹从各面板挪到标签组上、面板透明(面板换来换去，羽毛不断)；标签组自成层叠上下文、落到底的距离按标签组的高度(100cqh)。
+   宿主的分配见 build.py FEATHER_GROUP 上面的注释。面板自己画了不透明底色的(个别插件)会盖住羽毛，只是看不到，不出错。
+   性能(第三十七版，用户：笔记滚动时变卡；参考 Momiji Autumn 的落叶——只动 transform / opacity)：原来三根染血羽毛用 background-image 关键帧换图，
+   这个属性只能在主线程上逐帧推，什么都不动时主线程也有约一半时间耗在这上面。改成染血版挂在另外三个宿主上、两边互换透明度，全部在合成线程跑 */
+@@FEATHER-GROUP@@ {
+  isolation: isolate;
+  container-type: size;
+  background-color: var(--background-secondary);
+}
+.theme-light @@FEATHER-GROUP@@ {
+  --ba-veil-c: var(--background-secondary);
+  --ba-veil: color-mix(in srgb, var(--ba-veil-c) calc(100% - var(--ba-texture-opacity, 100%)), transparent);
+  background-image: linear-gradient(var(--ba-veil), var(--ba-veil)), @@RASTER:tone@@, @@RASTER:grain@@;
+  background-size: auto, 1024px 1024px, 320px 320px;
+  background-repeat: repeat;
+}
+@@FEATHER-GROUP@@ > .workspace-tab-container > .workspace-leaf,
+@@FEATHER-GROUP@@ > .workspace-tab-container > .workspace-leaf > .workspace-leaf-content {
+  background-color: transparent;
+  background-image: none;
+}
+/*@@FEATHERS@@*/
+/*@@EMBERS@@*/
+/* tooltip：金线纸笺(颜色、圆角、阴影、内边距在第 2 节的 --tooltip-*)。原版的小箭头用的是 --background-modifier-message，
+   不跟 --tooltip-background 走(原来暗血红底配灰黑箭头)：四个方向都改成金色，贴在金线外侧 */
+.tooltip {
+  border-block: 1px solid var(--ba-gold);
+  backdrop-filter: blur(6px);
+  font-family: var(--ba-font-display);
+  letter-spacing: 0.02em;
+}
+.tooltip .tooltip-arrow {
+  top: -6px;
+  border-bottom-color: var(--ba-gold);
+}
+.tooltip.mod-top .tooltip-arrow {
+  top: calc(100% + 1px);
+  border-top-color: var(--ba-gold);
+}
+.tooltip.mod-right .tooltip-arrow {
+  top: calc(50% - 5px);
+  border-right-color: var(--ba-gold);
+}
+.tooltip.mod-left .tooltip-arrow {
+  top: calc(50% - 5px);
+  border-left-color: var(--ba-gold);
+}
+/* 文件列表(第三十四版；设计稿 A 金箔刷痕 / B 朱红书签 / C 典籍金线，用户定 A 的图标 + C 的选中和横线、文件夹名墨色)：
+   文件夹 = 金色空心血滴，展开尖朝上、收起转成尖朝右(一稿尖朝下像地图图钉)；往下挪 3px 和文件夹名对齐(量过：血滴中线比首字母中线高 2.8px)，
+   translate 在 rotate 之前作用，收起转了 90° 也是往下挪。文件夹名墨色罗马体(B 圣血红、A 深金都比过)；
+   一级文件夹名后面一道往右渐隐的金线(像典籍的章名)。附件后缀(jpg 等)深金小型大写、去掉底色。
+   当前文件 = 上下两道两头渐隐的金细线 + 象牙衬底、圣血红加粗字(加粗走 --nav-item-weight-active，见第 2 节)；
+   悬停时也保持(原版「当前 + 悬停」那条会把底色换掉)。一稿是圣血红淡底 + 左侧一道金线。悬停流光做过小样，用户说先不要 */
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title {
+  color: var(--ba-ink);
+}
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title-content {
+  font-family: var(--ba-font-roman);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon svg {
+  display: none;
+}
+/* 血滴一直竖着(二稿收起时转成横的，用户：横向泪滴很不自然)；收起 = 空心金血滴，展开 = 血从底下往上灌满空心(用户：展开时动态填充实心红色)。
+   ::before = 金色空心轮廓；::after = 血，叠在上面、和 ::before 重合(图标格子本来就是绝对定位、16×12、内容居中)，
+   遮罩用实心血滴的外形(和空心轮廓的外沿是同一条路径)，背景是两倍高的「下半红、上半透明」渐变(红同正文一级列表的血滴)。
+   展开 / 收起时 background-position 过渡：0% = 露上半 = 空，100% = 露下半 = 满；液面涨上来时连金边一起淹掉(用户：填色时边框也变成同样的红)，
+   灌满时金色那层再淡出(不然红色边上一圈抗锯齿的金边)；收起时金边马上回来，血从上往下退。
+   速度：灌血 0.55s、退血 0.4s，都匀速(用户：还是不要曲线了，稍微快点但别像原来那么快)。
+   试过的：0.6s 只灌空心(慢)→ 0.35s ease-out(看着匀速)→ 0.45s cubic-bezier(.6,0,.15,1)(中段太冲、太快)→ 0.75s cubic-bezier(.45,0,.2,1)(太慢)。过渡用的是目标状态上写的那条，所以展开态 / 收起态各写各的。
+   只用过渡、不用关键帧：文件树是虚拟列表，滚动时行会重建，关键帧动画会在新出现的行上再播一遍；过渡只在状态变化时走。
+   (三稿 0.35s ease-out：图标太小，看着几乎匀速；二稿 0.6s 用户嫌慢；从上往下注试过，用户要改回从下往上)
+   二稿只灌空心、金边不变；一稿红色垫在金边底下，遮罩边缘透出一圈粉晕 */
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon::before,
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 12px;
+  translate: 0 3px;
+}
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon::before {
+  background: @@ORN:bul2@@ center / contain no-repeat;
+}
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon:not(.is-collapsed)::before {
+  opacity: 0;
+  transition: opacity 0.1s linear 0.5s;
+}
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon::after {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  background: linear-gradient(to top, #a8171f, #c2232c 48%, transparent 50%) 50% 0% / 100% 200% no-repeat;
+  -webkit-mask: @@ORN:bul1@@ center / contain no-repeat;
+  mask: @@ORN:bul1@@ center / contain no-repeat;
+  transition: background-position 0.4s linear;
+}
+.workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon:not(.is-collapsed)::after {
+  background-position: 50% 100%;
+  transition: background-position 0.55s linear;
+}
+/* 一出现就是展开态的文件夹也要灌血(用户：全部折叠再全部展开，第二层起的血滴直接是红的)：
+   那些文件夹是在父文件夹折叠(不显示)时就被设成展开的，等父文件夹展开、它们露出来时已经是终态，过渡不触发。
+   @starting-style 给「刚出现」的展开态血滴一个起点(空、金边在)，于是露出来时从空灌起。
+   要写在展开态那两条普通规则后面(同优先级，后写的赢，写在前面会被盖掉、等于没起作用)。
+   附带：打开 Obsidian 时已展开的文件夹会一起灌一次；大库的文件列表边滚边建行，滚进来的展开文件夹也会灌一次 */
+@starting-style {
+  .workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon:not(.is-collapsed)::before {
+    opacity: 1;
+  }
+  .workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon:not(.is-collapsed)::after {
+    background-position: 50% 0%;
+  }
+}
+/* 横线用边框画(border-image 上渐变)，不用 1px 高的背景：屏幕缩放 125% 时 1px = 1.25 物理像素，
+   每行文件夹 31.05px 高，背景画的线逐行落在不同小数位置上，量出来有的占 1 行、有的 2～3 行(用户：有些横线更粗)；
+   边框宽度会被取整到整物理像素，条条一样细 */
+.workspace-leaf-content[data-type="file-explorer"] .nav-files-container > div > .nav-folder > .nav-folder-title::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 12px;
+  height: 0;
+  align-self: center;
+  margin-left: 10px;
+  border-top: 1px solid var(--ba-gold);
+  -webkit-mask: linear-gradient(to right, #000, transparent);
+  mask: linear-gradient(to right, #000, transparent);
+}
+.workspace-leaf-content[data-type="file-explorer"] .nav-file-tag {
+  background: none;
+  color: var(--ba-gold-deep);
+  font-family: var(--ba-font-roman);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+}
+/* 象牙底：第三十六版(用户：选中白条太亮)60% → 30%，和 callout 的象牙底同一个比例(比过 60 / 40 / 30 / 20，preview/选中行亮度/) */
+.nav-file-title.is-active {
+  background-color: color-mix(in srgb, #fffdf8 30%, transparent);
+}
+/* 上下两道金线画在叠在整行上的 ::after 的上下边框上(两头渐隐用遮罩)，不用 1px 高的背景：
+   行高 26.9px，125% 缩放下行的下沿落在半个物理像素上，背景线被对齐到上一行、象牙底多铺一行，金线看着浮在白底上(用户发现)；
+   边框和行一起取整到物理像素，正好压在象牙底的上下沿；绝对定位，不改行高 */
+.nav-file-title.is-active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-block: 1px solid var(--ba-gold);
+  -webkit-mask: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  mask: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+}
+/* 悬停当前文件：象牙衬纸微微浮起 + 行尾盖下一枚红蜡封(用户从五个动效小样里选了「衬纸浮起」和「封蜡按印」，合起来替换流光)。
+   浮起：上移 1px、底下一道柔和投影(图片 / 嵌入笔记同款的象牙衬纸 + 投影)，0.3s。
+   蜡封：复选框打勾那枚(圆蜡 + 镂空战团徽，ORN:seal-emblem，蜡色 + 磨损颗粒同复选框)，挂在文字元素的 ::after 上、贴行尾
+   (试过挪到行首缩进留白里，用户还是要右边；文件名长时会盖住字，用户说悬停时遮住无所谓)；
+   附件行尾有后缀标签(jpg 等)时蜡封要让开(用户)：改挂在后缀标签自己的 ::before 上、贴它左边 6px——后缀长短不一(jpg / canvas)，
+   跟着标签走比固定往左挪(一稿 right 44px)准；文字元素那枚就藏起来。
+   平时透明、放大 1.3 倍、斜 12°，悬停时 0.38s 带一点回弹地盖下去(cubic-bezier 超过 1 = 先压过头再弹回；一稿从 1.7 倍压下，用户嫌最大时太大)。
+   历次(都删了)：淡金斜光带扫过 → 三团白光横穿 → 加亮 + 悬停压暗底色 → 一团白光不规则变化 + 金线反光 + 金线外辉光；
+   小样还试过套色错版、描金生长、朱墨晕开(preview/悬停方案/)，用户没选 */
+body:not(.is-grabbing) .nav-file-title.is-active:hover {
+  background-color: color-mix(in srgb, #fffdf8 30%, transparent);   /* 悬停时底色不变(原版这条会换成 --nav-item-background-active) */
+  translate: 0 -1px;
+  box-shadow: 0 2px 6px rgb(90 60 30 / 0.18), 0 1px 1.5px rgb(90 60 30 / 0.14);
+}
+.nav-file-title.is-active {
+  transition: translate 0.3s ease, box-shadow 0.3s ease;
+}
+.nav-file-title.is-active .nav-file-title-content::after,
+.nav-file-title.is-active .nav-file-tag::before {
+  content: "";
+  position: absolute;
+  inset: 50% 12px auto auto;
+  width: 19px;
+  height: 19px;
+  margin-top: -9.5px;
+  pointer-events: none;
+  background: var(--ba-tag-grain) 0 0 / 256px 256px, #a32a35;
+  -webkit-mask: @@ORN:seal-emblem@@ center / contain no-repeat;
+  mask: @@ORN:seal-emblem@@ center / contain no-repeat;
+  opacity: 0;
+  scale: 1.3;
+  rotate: -12deg;
+  transition: opacity 0.18s ease, scale 0.38s cubic-bezier(0.3, 1.7, 0.5, 1), rotate 0.38s ease-out;
+}
+.nav-file-title.is-active .nav-file-tag {
+  position: relative;
+}
+.nav-file-title.is-active .nav-file-tag::before {
+  right: calc(100% + 6px);
+}
+.nav-file-title.is-active:has(.nav-file-tag) .nav-file-title-content::after {
+  display: none;
+}
+body:not(.is-grabbing) .nav-file-title.is-active:hover .nav-file-title-content::after,
+body:not(.is-grabbing) .nav-file-title.is-active:hover .nav-file-tag::before {
+  opacity: 1;
+  scale: 1;
+  rotate: 0deg;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-file-title.is-active,
+  .nav-file-title.is-active .nav-file-title-content::after,
+  .nav-file-title.is-active .nav-file-tag::before,
+  .workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon::before,
+  .workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon::after,
+  .workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon:not(.is-collapsed)::before,
+  .workspace-leaf-content[data-type="file-explorer"] .nav-folder-title .collapse-icon:not(.is-collapsed)::after {
+    transition: none;
+  }
+}
+/* ---- 侧栏各面板顶上的按钮行收成一对翅膀(第四十版，照永夜「自动收起侧栏面板按钮行」，Style Settings 同名开关，默认开——
+   和其他「自动隐藏」开关同一个方向：打开 = 收起；默认值靠 class-toggle 的 default: true 加类，没装 Style Settings 时按钮照原版常驻)。
+   翅膀：用户比过六种(战团徽双翼 ± 血滴、liberty / feathered / curly 成对、属性栏版画双翼)选 Lorc 的 curly-wing，
+   左右翻转、两个卷草在中间并排相切(不交错)、翼尖朝外，略放大(ornaments.nav_wings，遮罩铺金，悬停深一档)。
+   **翅膀的盒子取 32×16(4 的倍数)**：在 100% / 125% / 150% / 200% 缩放下都是整数物理像素。一稿 30.05×15，125% 下是 37.6×18.75 个物理像素，
+   内核画之前把盒子边缘取整，取整后宽高随所在位置在 37/38、18/19 之间变——大纲和文件列表的翅膀明明一样大，大纲那只看着小一圈、更糊
+   (用户发现)；收起时翅膀跟着行高上移 1.5px，每帧取整结果都在变，看着一顿一顿。盒子是整数像素后，不管落在哪、怎么移，画出来都一样大，
+   遮罩 contain 进盒子(翅膀 30.4×16 居中)。
+   仿 Baseline 的「Dot」：按钮行留在原处，收起时每个按钮的图标尺寸、内边距、间距都归零，行高收矮，正中画翅膀。
+   鼠标移上去 0.1s 后展开：翅膀张大淡出，按钮从正中往两边长出来(按钮行本来就居中排，宽度一长自然向两侧铺开)，
+   尺寸用 easeOutQuint 平滑到位、按钮自身再叠一层 easeOutBack 的轻微回弹缩放(回弹只放在 transform 上，行高不过冲，
+   下面的文件树不会抖)。离开 0.3s 后先让按钮缩小淡出，再收行高，最后翅膀「落回」原位。
+   **按钮行的最小高度跟着一起过渡**(收起 15px = 翅膀高，展开 = 按钮高)：只靠按钮缩小撑行高的话，行高 = max(最小高度, 按钮高)，
+   按钮还在快速缩小时就被 15px 卡住、急停，剩下 2px 内边距再慢慢收完，看着「卡一下又缩一下」(用户发现；永夜翅膀只有 10px 高，
+   卡住时已到动画尾段、不明显)。最小高度用同一条缓动从按钮高过渡到 15px，始终 ≥ 按钮高，行高变成一条平滑曲线。
+   收起时翅膀上方留 10px、下方 5px(原来上下各 6px，用户嫌离面板上边太近)。
+   只有排序等菜单开着时不收；面板里的搜索框开着照样收(它是 .nav-header 里按钮行之外的另一个子元素，收起后留在翅膀下面照常可用，
+   收起时和翅膀之间的间距从原版 4px 放到 10px，展开时随按钮一起回到 4px)。
+   DOM 照 1.14 app.js：.nav-header > .nav-buttons-container > .nav-action-button；.nav-header 大多是 .workspace-leaf-content 的直接子元素，
+   反向链接面板的在 .view-content 里，所以用后代选择器、限定在侧栏(.mod-sidedock，笔记底部嵌入的反向链接不动)。手机版不动 */
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header {
+  padding-block: 10px 5px;
+  transition: padding 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container {
+  position: relative;
+  min-height: 16px;
+  gap: 0;
+  transition: gap 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms, min-height 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button {
+  padding: 0;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: padding 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms, opacity 120ms ease-in 300ms, transform 180ms ease-in 300ms,
+    color 150ms, background-color 150ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container > .nav-action-button > svg {
+  width: 0;
+  height: 0;
+  transition: width 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms, height 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .search-input-container {
+  margin-top: 10px;
+  transition: margin-top 240ms cubic-bezier(0.65, 0, 0.35, 1) 360ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 32px;
+  height: 16px;
+  margin: auto;
+  pointer-events: none;
+  background-color: var(--ba-gold);
+  -webkit-mask: @@ORN:nav-wings@@ center / contain no-repeat;
+  mask: @@ORN:nav-wings@@ center / contain no-repeat;
+  transition: opacity 220ms ease-out 480ms, transform 320ms cubic-bezier(0.22, 1, 0.36, 1) 480ms, background-color 150ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:hover > .nav-buttons-container::before {
+  background-color: color-mix(in srgb, var(--ba-gold) 70%, var(--ba-gold-deep));
+}
+/* 展开 */
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) {
+  padding-block: var(--size-4-2);
+  transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container {
+  min-height: calc(var(--icon-size) + 2 * var(--size-2-2));
+  gap: var(--size-2-1);
+  transition: gap 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, min-height 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button {
+  padding: var(--size-2-2) var(--size-2-3);
+  opacity: 1;
+  transform: none;
+  transition: padding 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, opacity 180ms ease-out 160ms,
+    transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1) 100ms, color 150ms, background-color 150ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container > .nav-action-button > svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms, height 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .search-input-container {
+  margin-top: 4px;
+  transition: margin-top 300ms cubic-bezier(0.22, 1, 0.36, 1) 100ms;
+}
+body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header:is(:hover, :has(.has-active-menu)) > .nav-buttons-container::before {
+  opacity: 0;
+  transform: scale(1.8, 1.4);
+  transition: opacity 140ms ease-out 100ms, transform 220ms ease-out 100ms, background-color 150ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header,
+  body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header *,
+  body:is(.ba-autohide-nav, :not(.css-settings-manager)):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content .nav-header > .nav-buttons-container::before {
+    transition-duration: 0s !important;
+  }
+}
+/* ---- 大纲面板 · 金线导轨(ba-outline-marker，照永夜的「简单指示线」；第四十版起默认改成血线)：列表左边一道金细线导轨，悬停 / 当前标题那一行
+   在导轨上压一段圣血红竖条、正中串一粒红圆点，竖条在圆点上下断开(同主区标签栏分隔线的「竖线串金圆点」，
+   用户：圆点参考标签分隔线的比例；样稿用的血滴，用户：血滴被滥用了；一稿 8px 金圈红心，用户嫌大)。
+   CSS 锚点定位(Chromium 125+)：悬停的标题挂上锚点名，竖条和圆点用 anchor() 定位，transition 让它们滑过去；
+   鼠标不在大纲里时锚点落回当前标题(.is-active，Obsidian 随光标 / 滚动更新)。「鼠标在不在大纲里」用整块列表自己的 :hover
+   (只在进出时变一次)，不用 :has(.tree-item-self:hover)——永夜实测那样每换一个悬停项都整树重算样式。
+   **没有锚点时靠高度归零隐藏**：竖条、圆点的上下沿都用 anchor() 给(不写 height)，锚点不存在时 anchor() 失效、top / bottom 退成 auto，
+   高度 = 内容高 = 0，什么都不画。一稿用 position-visibility: anchors-valid 隐藏，但 Obsidian 的内核(实测 Chrome 150)不认这个值、
+   整条作废，圆点退回静态位置、停在大纲最底下(用户发现)。
+   **行与行之间的 2px 缝要补上**：原版每行 margin-bottom 2px，鼠标划过缝时没有悬停项、锚点丢失，圆点掉到底下再跳回来、
+   而且从 auto 回来没有过渡(用户：每移动鼠标圆点都会跳)。每行挂一条往下伸 3px 的透明 ::after 当悬停区(盖住缝，
+   多出的 1px 被下一行盖住——下一行排在后面、画在上面，点击 / 悬停都归它)。
+   导轨挂列表的 ::before、上半截竖条挂列表的 ::after、下半截挂 .view-content::before、圆点挂 .view-content::after；
+   后两个横向用第二个锚点对到列表左缘(不写死 .view-content 的内边距；也不能对行左缘：Obsidian 给每行写内联 margin / padding
+   把行拉回列表最左，但各级差零点几像素，实测四级标题右偏 0.4px、圆点跟着左右晃)。
+   当前标题同文件列表当前行：30% 象牙衬底 + 上下两道两头渐隐的金线、圣血红加粗字(颜色 / 加粗走 --nav-item-*-active)；
+   不支持锚点定位的旧版本只有这个当前行样式。
+   当前行样式和悬停蜡封金线导轨 / 血线两种模式共用(body:not(.ba-outline-native))，导轨、补缝悬停区只给金线导轨
+   (body.ba-outline-marker)，血线另见下一节 */
+body:not(.ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self {
+  position: relative;
+}
+body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-self::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 3px;
+}
+body:not(.ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active {
+  background-color: color-mix(in srgb, #fffdf8 30%, transparent);
+  box-shadow: none;
+}
+body:not(.ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-block: 1px solid var(--ba-gold);
+  -webkit-mask: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  mask: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+}
+/* 悬停当前标题：同文件列表当前行——象牙衬纸上移 1px + 柔和投影，行尾盖下一枚红蜡封(用户：和文件树一样的悬停蜡封)。
+   蜡封挂在文字元素 .tree-item-inner 的 ::after 上(行自己的 ::before 画金线、::after 是补缝的悬停区)；
+   .tree-item-inner 是 static，绝对定位的蜡封按整行定位、贴行尾 12px，不被它的 overflow 裁。
+   竖条 / 圆点按锚点的布局位置定位，不跟着 translate 上移(差 1px，看不出) */
+body:not(.is-grabbing, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active:hover {
+  translate: 0 -1px;
+  box-shadow: 0 2px 6px rgb(90 60 30 / 0.18), 0 1px 1.5px rgb(90 60 30 / 0.14);
+}
+body:not(.ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active {
+  transition: translate 0.3s ease, box-shadow 0.3s ease;
+}
+body:not(.ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active > .tree-item-inner::after {
+  content: "";
+  position: absolute;
+  inset: 50% 12px auto auto;
+  width: 19px;
+  height: 19px;
+  margin-top: -9.5px;
+  pointer-events: none;
+  background: var(--ba-tag-grain) 0 0 / 256px 256px, #a32a35;
+  -webkit-mask: @@ORN:seal-emblem@@ center / contain no-repeat;
+  mask: @@ORN:seal-emblem@@ center / contain no-repeat;
+  opacity: 0;
+  scale: 1.3;
+  rotate: -12deg;
+  transition: opacity 0.18s ease, scale 0.38s cubic-bezier(0.3, 1.7, 0.5, 1), rotate 0.38s ease-out;
+}
+body:not(.is-grabbing, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active:hover > .tree-item-inner::after {
+  opacity: 1;
+  scale: 1;
+  rotate: 0deg;
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active,
+  body:not(.ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.is-active > .tree-item-inner::after {
+    transition: none;
+  }
+}
+/* 悬停项所在那一级的缩进线提亮(同永夜) */
+body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-children:has(> .tree-item > .tree-item-self:hover) {
+  border-inline-start-color: color-mix(in srgb, var(--ba-gold) 60%, transparent);
+}
+@supports (anchor-name: --ba-x) {
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item) {
+    position: relative;
+    anchor-name: --ba-outline-list;
+  }
+  /* 导轨：1px 细线用边框画(背景画的在 125% 缩放下粗细不一)，上下两头 16px 渐隐 */
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-inline-start: 1px solid color-mix(in srgb, var(--ba-gold) 60%, transparent);
+    -webkit-mask: linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
+    mask: linear-gradient(transparent, #000 16px, #000 calc(100% - 16px), transparent);
+    pointer-events: none;
+  }
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::after,
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content::before,
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content::after {
+    content: "";
+    position: absolute;
+    position-anchor: --ba-outline;
+    pointer-events: none;
+    transition: top 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), bottom 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  /* 圣血红竖条，压在导轨上、高 = 那一行，正中断开一段放圆点；上下两截分开画(都是盒子边缘，按物理像素取整，
+     不用遮罩挖空——遮罩的边落在小数像素上会糊)。尺寸按 125% 缩放的物理像素算(同标签栏分隔线)：
+     竖条 2px 边框取整成 2 个，圆点 4.8px = 6 个(双数，和竖条同心)，断口 ±3.2px = 圆点上下各空 1 个；
+     导轨 1 个——单数宽没法正好在双数宽的正中，落在竖条左半。
+     竖条左缘 = 列表左缘、圆点左缘 = 列表左缘 -1.6px(= 整 2 个物理像素)，列表左缘落在什么小数位上都一起取整、始终同心
+     (一稿竖条往左让 0.5px 想骑在导轨正中，取整后和圆点错开 1 个)；不用 translate 居中(变换后不按像素取整) */
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::after {
+    left: 0;
+    width: 0;
+    top: anchor(top);
+    bottom: calc(anchor(center) + 3.2px);
+    border-inline-start: 2px solid var(--ba-crimson);
+  }
+  /* 下半截和圆点挂在 .view-content 上，::before 排在列表前面、会被导轨和当前行的象牙底盖住(实测下半截只剩右半、离开时整截不见)，
+     两个都抬到 z-index 1 */
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content::before {
+    z-index: 1;
+    left: anchor(--ba-outline-list left);
+    width: 0;
+    top: calc(anchor(center) + 3.2px);
+    bottom: anchor(bottom);
+    border-inline-start: 2px solid var(--ba-crimson);
+  }
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content::after {
+    z-index: 1;
+    left: calc(anchor(--ba-outline-list left) - 1.6px);
+    width: 4.8px;
+    top: calc(anchor(center) - 2.4px);
+    bottom: calc(anchor(center) - 2.4px);
+    border-radius: 50%;
+    background: var(--ba-crimson);
+  }
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .tree-item-self:hover,
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:not(:hover) .tree-item-self.is-active {
+    anchor-name: --ba-outline;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content > div:has(> .tree-item)::after,
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content::before,
+  body.ba-outline-marker .workspace-leaf-content[data-type="outline"] .view-content::after {
+    transition: none;
+  }
+}
+/* ---- 大纲面板 · 血线(默认，第四十版；照永夜的血线模式。没装 Style Settings 时也是它，选择器写成 :not(另两种))：每个标题前一只金圣杯，
+   有子项的杯上悬一滴血(Lorc chalice-drops 只留正中一滴)，折叠起来的杯里盛满血，没有子项的是镂空圣杯。
+   平时不画线；悬停某个标题时，从最顶层的祖先开始，每一级从父杯的杯脚下流出一道血线，
+   一直流到通往目标的那一项、圆角拐进它的杯身左缘；线两端都压在杯后面(杯 z2 > 线 z1)。
+   **每一级只有一根线**：挂在这一级的子级容器 .tree-item-children::before 上，同一级里鼠标往下移，这根线只是 transition 平滑地延伸；
+   进入新的一级时才生成新线、播一次从上往下流出的动画(按深度延迟，逐级流下)。
+   线的下沿锚到路径项那一行的中线(锚点 --ba-oc{深度})，右端锚到路径项杯子的左缘(锚点 --ba-oi{深度}，挂在杯子所在的伪元素上)
+   再往里 --ba-ol-reach——停在行中线高度的杯身轮廓上；锚点名按深度编号，免得外层的线锚到更深一级(同名锚点取树序最后一个)，
+   规则和图标尺寸由 build.py outline_css 生成(图标几何见 tools/chalice.py)。
+   几何：行高 --ba-ol-row 28.8px(125% 下 36 物理像素)；看上去行首 28px、每级缩进 28px(同永夜)。
+   **横向不能动 Obsidian 量的东西**：大纲的虚拟列表量每行的缩进 c(这一项离列表左缘多远)和行首内边距 pad，
+   给行写内联 !important 的 margin-inline-start: -c、padding-inline-start: c + pad，把行拉回面板最左；
+   **只在重绘大纲时量**(换笔记、标题变动)，切换大纲样式、启动时 Style Settings 延迟 100ms 才挂上类，都不会重量。
+   一稿血线模式把行首内边距 / 每级缩进改成 28px，用户切到血线后行还按原版量的 24 / 17 摆，文字起点每级少 4px，
+   杯子跟着左移、血线看着偏右(用户发现)。所以这两样一律保持原版(子级容器只把缩进线变透明)，
+   多出来的缩进加在文字元素 .tree-item-inner 的 margin 上(Obsidian 不量它)：--ba-ol-shift = 28 - pad + 深度 × (28 - 原版每级缩进)，
+   原版缩进从 app.css 的同一组变量算，原版改了也跟得上；折叠箭头(绝对定位，按行首内边距摆)跟着挪同样多，点杯子照样折叠。
+   **杯子跟着文字起点定位**：杯子挂 .tree-item-inner::before(绝对定位、left 留 auto = 文字起点，再 margin 往左退)，
+   杯的中轴在文字起点左边 13px；线挂在没被拉伸的子级容器上：父杯中轴 = 父项左缘 + 15 + 深度 × 多出的缩进。
+   当前标题沿用上一节的象牙衬底 + 金线 + 悬停蜡封 */
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] {
+  --ba-ol-row: 28.8px;
+  --ba-thread-w: 1.6px;
+  /* 原版的横向几何(app.css)：行首内边距 = --nav-item-padding 的起始边；每级缩进 = 子级容器的外边距 + 缩进线 + 内边距；每级要多缩进多少 */
+  --ba-ol-pad: var(--size-4-6);
+  --ba-ol-indent: calc(var(--nav-item-children-margin-start, var(--nav-item-children-margin-left)) + var(--nav-indentation-guide-width)
+    + var(--nav-item-children-padding-start, var(--nav-item-children-padding-left)));
+  --ba-ol-extra: calc(28px - var(--ba-ol-indent));
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .view-content {
+  isolation: isolate;
+}
+/* 虚拟列表的几层包装 div 比面板宽 9~10px，底下挂一条横向滚动条；收起长标题时溢出没了、滚动条消失，面板高 9px，
+   按面板定位的血线(下面 @supports 里)下端跟着动、又过渡一次。大纲行都是单行省略号，用不着横向滚动 */
+@supports (anchor-name: --ba-x) {
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .view-content {
+    overflow-x: hidden;
+  }
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item {
+  --ba-ol-shift: calc(28px - var(--ba-ol-pad) + var(--ba-d) * var(--ba-ol-extra));
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self {
+  margin: 0;
+  padding-block: 0;
+  white-space: nowrap;
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-inner {
+  height: var(--ba-ol-row);
+  line-height: var(--ba-ol-row);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-inline-start: var(--ba-ol-shift);
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children {
+  border-inline-start-color: transparent;
+}
+/* 圣杯：盖在原版折叠箭头上(箭头只隐藏图形，点杯子照样折叠 / 展开)；宽高、位置由 outline_css 按图标给 */
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self > .collapse-icon {
+  margin-inline-start: calc(var(--ba-ol-shift) - 21px);
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self > .collapse-icon > .svg-icon {
+  opacity: 0;
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-inner::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  background: var(--ba-ol-cup-o) 0 0 / 100% 100% no-repeat;
+  pointer-events: none;
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-self.mod-collapsible > .tree-item-inner::before {
+  background-image: var(--ba-ol-cup);
+}
+body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item.is-collapsed > .tree-item-self > .tree-item-inner::before {
+  background-image: var(--ba-ol-cup-x);
+}
+@keyframes ba-bleed {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@supports (anchor-name: --ba-x) {
+  /* 每一级一根线：从父杯的杯脚下(父杯中轴、父项那一行中线再往下 --ba-ol-foot)往下，圆角拐进路径项的杯子。
+     一稿线按父项 .tree-item 定位，收起 / 展开子项时父项高度变、bottom 跟着变，transition 播成「跳一下再长回去」(用户发现)；
+     现在 .tree-item 不定位，线按大纲滚动区 .view-content(Obsidian 写了内联 position: relative)定位，
+     四边全由 outline_css 按深度生成的锚点规则给出(起点锚父项的行和文字，终点锚路径项的行和杯子) */
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children::before {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    border-inline-start: var(--ba-thread-w) solid var(--ba-crimson);
+    border-bottom: var(--ba-thread-w) solid var(--ba-crimson);
+    border-end-start-radius: 6px;
+    pointer-events: none;
+    transition: bottom 0.24s cubic-bezier(0.3, 0.7, 0.4, 1);
+    animation: ba-bleed 0.2s ease-out both;
+    animation-delay: calc(var(--ba-d) * 100ms);
+  }
+  /* 路径上的层(:hover 沿祖先传递)；悬停的是某项自己那一行时，它的子级里没有悬停项，不画 */
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children:has(> .tree-item:hover)::before {
+    content: "";
+  }
+}
+@supports not (anchor-name: --ba-x) {
+  /* 旧内核(无锚点定位)：每个兄弟各画一段竖线、路径项画拐角(同一级移动时会一段段重新生成)；
+     拐角长度用固定的 --ba-ol-arm(所有杯子同宽、同一条中轴)；线段按各自的 .tree-item 定位 */
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item {
+    position: relative;
+  }
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item::after {
+    position: absolute;
+    z-index: 1;
+    left: calc(15px - var(--ba-ol-indent) + (var(--ba-d) - 1) * var(--ba-ol-extra) - var(--ba-thread-w) / 2);
+    top: calc(var(--ba-ol-row) / -2);
+    bottom: calc(var(--ba-ol-row) / 2);
+    width: var(--ba-thread-w);
+    background: var(--ba-crimson);
+    pointer-events: none;
+  }
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item::before {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    left: calc(15px - var(--ba-ol-indent) + (var(--ba-d) - 1) * var(--ba-ol-extra) - var(--ba-thread-w) / 2);
+    top: calc(var(--ba-ol-row) / -2);
+    width: calc(var(--ba-ol-arm) + var(--ba-thread-w) / 2);
+    height: calc(var(--ba-ol-row) + var(--ba-thread-w) / 2);
+    border-inline-start: var(--ba-thread-w) solid var(--ba-crimson);
+    border-bottom: var(--ba-thread-w) solid var(--ba-crimson);
+    border-end-start-radius: 6px;
+    pointer-events: none;
+  }
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-children > .tree-item::after {
+    content: "";
+  }
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-children > .tree-item:is(:hover, :hover ~ .tree-item)::after,
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-self:hover + .tree-item-children .tree-item::after {
+    content: none;
+  }
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item:hover > .tree-item-children > .tree-item:hover::before {
+    content: "";
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.ba-outline-marker, .ba-outline-native) .workspace-leaf-content[data-type="outline"] .tree-item-children::before {
+    transition: none;
+    animation: none;
+  }
+}
+/*@@OUTLINE-THREAD@@*/
+/* 当前标签：顶上一道朱红(主区非堆叠的标签栏另见下面 T4) */
+.workspace-tabs .workspace-tab-header.is-active {
+  box-shadow: inset 0 2px 0 var(--ba-crimson);
+}
+/* 侧栏「书签卡片」布局(第四十一版，Style Settings「侧栏布局」；默认 Plain · 简洁 = 原来那套，不动)：
+   用户要像 Nox Aeterna 的战旗那样，把标签图标放进下面的窗口里。每个侧栏标签组(.workspace-tabs = 标签栏 + 面板)是一张卡片，
+   铺面板的纸，卡片之间露出侧栏自己的纸(同标签栏，深一档)；标签栏去掉自己的纸和底线，图标收进卡片里；
+   当前标签挂一条红色书签丝带(ornaments.tab_ribbon)，顶端伸出卡片的纸 --ba-rb-rise(用户：书签顶部要突出外框一些)。
+   比过战旗 / 书签丝带 / 纯洁封印 / 拱龛 / 挂盾(preview/侧栏一级标签/卡片窗口_实机/)，用户选丝带；
+   卡片的金色双线框 + callout 卷草花角嫌繁琐，先不加。
+   版面：卡片之间、卡片到四边的空隙都是 --ba-gap(Style Settings「书签卡片：面板间距」--ba-card-gap，只在这个布局下用)。
+   默认 8px(同 Nox Aeterna 的卡片留白；一稿 6px 时丝带只能伸出 3px，用户定 8，伸出 4px)。
+   卡片左右外边距 = gap；卡片上下各留 gap / 2 不铺纸(background-clip: content-box)，侧栏上下内边距 gap / 2。
+   拖动线(第四十一版，用户：拖动左右 / 上下布局时那根线不在两个板块中间，贴在某个板块边上)：两张卡片之间那根是上面那张卡片自带的 hr，
+   贴着它自己的底边、又出不了标签组(overflow: hidden)——上下留白对半分以后正好落在空隙正中(一稿上 5 下 1，贴在上面那张纸下 1px)；
+   侧栏和正文之间那根(侧栏自带的 hr，原版贴着侧栏靠正文那条边 = 正文的边)往卡片方向挪半个 gap。平时都藏起来，悬停 / 拖动时显出。
+   丝带只能伸进卡片自己的上留白：伸出 --ba-rb-rise = min(2px, gap / 2)(第四十二版 4 → 2px，用户：突出外框有点多，像永夜战旗那样——旗顶比外框线高约 2.4px)；标签头顶在卡片内容顶下 --ba-rb-top = 6px − rise，
+   图标中心离丝带顶始终 6 + 12.6 = 18.6px(下摆第四十二版起是哥特尖盾，图标落在盾身方正的那段里)。
+   (丝带一稿标签头在 10px，图标在丝带上偏下；二稿丝带 48 长，用户：丝带太长，永夜的战旗短，是图标离上边太远——标签上移，丝带 40)
+   纸纹画在卡片上(同文件列表那组飘羽毛的标签组)，面板、标签栏透明(纸纹规则见第 4 节)；面板贴着正文那侧的内阴影(书沟)去掉。手机版不动 */
+body:not(.ba-sidebar-plain):not(.is-mobile) {
+  --ba-gap: var(--ba-card-gap, 8px);
+  --ba-rb-rise: min(2px, var(--ba-gap) / 2);
+  --ba-rb-top: calc(6px - var(--ba-rb-rise));
+  --ba-rb-len: 40px;
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock {
+  padding-block: calc(var(--ba-gap) / 2);
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tabs {
+  width: auto;
+  margin: 0 var(--ba-gap);
+  padding-block: calc(var(--ba-gap) / 2);
+  background-color: var(--background-secondary);
+  background-clip: content-box;
+}
+/* 标签栏高 = 丝带在卡片的纸里的那一截(40 − rise，默认 38px；原版 40)，正好装下下摆 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header-container {
+  height: calc(var(--ba-rb-len) - var(--ba-rb-rise));
+  background-color: transparent;
+  border-bottom: none;
+}
+/* 内层原版：上外边距 6、上下内边距 1 / 7，标签头 25.2px 高。内层是 overflow: auto，丝带要整条落在它里面才不被裁：
+   上外边距改成 −rise(往上伸进卡片的上留白)，内层高 = 标签栏高 + rise = 丝带长；上内边距 = --ba-rb-top + rise，
+   下内边距补到标签头还是 25.2(不补的话标签头被撑高，图标又往下掉) */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header-container-inner {
+  margin-top: calc(-1 * var(--ba-rb-rise));
+  padding-block: calc(var(--ba-rb-top) + var(--ba-rb-rise)) calc(var(--ba-rb-len) - var(--ba-rb-top) - var(--ba-rb-rise) - 25.2px);
+}
+/* 卡片花边(第四十二版，Style Settings「卡片花边」默认开；一稿是反着的「书签卡片：关闭卡片花边」，用户：逻辑反了，第四十四版改成正向开关)：侧栏花边样稿 A–H 里的 H「花角双线」(preview/侧栏花边/，
+   一稿都往纸边里缩了 3~4px，用户：没贴着外缘——改成贴纸边；之后几轮 A 双线 / C 卷草 + 双线 / 垂弧几款还在比，用户先实装 H 看看)。
+   素材库 f1509_4 整副边框按九宫格切开(ornaments.card_frame)：四角镂空线描花角，四边中段是原图截出来的四道细线(两组双线)拉长。
+   画成卡片自己的背景层，压在纸纹上、面板内容和丝带下面；花边层从 content-box 起(= 卡片的纸边，上下留白不画，同纸纹只铺 content-box)。
+   全是 SVG(角和边各自对齐像素网格也一致；永夜的教训：双线别拆成 CSS 渐变配 SVG 角，125% 下接口错开 1 个物理像素)。
+   飘羽毛那组的纸纹规则带 :has()(第 10 节羽毛那里)，单列一条才压得住；选择器带 body 比第 4 节纸纹那条 :is() 多一级。
+   大小 --ba-cf(一稿 24px，用户：颜色太淡——原图缩到 24px 时细线只有 0.1~0.3px、四道挤成一条浅带；
+   preview/侧栏花边/H_颜色(_二轮)/ 比过加深 / 加粗 / 放大，用户定 32px、颜色同属性栏花框 #c9a548(G1，不加粗))。
+   标签行整排右移 --ba-cf-shift 让出左上角花(24px 时 16，按比例)。
+   右上那组顶着窗口按钮(标题栏隐藏时)：一稿不画右上角花，用户：日历右上角怎么没有角花——四角照画，窗口按钮整组左移 --ba-cf-shift
+   (同 Nox Aeterna 让出右上角花；按钮规则在下面)，标签栏右内边距同步加宽，标签图标不钻到按钮下面 */
+body:not(.ba-sidebar-plain):not(.is-mobile):is(.ba-card-frame, :not(.css-settings-manager)) {
+  --ba-cf: 32px;
+  --ba-cf-shift: 21px;
+}
+body:not(.ba-sidebar-plain):not(.is-mobile):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-sidedock .workspace-tab-header-container-inner {
+  margin-inline-start: var(--ba-cf-shift);
+}
+/* 侧栏开关进了卡片标签栏时(app.js updateFrameless：mac 隐藏标题栏或功能栏隐藏 → 左栏开关挪到左栏顶上那组标签栏最后；
+   Windows 不隐藏标题栏 → 右栏开关挪到右栏顶上那组最后)，贴着标签栏右端、压在右上角花上(用户在 mac 模拟图里指出)：
+   右内边距同左边让出 --ba-cf-shift。窗口按钮那组(.mod-top-right-space)另有规则 */
+body:not(.ba-sidebar-plain):not(.is-mobile):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-sidedock .workspace-tab-header-container {
+  padding-inline-end: calc(var(--size-4-2) + var(--ba-cf-shift));
+}
+/* 同上，开关在标签栏里垂直居中(图标中线在标签栏顶下 20px)，比丝带上的标签图标(--ba-rb-top + 12.6)低约 3px：往上挪齐 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header-container > .sidebar-toggle-button {
+  translate: 0 calc(var(--ba-rb-top) + 12.6px - 20px);
+}
+/* 面板内容收进花边的线里(用户：文件列表、日历的滚动条压在右边的线上)：32px 时左右四道线在纸边往里 0.9~4.5px、下边 0.7~4.2px，
+   面板容器左右下各缩 6px，滚动条和滚到底的内容都落在内线里面(同永夜内容区内边距让出框线) */
+body:not(.ba-sidebar-plain):not(.is-mobile):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-sidedock .workspace-tab-container {
+  padding: 0 6px 6px;
+}
+body.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .mod-macos, .is-mobile):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-sidedock > .workspace-tabs.mod-top-right-space > .workspace-tab-header-container {
+  padding-right: calc(var(--size-4-2) + var(--frame-right-space) + var(--ba-cf-shift));
+}
+body.theme-light:not(.ba-sidebar-plain):not(.is-mobile):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-sidedock .workspace-tabs,
+body.theme-light:not(.ba-sidebar-plain):not(.is-mobile):is(.ba-card-frame, :not(.css-settings-manager)) @@FEATHER-GROUP@@ {
+  background-image: @@ORN:card-frame-tl@@, @@ORN:card-frame-tr@@, @@ORN:card-frame-bl@@, @@ORN:card-frame-br@@,
+                    @@ORN:card-frame-top@@, @@ORN:card-frame-bottom@@, @@ORN:card-frame-left@@, @@ORN:card-frame-right@@,
+                    linear-gradient(var(--ba-veil), var(--ba-veil)), @@RASTER:tone@@, @@RASTER:grain@@;
+  background-position: left top, right top, left bottom, right bottom,
+                       left var(--ba-cf) top, left var(--ba-cf) bottom, left top var(--ba-cf), right top var(--ba-cf), 0 0, 0 0, 0 0;
+  background-size: var(--ba-cf) var(--ba-cf), var(--ba-cf) var(--ba-cf), var(--ba-cf) var(--ba-cf), var(--ba-cf) var(--ba-cf),
+                   calc(100% - 2 * var(--ba-cf)) var(--ba-cf), calc(100% - 2 * var(--ba-cf)) var(--ba-cf),
+                   var(--ba-cf) calc(100% - 2 * var(--ba-cf)), var(--ba-cf) calc(100% - 2 * var(--ba-cf)),
+                   auto, 1024px 1024px, 320px 320px;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
+  background-origin: content-box, content-box, content-box, content-box, content-box, content-box, content-box, content-box,
+                     padding-box, padding-box, padding-box;
+}
+/* 标题栏隐藏、右栏开着时，窗口按钮叠在右边那张卡片上(同 Nox Aeterna)：按钮底色透明，往下挪，
+   图标中线(原版 19.5px)和卡片里的标签图标(侧栏内边距 gap/2 + 卡片上留白 gap/2 + --ba-rb-top + 12.6)对齐；往左挪 gap 收进卡片(卡片花边开着时再左移 --ba-cf-shift 让出右上角花)
+   (原版底色规则带 .is-focused，选择器多加一级 .titlebar 才压得住) */
+/* 「右栏开着」怎么判断(性能)：标题栏按钮、状态栏在 .workspace 外面，只能用 :has() 往回看。
+   一稿每条都写成 body:has(.workspace.is-right-sidedock-open) .status-bar——:has() 挂在 body 上又不在主体位置，Chromium 把非主体 :has() 的失效集
+   合并在一起，编辑器里打字(换 DOM、改光标的 style)都可能把 body 整棵树标成要重算(永夜 1.0.5 issue #1 同款)。
+   二稿在主体位置给 body 挂标记 --ba-rs-open、那几条规则包进 @container style()：样式重算也好了(滚动时多出的 ~130ms 布局一度算在它头上，
+   后来查明是状态栏的锚点宽度，见下面状态栏那里；去掉锚点后二稿、三稿一样快)。
+   三稿(更简单，不用标记和样式查询) :has() 挂在 body 下面的小兄弟上：.titlebar 看 ~ .app-container 里的 .workspace——
+   第四十六版查文件树拖动卡顿(用户：拖动很卡、延迟严重，和大纲那次很像)查到它头上：参数里有 ~，.titlebar 后面的兄弟都在它的辖区里，
+   而拖动残影 .drag-ghost、菜单、悬浮提示全都挂在 body 末尾，正是它后面的兄弟；app.css 有 :has(div…)，div 本身就是 :has 特征，
+   残影每次 dragover 一变，Chromium 就要重查 .titlebar 的 :has，重查就套所有非主体 :has 合并的那张失效集(正文 callout 标题、标签栏、文件行……
+   每次 ~240 个元素、6~11ms；真拖动时 dragover 比帧密，主线程越堆越多)。
+   四稿 = 回到二稿：主体位置的 :has() 只重算 body 自己，值不变不往下传。状态栏那条看的是 .horizontal-main-container 的直接子元素，残影碰不到，照旧 */
+body.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .mod-macos, .is-mobile):has(> .app-container > .horizontal-main-container > .workspace.is-right-sidedock-open) {
+  --ba-rs-open: 1;
+}
+@container style(--ba-rs-open: 1) {
+  body.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .mod-macos, .is-mobile) > .titlebar .titlebar-button-container.mod-right {
+    top: calc(var(--ba-gap) + var(--ba-rb-top) + 12.6px - 19.5px);
+    inset-inline-end: calc(var(--ba-gap) + var(--ba-cf-shift, 0px));
+    background-color: transparent;
+  }
+}
+/* 关闭按钮悬停：原版警示红 --background-modifier-error 铺满、叉还是灰褐(原版白叉规则只管 .svg-icon，这个 svg 没有那个类)，用户：太红、看不清图标。
+   preview/窗口按钮/关闭悬停_对比.png 比过 C0–C3，用户定 C1：淡朱红底(同最小化 / 最大化那种淡悬停底) + 朱红叉。
+   叉的 path 是 fill="currentColor"，改 color 就变色；svg 再描一圈 currentColor，叉粗一点(样稿就是这样) */
+body.mod-windows .titlebar .titlebar-button.mod-close:hover {
+  background-color: color-mix(in srgb, var(--ba-crimson) 14%, transparent);
+  color: var(--ba-crimson);
+}
+body.mod-windows .titlebar .titlebar-button.mod-close:hover svg {
+  stroke: currentColor;
+}
+/* macOS(标题栏隐藏)：红绿灯原位(关闭键框左上 14, 12)压在左上卡片的角花上(永夜同样没处理)；右侧栏开关 position: fixed 贴窗口右上角、
+   带不透明底，整块盖住右上卡片的角花。本机是 Windows，只能模拟(scratchpad _mac_mock.py：body 换 mod-macos、按源码公式画假灯，
+   preview/macOS红绿灯/)，没在真 mac 上验过。
+   红绿灯位置是 Obsidian 读 body 的 --traffic-lights-offset-x/y 算的(app.js updateStatus：关闭键框 = (floor(X/2 − 8) + 2, floor(Y/2 − 8))，
+   框 14×16、三个灯共宽 52)，只在窗口缩放和 css-change(换主题、Style Settings)时重读；读到的是字符串，calc() 解析不了，
+   所以用 @property 注册成 <length>，计算值才是算好的 px。
+   红绿灯挪到左上角花右边(功能栏宽 + gap + 角花 + 2)、和标签图标同一中线(同 Windows 窗口按钮)，左上卡片的标签行让到灯后面 8px；
+   左栏收起时左上那组换成主区的标签栏，红绿灯不会跟着动(开关侧栏不触发重读)，--frame-left-space 按灯的位置让出。
+   右侧栏开关(右栏开着时 app.js 把它挪进右栏顶上那组的标签栏)照 Windows 窗口按钮：底色透明、往下挪到标签图标中线、左移让出右上角花 */
+@property --traffic-lights-offset-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 40px;
+}
+@property --traffic-lights-offset-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 40px;
+}
+body.mod-macos.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl):is(.ba-card-frame, :not(.css-settings-manager)) {
+  --ba-tl-x: calc(var(--ba-gap) + var(--ba-cf) + 2px);   /* 关闭键框左缘离功能栏右缘 */
+  --traffic-lights-offset-x: calc(2 * (var(--frame-ribbon-left) + var(--ba-tl-x) + 6px));
+  --traffic-lights-offset-y: calc(2 * (var(--ba-gap) + var(--ba-rb-top) + 12.6px));
+  --frame-left-space: calc(var(--ba-tl-x) + 52px);
+}
+body.mod-macos.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-sidedock > .workspace-tabs.mod-top-left-space > .workspace-tab-header-container {
+  padding-left: calc(var(--ba-cf) + 2px + 52px + 8px - var(--ba-cf-shift));
+}
+body.mod-macos.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-right-split > .workspace-tabs.mod-top-right-space .sidebar-toggle-button.mod-secondary {
+  top: calc(var(--ba-gap) + var(--ba-rb-top) + 12.6px - 20px);
+  inset-inline-end: calc(var(--ba-gap) + var(--ba-cf-shift));
+  background-color: transparent;
+}
+body.mod-macos.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .is-popout-window, .is-popout-modal, .is-mobile, .mod-rtl, .mod-system-rtl):is(.ba-card-frame, :not(.css-settings-manager)) .workspace-split.mod-right-split > .workspace-tabs.mod-top-right-space > .workspace-tab-header-container {
+  padding-right: calc(44px + var(--ba-cf-shift));
+}
+/* 主区标签栏原版左内边距 8px，第一个标签比下面的正文窗口缩进去一截——平时左栏的标签栏和它连成一条看不出来，
+   卡片布局下左栏卡片和正文之间露出同色的缝，缩进就显出来了(用户指出)：左内边距去掉，第一个标签和正文左边对齐。
+   macOS 红绿灯 / 收起侧栏让出的位置(.mod-top-left-space)照旧 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-top-left-space, .mod-stacked) > .workspace-tab-header-container {
+  padding-inline-start: 0;
+}
+/* 左栏底部仓库栏(1.14：左栏 containerEl 里的 .workspace-sidedock-vault-profile，order: 1 排在所有卡片后面)：原版通栏宽，
+   改成卡片下面的一张小卡片，左右和卡片对齐(原版写死 100% 宽，加外边距要改回 auto)；上外边距 gap/2 + 上面卡片的下留白 gap/2 = gap，
+   下外边距 gap/2 + 侧栏下内边距 gap/2 = gap，和卡片之间、四边同一个空隙；去掉上分隔线，纸纹同卡片(第 4 节)。
+   以上是「仓库栏：一直显示」；「悬停显示」(默认，第 10 节标题栏自动隐藏后面)时浮在左栏底上，离左右下各 gap，升起来时带往上的淡阴影 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  --ba-vp-bottom: var(--ba-gap);
+  width: auto;
+  margin: calc(var(--ba-gap) / 2) var(--ba-gap);
+  border-top: none;
+}
+body:not(.ba-sidebar-plain):not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  inset: auto var(--ba-gap) var(--ba-vp-bottom);
+  margin: 0;
+}
+.theme-light:not(.ba-sidebar-plain):not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  box-shadow: 0 -2px 6px rgb(90 60 30 / 0.1), 0 -1px 1.5px rgb(90 60 30 / 0.07);
+}
+/* 右下角浮动的状态栏(.app-container 里 position: fixed，原版贴着窗口右下角、压在右栏卡片的角上)：右栏开着时对齐右栏卡片——
+   离窗口右边、下边各 gap，宽度随内容、靠右对齐卡片右边(一稿用锚点撑到卡片宽，滚动时每帧多一次布局，去掉了，见下)，铺卡片的纸。
+   「一直显示」时是右栏卡片下面的一张小卡片：右栏下内边距留出状态栏的高度；「悬停显示」(第 10 节标题栏自动隐藏后面)时不留，卡片一直铺到底，
+   状态栏升起来时浮在卡片底上，带一道往上的淡阴影(同标题栏)。高 30px(原版 30.8 含边框，去掉边框后定高，右栏留的空才算得准)。
+   原版项与项之间除了各自左右 4px 内边距还有 4px 间距、整条左 4 右 8 内边距，示例库五项要 360px，比 354 宽的右栏卡片(342)还宽：
+   间距去掉、两边内边距都 4px，省 20px(项之间还有 8px)；字数统计变长、插件项变多时照旧往左伸。右栏收起时状态栏照原版 */
+body:not(.ba-sidebar-plain).ba-status-always:not(.is-mobile) .workspace.is-right-sidedock-open > .workspace-split.mod-right-split {
+  padding-bottom: calc(var(--ba-gap) * 1.5 + 30px);
+}
+/* 「右栏开着」= 前面的兄弟 .horizontal-main-container 里 .workspace 带 is-right-sidedock-open(见上面标题栏按钮那里) */
+body:not(.ba-sidebar-plain):not(.is-mobile) .horizontal-main-container:has(> .workspace.is-right-sidedock-open) + .status-bar {
+  --ba-sb-bottom: var(--ba-gap);
+  right: var(--ba-gap);
+  bottom: var(--ba-sb-bottom);
+  height: 30px;
+  align-items: center;
+  gap: 0;
+  padding-inline: 4px;
+  border: none;
+  border-radius: 0;
+  background-color: var(--background-secondary);
+}
+.theme-light:not(.ba-sidebar-plain).ba-status-hover:not(.is-mobile) .horizontal-main-container:has(> .workspace.is-right-sidedock-open) + .status-bar {
+  box-shadow: 0 -2px 6px rgb(90 60 30 / 0.1), 0 -1px 1.5px rgb(90 60 30 / 0.07);
+}
+/* 一稿宽度至少同右栏卡片：min-width: calc(anchor-size(--ba-right-split width) - 2 * gap)。锚点让编辑视图滚动时每帧多一次布局，
+   一趟滚动布局 ~130ms → 去掉 15ms(同无主题)、p95 12 → 6ms(状态栏显示时才有，一直隐藏时 display: none 不算)。现在宽度随内容，靠右对齐卡片 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf,
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-leaf-content {
+  background-color: transparent;
+  box-shadow: none;
+}
+/* 拖动线(版面见本段开头)：侧栏和正文之间那根原版画在 hr 靠正文那侧的边框上(1px，缩放后 = 一个物理像素 --ba-dp)，
+   往卡片方向挪 gap / 2 − 半根线宽，线心落在卡片和正文之间空隙的正中 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-left-split > .workspace-leaf-resize-handle {
+  inset-inline-end: calc(var(--ba-gap) / 2 - var(--ba-dp, 1px) / 2);
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-right-split > .workspace-leaf-resize-handle {
+  inset-inline-start: calc(var(--ba-gap) / 2 - var(--ba-dp, 1px) / 2);
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock > .workspace-leaf-resize-handle,
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tabs > .workspace-leaf-resize-handle {
+  border-color: transparent;
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock > .workspace-leaf-resize-handle:is(:hover, .is-active),
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tabs > .workspace-leaf-resize-handle:is(:hover, .is-active) {
+  border-color: var(--divider-color-hover);
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active,
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+/* 丝带：红底 + 磨损颗粒(同标签、蜡封)，上面叠缎面明暗和两道金线，一起用丝带剪影裁；标签头是 relative，丝带顶 = 内层的上边 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(-1 * (var(--ba-rb-top) + var(--ba-rb-rise)));
+  left: 50%;
+  width: 22px;
+  height: var(--ba-rb-len);
+  margin: 0 0 0 -11px;
+  z-index: 0;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: none;
+  pointer-events: none;
+  background: @@ORN:tab-ribbon-sheen@@ 0 0 / 22px 40px no-repeat, var(--ba-tag-grain) 0 0 / 256px 256px, #a32a35;
+  -webkit-mask: @@ORN:tab-ribbon@@ 0 0 / 22px 40px no-repeat;
+  mask: @@ORN:tab-ribbon@@ 0 0 / 22px 40px no-repeat;
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active .workspace-tab-header-inner {
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+}
+/* 丝带上的图标 = 羊皮纸色(= --tag-color，红底标签上的字同色)：一稿象牙白 #fbf3e0，用户嫌像纯白、和主题色调不搭；
+   比过羊皮纸 / 浅金 #ecd27f / 金 #d2ae55(preview/侧栏一级标签/书签卡片_实装/丝带图标颜色对比.png)，先试浅金，用户定羊皮纸 */
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active .workspace-tab-header-inner-icon {
+  color: #f4e6c9;
+  transition: color 0.18s ease-out 0.1s;
+}
+/* 切换时丝带放下(用户：新标签能否从上往下展开、模拟旗帜缎带放下，不能影响性能)：丝带是 .is-active::before，标签一成为当前就新建，
+   animation 每次切换自动从头播；旧标签的丝带照旧一下消失。preview/侧栏一级标签/丝带放下/ 比过 A 垂落 / B 展开(clip-path) / C 垂落 + 回弹，
+   用户：C 的回弹对布料太 Q 弹、冲到最低时尖角被切(丝带长 = 内层高，内层 overflow 在底边裁)；改成落定后摆一下(C1 两摆 / C2 一摆)，
+   装了 C2，用户：还是太刻意——定 A：只从卡片顶边后面滑下来(内层在丝带顶边裁)，0.34s 先快后慢停住。
+   只动 translate(合成线程)；图标晚 0.1s 变羊皮纸色，免得丝带还没到、浅色图标落在纸上看不清 */
+@keyframes ba-rb-drop {
+  from {
+    translate: 0 -100%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active::before {
+  animation: ba-rb-drop 0.34s cubic-bezier(0.25, 0.8, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active::before {
+    animation: none;
+  }
+  body:not(.ba-sidebar-plain):not(.is-mobile) .workspace-split.mod-sidedock .workspace-tab-header.is-active .workspace-tab-header-inner-icon {
+    transition: none;
+  }
+}
+/* ---- 左侧功能栏「纯洁印记」(第四十八版，Style Settings「功能栏样式」默认；「普通」= 原样)：
+   顶上一枚战团徽蜡封(= 引用块纯洁封印的蜡那一层，ornaments.ribbon_seal)，下面垂一张纸条，图标排在纸条上、之间一道短横线
+   (颜色 = 封印纸条上的字行)，下端燕尾缺口。纸 = 侧栏卡片的纸(卡片底色 + 同一套纸纹)。
+   preview/功能栏/：设计稿一(红绶带长幡 / 金链念珠 / 象牙窄卡 / 哥特尖拱龛，用户：长幡颜色太跳、太简单，不要喧宾夺主)、
+   二(泰莱斯托圣矛 / 圣杯血线 / 羽翼 / 圣物匣)，用户把羽翼改成纯洁印记；三稿纸条用封印纸条的黄，用户：要和文件树里面一样的亮色，
+   而且没居中在窗口和左栏左边之间；尾部装饰比过字行 / 金线燕尾 + 血滴 / 圣杯 / 镂花垂饰 / 双头鹰 + 斜线(设计稿四～六)，最后不要。
+   悬停先不做，只去掉原版的灰底。
+   纸条整张 = 一张不设 viewBox 的 SVG(ornaments.ribbon_strip)，按钮组多高纸条就多长，蜡和燕尾不变形。
+   层次：投影剪影(-3) < 纸和蜡(-2) < 短横线(-1) < 图标。按钮组 relative 但不成层叠上下文(不用 transform / isolation)，
+   三层都落在功能栏自己(z-index 10)那一层里，铺在功能栏的纸上面 */
+body:not(.ba-ribbon-plain):not(.is-mobile) {
+  --ba-ps-d: @@SIZE:rb-seal-d@@;
+}
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions {
+  position: relative;
+  gap: 9px;
+  margin-top: calc(var(--ba-ps-d) + 2px);
+  padding-bottom: 16px;
+}
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions::before,
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions::after {
+  content: "";
+  position: absolute;
+  top: calc(-4px - var(--ba-ps-d));
+  bottom: 0;
+  left: 50%;
+  width: var(--ba-ps-d);
+  margin-left: calc(var(--ba-ps-d) / -2);
+  pointer-events: none;
+}
+/* 投影：遮罩会把 filter 投影一起裁掉，所以另垫一层不遮罩的剪影——剪影本身铺投影色、模糊、下移 1px，被上面的纸盖住只露出边缘，
+   再带一道往下 2.5px 的淡投影(同设计稿的两道 drop-shadow：贴边 0.26、外圈 0.13)；颜色和纸无关，夜间也不会描出一圈纸色 */
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions::before {
+  z-index: -3;
+  background: @@ORN:rb-strip-shadow@@ 0 0 / 100% 100% no-repeat;
+  translate: 0 1px;
+  filter: blur(0.6px) drop-shadow(0 1.5px 2.5px rgb(92 58 26 / 0.5));
+  opacity: 0.26;
+}
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions::after {
+  z-index: -2;
+  background: @@ORN:rb-seal@@ 0 0 / var(--ba-ps-d) var(--ba-ps-d) no-repeat;
+  background-color: var(--background-secondary);
+  -webkit-mask: @@ORN:rb-strip@@ 0 0 / 100% 100% no-repeat;
+  mask: @@ORN:rb-strip@@ 0 0 / 100% 100% no-repeat;
+}
+body.theme-light:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions::after {
+  --ba-veil: color-mix(in srgb, var(--background-secondary) calc(100% - var(--ba-texture-opacity, 100%)), transparent);
+  background-image: @@ORN:rb-seal@@, linear-gradient(var(--ba-veil), var(--ba-veil)), @@RASTER:tone@@, @@RASTER:grain@@;
+  background-size: var(--ba-ps-d) var(--ba-ps-d), auto, 1024px 1024px, 320px 320px;
+  background-repeat: no-repeat, repeat, repeat, repeat;
+}
+/* 夜间(2026-11-03，用户：功能栏的纸条要单独保持相对亮色)：纸条 = 提亮的旧羊皮纸(同引用块封印纸条，tools/dark.STRIP_PAPER)，
+   铺日间那套纸纹(夜间纸纹是给黑纸的)；蜡封用夜间版(战团徽填亮色)。纸条上的图标、悬停红换回深一档的颜色，浅纸上才看得清。
+   第五十二版(用户：纸带比别的页面元素亮，但不要变深色；末端要有类似灰烬的燃烧痕迹)：纸降一档(#bca78c L .74 → L .66)，
+   图标 / 短横线跟着加深(一稿降了纸没改图标，用户嫌看不清)；比过两侧熏黑焦边，用户不要。末端燕尾换成烧边(dark.rb_strip_burnt 遮罩)，
+   底边垫烧痕位图(dark.rb_char_webp：焦褐 → 炭黑 → 灰烬边 → 断续的余火，同一条边线)，投影剪影也换烧边形状；
+   烧痕高 ~12px，纸条往下多留 14px(下内边距 16 → 30)，免得焦痕贴着最后一个图标；二稿烧得更多(中间烧深、两角垂长、焦褐蔓延到 ~15px)，
+   下内边距再加到 40。preview/夜间配色/功能栏纸带/ */
+body.theme-dark:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions {
+  --ba-rb-paper: #a48e74;
+  --icon-color: #3d281a;
+  --icon-color-hover: #3d2a1f;
+  padding-bottom: 40px;
+}
+body.theme-dark:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions::before {
+  background-image: @@ORN:rb-strip-burnt-shadow@@;
+}
+body.theme-dark:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions::after {
+  --ba-veil: color-mix(in srgb, var(--ba-rb-paper) calc(100% - var(--ba-texture-opacity, 100%)), transparent);
+  background-color: var(--ba-rb-paper);
+  background-image: @@ORN:rb-seal-dk@@, @@RASTER:rb-char@@, linear-gradient(var(--ba-veil), var(--ba-veil)), @@RASTER:tone@@, @@RASTER:grain@@;
+  background-size: var(--ba-ps-d) var(--ba-ps-d), @@SIZE:rb-char@@, auto, 1024px 1024px, 320px 320px;
+  background-position: 0 0, center bottom, 0 0, 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat, repeat, repeat;
+  -webkit-mask-image: @@ORN:rb-strip-burnt@@;
+  mask-image: @@ORN:rb-strip-burnt@@;
+}
+body.theme-dark:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action:not([style*="none"]) ~ .side-dock-ribbon-action::before {
+  border-top-color: #674c36;
+}
+body.theme-dark:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action:hover > .svg-icon {
+  color: #a3161f;
+}
+/* 图标之间的短横线：画在「前面有可见按钮」的按钮上方，落在两个按钮空隙的正中；1px 用边框画(背景在 125% 下会糊成两行)。
+   隐藏的功能栏图标(右键 / 外观设置里取消勾选)原版是 display: none 留在 DOM 里(app.js：buttonEl.toggle(!hidden))，
+   只看「有前一个兄弟」的话，第一个图标隐藏时第二个头上会多一道线 */
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action {
+  position: relative;
+}
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action:not([style*="none"]) ~ .side-dock-ribbon-action::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  margin-left: -5px;
+  border-top: 1px solid #a98758;
+  opacity: 0.85;
+  z-index: -1;
+  pointer-events: none;
+}
+/* 悬停(用户：图标微微变大且变红色；设计稿三比过的盖红蜡印 / 朱砂描红 / 盲压凹印都没用)：原版灰底去掉，图标 16 → 18px、圣血红。
+   不用 transform: scale——缩放动画首尾在合成层 / 普通绘制之间切换、半像素取整不同，图标会轻跳(永夜功能栏踩过)；
+   直接改 svg 宽高，外边距 −1px 抵掉，按钮还是 28 × 24，下面的图标不动(描边按图标视框缩放，放大后也略粗一点) */
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action:hover {
+  background-color: transparent;
+}
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action > .svg-icon {
+  transition: width 0.15s ease-out, height 0.15s ease-out, margin 0.15s ease-out, color 0.15s ease-out;
+}
+body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action:hover > .svg-icon {
+  width: 18px;
+  height: 18px;
+  margin: -1px;
+  color: var(--ba-crimson);
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.ba-ribbon-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-ribbon-action > .svg-icon {
+    transition: none;
+  }
+}
+/* 书签卡片布局：纸条居中在窗口左边和左栏卡片左边(功能栏宽 + 卡片间距)之间，按钮组和侧栏开关一起右移 gap / 2(用户指出没居中)；
+   按钮组用左右外边距挪(+gap/2、−gap/2，宽度不变)，不用 translate——transform 会让按钮组自成层叠上下文，三层就压不到图标下面了。
+   功能栏从窗口顶上排起、上内边距让出角块，角块(原版 ::before，也是窗口拖拽区)去掉底色和底线，整条一张纸；右边的分隔线去掉。
+   间距 > 8 时蜡封会伸出功能栏右边：横向不裁(overflow-x: visible)，纵向照旧裁(clip 可以和 visible 搭配，hidden 不行)。
+   简洁布局左栏紧贴功能栏，纸条留在功能栏正中、角块和分隔线照旧(和左栏标签栏的底线连成一条) */
+body:not(.ba-ribbon-plain):not(.ba-sidebar-plain):not(.is-mobile) .workspace-ribbon.mod-primary {
+  margin-top: 0;
+  padding-top: calc(var(--header-height) + var(--size-4-2));
+  border-inline-end: none;
+  overflow: visible clip;
+}
+body:not(.ba-ribbon-plain):not(.ba-sidebar-plain):not(.is-mobile) .workspace-ribbon.mod-primary::before {
+  background-color: transparent;
+  border-bottom: none;
+}
+body:not(.ba-ribbon-plain):not(.ba-sidebar-plain):not(.is-mobile) .workspace-ribbon.mod-primary .side-dock-actions {
+  margin-inline: calc(var(--ba-gap) / 2) calc(var(--ba-gap) / -2);
+}
+body:not(.ba-ribbon-plain):not(.ba-sidebar-plain):not(.is-mobile) .workspace-ribbon.mod-primary > .sidebar-toggle-button {
+  inset-inline-start: calc(var(--ba-gap) / 2);
+}
+/* ---- 左侧功能栏自动隐藏(第四十八版，Style Settings「功能栏显示」，默认「自动隐藏」；「常驻」= 原样)，照永夜 nl-autohide-ribbon：
+   功能栏照旧排在最左，右外边距 = 负的自身宽度、不占位置——侧栏卡片 / 正文从窗口左边排起，版面跟着变宽。
+   平时整条移出窗口、只留 6px 透明感应条(书签卡片下正好落在卡片外那道 gap 宽的缝里)，鼠标停 0.12s 后滑出，离开 0.3s 后收回。
+   滑出时左栏(功能栏的下一个兄弟，相邻兄弟选择器，悬停只让它重算样式)加一个功能栏宽的左内边距、同步过渡：左栏是写死像素宽的
+   border-box，内边距只让左栏里面变窄，主区和编辑器一像素都不动、不重排；书签卡片下推开后卡片左边 = 功能栏宽 + gap，
+   和常驻一样，纯洁印记的纸条照旧居中。
+   左栏收起(is-sidedock-collapsed，宽 0)时不推(border-box 下内边距会把它撑成 44px、挤动主区)，功能栏浮在正文上、带投影；
+   收起那一刻内边距直接归零(过渡只挂在没收起的左栏上)。层级压过正文顶栏(标题栏自动隐藏是 --layer-status-bar + 1)。
+   原版功能栏 margin-top 一个标签栏高、侧栏开关和左上角角块绝对定位在它上方：改成从窗口顶上排起、上内边距让出角块，
+   position: relative 让开关和角块跟着功能栏一起收放；角块原版是窗口拖拽区，收起时改不可拖，免得看不见的拖拽区挡住侧栏第一个标签。
+   macOS 红绿灯的让位按功能栏不占位重算(--frame-ribbon-left: 0)。
+   永夜那条「功能栏里有菜单开着时不收」(:is(:hover, :has(.has-active-menu)) + 左栏)没照搬：功能栏的右键菜单(勾选隐藏哪些图标)
+   是 showAtMouseEvent、不设父元素，原版根本不加 has-active-menu(app.js)；而且 :has 挂在 + 左边是非主体位置，正是第四十七版拖动卡顿那类写法。
+   RTL、手机版不动 */
+body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) {
+  --frame-ribbon-left: 0px;
+}
+body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary {
+  position: relative;
+  margin-top: 0;
+  padding-top: calc(var(--header-height) + var(--size-4-2));
+  margin-inline-end: calc(-1 * var(--ribbon-width));
+  z-index: calc(var(--layer-status-bar) + 2);
+  transform: translateX(calc(6px - 100%));
+  opacity: 0;
+  transition: transform 160ms ease-in 300ms, opacity 160ms ease-in 300ms;
+}
+body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary.is-collapsed {
+  box-shadow: inset 0 0 0 100vmax var(--ba-veil, transparent), 8px 0 16px -8px rgba(var(--ba-shadow), 0.35);   /* 第一道 = 纸纹的纱(第 4 节) */
+}
+body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:hover {
+  transform: none;
+  opacity: 1;
+  transition: transform 200ms ease-out 120ms, opacity 200ms ease-out 120ms;
+}
+body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary + .workspace-split.mod-left-split:not(.is-sidedock-collapsed) {
+  transition: padding-inline-start 160ms ease-in 300ms;
+}
+body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:hover + .workspace-split.mod-left-split:not(.is-sidedock-collapsed) {
+  padding-inline-start: var(--ribbon-width);
+  transition: padding-inline-start 200ms ease-out 120ms;
+}
+body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:not(:hover)::before {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary,
+  body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:hover,
+  body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary + .workspace-split.mod-left-split:not(.is-sidedock-collapsed),
+  body:not(.ba-ribbon-pinned):not(.is-mobile, .mod-rtl) .workspace-ribbon.mod-primary:hover + .workspace-split.mod-left-split:not(.is-sidedock-collapsed) {
+    transition-duration: 0s;
+  }
+}
+/* 主区标签栏 = T4「象牙衬签」(第三十八版。用户比过三稿「只有 T4 可以接受」，四稿又比了分隔线是否串圆点——圆点是用户自己提的；
+   preview/标签栏方案/)。当前标签不再是和标题栏连成一片的耳朵形，改成浮在标签栏里的一张签条：上下各让出 3 / 4px 透出标签栏的纸，
+   底色 30% 象牙(同文件列表当前行)，上下两道金线、两端渐隐；签条和金线画在标签自己的 ::before / ::after(原版画两只「耳朵」的位置)。
+   堆叠标签不动 */
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) {
+  --tab-radius-active: 0;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header.is-active {
+  background: none;
+  box-shadow: none;
+}
+/* 每个标签自成层叠上下文：签条 / 金线是 z-index: -1，原版只有当前标签有 z-index: 1，非当前标签的 -1 会落到标签栏纸纹底色后面——
+   按下反馈、旧标签退场都被纸纹盖住看不见(主线程算出来的透明度是对的，录屏里却一下就没了) */
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header {
+  isolation: isolate;
+}
+/* 切换动效「金线展开 + 按下反馈」(用户：点击切换标签时能否有动态效果。样稿 A 金线展开 / B 签条浮起 / C 盖印，preview/标签栏方案/切换动效/；
+   B「不是很满意」换 A；又嫌比 GIF 不明显，看了别的主题后要「旧标签退场 + 按下就有反馈」，前提是不影响性能；
+   试了旧标签退场(金线往中间收、签条淡出)，用户嫌「切换节奏变得很不干脆」，退场去掉、按下反馈保留)：
+   - 每个标签都有签条和金线，平时透明、金线收成中间一点；当前标签显出来、金线从中间划开。签条 / 金线常驻，进场用过渡；
+     离开当前标签时不过渡，一下收掉。
+   - 延迟 0.15s、时长 0.4s：Obsidian 松开鼠标才切标签，接着渲染那篇笔记，主线程连着忙 ~160 + ~90ms，过渡要等第一段忙完才开始，
+     0.26s 时前半截落在第二段里没上屏(真实点击录屏只看到 3 帧)；推迟、拉长后能看到从头到尾(scratchpad _tabanim_try.py)。
+   - 按下就有反馈(学 Ultra Lobster 按下先缩)：鼠标按住还没松开时 Obsidian 还没开始忙，非当前标签按下 0.08s 内显出半透明签条、金线展开三成，
+     松开后接着走完。拖走取消就一下收回。
+   只动 opacity / scale(合成线程)，不挂 will-change(不常驻合成层，标签文字的 LCD 次像素抗锯齿不受影响)；减少动态效果时都关 */
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header::before,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header::after {
+  display: block;
+  content: "";
+  position: absolute;
+  inset: 3px 0 4px;
+  z-index: -1;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  clip-path: none;
+  box-shadow: none;
+  pointer-events: none;
+  opacity: 0;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header::before {
+  background: color-mix(in srgb, #fffdf8 30%, transparent);
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header::after {
+  scale: 0 1;
+  border-block: 1px solid var(--ba-gold);
+  -webkit-mask: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+  mask: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent);
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header.is-active::before,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header.is-active::after {
+  opacity: 1;
+  scale: 1;
+  transition: opacity 0.32s ease-out 0.15s, scale 0.4s cubic-bezier(0.25, 0.6, 0.3, 1) 0.15s;
+}
+/* 松开鼠标到 Obsidian 真把它设成当前标签之间，这个标签既不是 :active 也还不是 is-active，没有过渡就会一下掉回透明、再从头播
+   (用户：按下反馈之后会跳一下消失再生硬播放)。鼠标还停在它上面时给 0.3s 延迟，按下的样子先撑住，is-active 上来后从这里接着展开；
+   旧的当前标签不在鼠标下，照样一下收掉。这条要排在下面 :active 那两条前面(按住时 :hover 和 :active 同时成立，按下的 0.08s 要生效) */
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:not(.is-active):hover::before,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:not(.is-active):hover::after {
+  transition: opacity 0.2s ease-in 0.3s, scale 0.2s ease-in 0.3s;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:not(.is-active):active::before {
+  opacity: 0.55;
+  transition: opacity 0.08s ease-out;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:not(.is-active):active::after {
+  opacity: 0.6;
+  scale: 0.3 1;
+  transition: opacity 0.08s ease-out, scale 0.08s ease-out;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner-title {
+  transition: color 0.2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header::before,
+  .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header::after,
+  .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner-title {
+    transition: none !important;
+  }
+}
+/* 分隔竖线正中串一粒金圆点(用户：竖线中间可否加上圆点)。竖线 = 原版 .workspace-tab-header-inner::after 改成左边框，遮罩挖空中段；
+   圆点画在原版没用的 inner::before(inner 是 static + overflow: hidden，绝对定位的伪元素按 .workspace-tab-header 定位，不被裁)。
+   一版圆点偏左一个物理像素(用户截图看出歪)：125% 缩放下 1px 边框取整成一个物理像素(0.8px)，竖线贴 -0.5px 的右边时中线落在 +0.1px，
+   和圆点(中线 0)取整后差一格。竖线改贴 -0.4px，两者中线重合：竖线 1 个、圆点 5 个物理像素，都是奇数，圆点正好骑在线上。
+   竖向同理：线高 16.8px = 21 个物理像素，圆点上下各留 8 个；挖空 5.6–11.2px = 第 7–13 格，圆点上下各空 1 格。
+   当前标签左邻那道分隔的圆点有一半伸进当前标签、被签条盖住只剩半粒：当前标签两侧都不画分隔(同 Nox Aeterna)。
+   第四十二版性能(用户：大纲里拖标题严重卡顿)：原来分隔挂在每个标签右边，当前标签左邻那道靠 .workspace-tab-header:has(+ .is-active) 藏——
+   is-active 在 Obsidian 里到处在换(拖动时的落点线、大纲当前标题、文件列表当前行)，:has() 参数里有它，每换一次浏览器就沿祖先查 :has()，
+   碰上 body / 标题栏 / 侧栏卡片这些高层锚点就把几百个元素重算一遍(_ol_drag.py：拖动每帧 38~60ms)。
+   现在竖线和圆点挂在下一个标签的左边(标签之间没有缝，左邻右缘 = 本标签左缘，位置不变：竖线 [-0.6, +0.4]、圆点 [-2, +2])，第一个标签左边不画；
+   最后一个标签右边那道挂在它标题的 ::before / ::after 上(标题是 static，绝对定位按标签定位、不被标题的 overflow 裁)；竖向位置写死(原来的静态位置)。
+   当前标签两侧不画 = 它自己左边那道(原版就把当前标签的 inner::after 设成透明) + 下一个标签左边那道 + 它是最后一个时标题上那道，都不用 :has() */
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner::after,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:last-child .workspace-tab-header-inner-title::after {
+  content: "";
+  position: absolute;
+  top: 7.2px;
+  background: none;
+  width: 0;
+  height: 16.8px;
+  border-left: 1px solid color-mix(in srgb, var(--ba-gold) 70%, transparent);
+  -webkit-mask: linear-gradient(#000 0 5.6px, transparent 5.6px 11.2px, #000 11.2px);
+  mask: linear-gradient(#000 0 5.6px, transparent 5.6px 11.2px, #000 11.2px);
+  pointer-events: none;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-inner::after {
+  inset-inline-end: auto;
+  inset-inline-start: -0.6px;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:last-child .workspace-tab-header-inner-title::after {
+  inset-inline-end: -0.4px;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header .workspace-tab-header-inner::before,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:last-child .workspace-tab-header-inner-title::before {
+  content: "";
+  position: absolute;
+  top: 13.6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ba-gold);
+  pointer-events: none;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header .workspace-tab-header-inner::before {
+  inset-inline-start: -2px;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:last-child .workspace-tab-header-inner-title::before {
+  inset-inline-end: -2px;
+}
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:is(:first-child, .is-active, .is-active + .workspace-tab-header) .workspace-tab-header-inner::after,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header:is(:first-child, .is-active, .is-active + .workspace-tab-header) .workspace-tab-header-inner::before,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header.is-active .workspace-tab-header-inner-title::after,
+.workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header-container .workspace-tab-header.is-active .workspace-tab-header-inner-title::before {
+  opacity: 0;
+}
+/* 锁定标签的图标：原版图钉换成圣血红帝国双头鹰(第三十六版，用户：现在的(图钉 / 蜡封 / 血滴 / 空心血滴)都不满意，
+   试双头鹰或者钉、剑、矛；比过素材库五只双头鹰和 game-icons 的单头鹰 / 石中剑 / 剑祭坛 / 羽饰矛 / 钉子，红金两色，
+   选 Imperium 02 圣血红，preview/锁定图标/)。鹰很扁(约 2.7 : 1)，给 28 × 12 的宽框，16px 方框里会缩得太小 */
+.mod-root .workspace-tab-header-status-icon.mod-pinned > svg {
+  display: none;
+}
+.mod-root .workspace-tab-header-status-icon.mod-pinned::before {
+  content: "";
+  width: 28px;
+  height: 12px;
+  background-color: var(--ba-crimson);
+  -webkit-mask: @@ORN:pin-aquila@@ center / contain no-repeat;
+  mask: @@ORN:pin-aquila@@ center / contain no-repeat;
+}
+/* 主区视图标题栏(前进后退 / 文件名 / 右侧按钮那条)，第三十六版：文件名居中，底下一道很淡的暖褐阴影和正文分开；纸纹见第 4 节。
+   用户比过「金线 / 阴影 / 金线 + 阴影」(preview/标题栏方案/三稿/)，选只加阴影，并嫌第一版(0.16 + 0.12)太深。
+   再之前两轮(象牙衬纸 / 书眉暗带 / 题签 / 金线压边 + 血滴；书眉居中小型大写等)都没选，只要在原样上改。
+   居中：左边按钮块和右边按钮块各占剩下宽度的一半(放不下自己的按钮时按内容宽)，文件名夹在正中，不随右边按钮多少偏移；
+   文件名太长照原版省略。标题栏原版就是 position: relative + z-index: 1，阴影盖在正文上 */
+.workspace-split.mod-root .view-header > .view-header-left,
+.workspace-split.mod-root .view-header > .view-actions {
+  flex: 1 1 0;
+}
+.workspace-split.mod-root .view-header > .view-actions {
+  justify-content: flex-end;
+}
+.workspace-split.mod-root .view-header > .view-header-title-container {
+  flex: 0 1 auto;
+  justify-content: center;
+}
+.theme-light .workspace-split.mod-root .view-header {
+  box-shadow: 0 2px 6px rgb(90 60 30 / 0.1), 0 1px 1.5px rgb(90 60 30 / 0.07);
+}
+/* 标题栏自动隐藏(Style Settings「自动隐藏标题栏」，默认关；第三十七版，用户：像 Nox Aeterna 那样悬停展开，兼容 Editing Toolbar)，
+   照 Nox Aeterna 的写法：主区的视图标题栏改成浮在正文上、平时收到标签栏后面(被标签页的 overflow: hidden 裁掉)，只留顶边 6px 透明感应条；
+   鼠标停在顶边 0.12s 后滑出，离开 0.3s 后收回(短暂划过不弹出)。重命名标题、顶栏菜单开着、拖放高亮时不收。
+   浮层不占位置，滑出时正文不跳；纸纹和那道淡阴影照旧。堆叠标签、手机版不动。
+   层级要压过 Editing Toolbar 顶部模式的工具栏：它插在 .markdown-source-view 开头、z-index 是 --layer-status-bar(15)，
+   .view-content 不成层，标题栏低于它时感应条被工具栏盖住、滑不出来 */
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: calc(var(--layer-status-bar) + 1);
+  transform: translateY(calc(6px - 100%));
+  opacity: 0;
+  transition: transform 160ms ease-in 300ms, opacity 160ms ease-in 300ms;
+}
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)) {
+  transform: none;
+  opacity: 1;
+  transition: transform 200ms ease-out 120ms, opacity 200ms ease-out 120ms;
+}
+/* 标题栏滑出时把 Editing Toolbar 的顶部工具栏一起往下推一个标题栏高，铺上和标题栏同一张纸、同一道淡阴影(免得压在正文上看不清)：
+   不推的话标题栏正好盖住工具栏，鼠标往下挪到工具栏那里其实还在标题栏上，标题栏不收、工具栏点不到。
+   鼠标从标题栏移到推下来的工具栏上时两者都留着：「悬停在工具栏上」这一态的目标值同样是滑出 / 推下，但过渡延迟写成 1 小时——
+   已经滑出时目标值等于当前值，什么都不动；收着的时候悬停工具栏要等 1 小时才滑出，等于不触发。离开两者 0.3s 后一起收回。
+   纸画在 ::before 上(底色 + 第 4 节的纸纹)，跟着淡入淡出：纸纹是 background-image，不能过渡，直接挂在工具栏上会一下子跳出来 / 消失。
+   工具栏 position: relative + z-index 成层，z-index: -1 的纸垫在按钮底下。只铺底色的话是一条没纹理的平涂带，和标题栏接不上。
+   插件给顶部工具栏写死了 margin-right: 12px(让出滚动条)，纸只铺工具栏自己的盒子时右边缺一块(用户指出)，标题栏却是通栏的：
+   纸往右多铺 12px，阴影也画在纸上一起铺满，不动插件的排版(工具栏 overflow 是 visible，伸出去不被裁)。两边都是 CSS px，窗口大小、缩放比例都不影响。
+   插件的「居中」(.centered)例外：工具栏限宽成正文行宽、居中，比标签页窄，纸铺不满——这时不往右补、标题栏也留着自己的阴影(见下面合成一块)。
+   插件自己的「自动隐藏」只改透明度，不冲突 */
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top {
+  transition: transform 160ms ease-in 300ms, opacity 0.5s linear;
+}
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  --ba-veil-c: var(--background-primary);
+  background-color: var(--background-primary);
+  box-shadow: 0 2px 6px rgb(90 60 30 / 0.1), 0 1px 1.5px rgb(90 60 30 / 0.07);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease-in 300ms;
+}
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top:not(.centered)::before {
+  right: -12px;
+}
+/* 性能(第三十七版，用户：笔记滚动时阅读 / 编辑模式都变卡)：这一组原来全写成 .workspace-leaf-content:has(...)——主体是整个标签页、
+   参数是任意后代(#editingToolbarModalBar…:hover)，滚动时内容从鼠标底下滑过、正文里元素的悬停状态不停变，每变一次浏览器都要回头核对这条 :has。
+   现在：标题栏推工具栏 = 兄弟选择器(标题栏 ~ .view-content 里的工具栏)；悬停工具栏 = 工具栏自己的 :hover；
+   只有「悬停工具栏时标题栏留着」「有工具栏时标题栏去阴影」两处必须往上看，写成固定层级的 :has(> .view-content > .markdown-source-view > 工具栏)
+   (工具栏是 .markdown-source-view 的直接子元素)，核对只看这三层，不扫整片正文 */
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)) ~ .view-content #editingToolbarModalBar.top {
+  transform: translateY(var(--header-height));
+  transition: transform 200ms ease-out 120ms, opacity 0.5s linear;
+}
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)) ~ .view-content #editingToolbarModalBar.top::before {
+  opacity: 1;
+  transition: opacity 200ms ease-out 120ms;
+}
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top:hover {
+  transform: translateY(var(--header-height));
+  transition: transform 0s 3600s, opacity 1s linear;
+}
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top:hover::before {
+  opacity: 1;
+  transition: opacity 0s 3600s;
+}
+/* 标题栏和推下来的工具栏合成一块(用户比过，选 1)：标题栏自己的阴影原来落在工具栏上，两条之间一道分界、像两片叠着的纸；
+   有工具栏时标题栏不要阴影，只留工具栏底下那一道。标题栏露出来时工具栏一定被推在它下面(两边的条件相同)，所以不用跟着过渡。
+   只在编辑模式(data-mode="source")：阅读视图里工具栏所在的源码视图不显示，标题栏照旧带阴影；
+   插件自己的「自动隐藏」开着时工具栏平时透明，纸也跟着透明，标题栏也照旧带阴影；「居中」时工具栏比标题栏窄，两侧要靠标题栏自己的阴影 */
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content[data-mode="source"]:has(> .view-content > .markdown-source-view > #editingToolbarModalBar.top:not(.autohide, .centered)) > .view-header {
+  box-shadow: none;
+}
+body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content:has(> .view-content > .markdown-source-view > #editingToolbarModalBar.top:hover) > .view-header {
+  transform: none;
+  opacity: 1;
+  transition: transform 0s 3600s, opacity 0s 3600s;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header,
+  body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)),
+  body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top,
+  body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .workspace-leaf-content #editingToolbarModalBar.top::before,
+  body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)) ~ .view-content #editingToolbarModalBar.top,
+  body.ba-autohide-view-header:not(.is-mobile) .workspace-split.mod-root .workspace-tabs:not(.mod-stacked) .view-header:is(:hover, .is-highlighted, :has(.view-header-title:focus, .has-active-menu)) ~ .view-content #editingToolbarModalBar.top::before {
+    transition-duration: 0s;
+  }
+}
+.workspace-tab-header-inner-title {
+  font-size: 0.98em;
+}
+/* 左栏底部仓库栏(Style Settings「仓库栏」，默认「悬停显示」；第四十一版，用户：平时隐藏、悬停出现，另有一直显示)：
+   和下面的状态栏同一个写法——改成浮在左栏底上(左栏是 relative，仓库栏绝对定位、不再占一行，上面的面板一直铺到底)，
+   平时往下收到左栏外，只在左栏底边留一条透明感应条(高 --ba-sensor，收起时只有它接鼠标，见下面状态栏那段)；
+   鼠标停上去 0.12s 后升起，离开 0.3s 后收回，切换仓库的菜单开着时不收。
+   下移量 = 自身高度 + 离左栏底边的距离(--ba-vp-bottom：简洁布局 0，书签卡片布局 6px) − 感应条高；
+   书签卡片布局下升起后鼠标落在下面 6px 空隙里会来回跳，同状态栏垫一条透明桥(::after) */
+/* 收在左栏外的仓库栏(transform 往下推)也算进上层的可滚动范围：左栏内容高出一截(示例库 897 / 863)，.workspace 原版是 overflow: hidden，
+   聚焦时浏览器把元素滚进视野，整个工作区被往上滚了 33.6px——主区标签栏、侧栏卡片顶部被推出窗口，底下空出一条(用户：标签栏消失、侧栏排版乱)。
+   改 overflow: clip：裁切一样，但不是滚动容器，滚不动，推出去的部分也不算滚动范围 */
+body:not(.is-mobile) .workspace {
+  overflow: clip;
+}
+body:not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile {
+  position: absolute;
+  inset: auto 0 var(--ba-vp-bottom, 0px);
+  z-index: 2;
+  transform: translateY(calc(100% + var(--ba-vp-bottom, 0px) - var(--ba-sensor)));
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 160ms ease-in 300ms, opacity 160ms ease-in 300ms;
+}
+body:not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu)) {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  transition: transform 200ms ease-out 120ms, opacity 200ms ease-out 120ms;
+}
+body:not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--ba-sensor);
+  pointer-events: auto;
+}
+body:not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu))::before {
+  pointer-events: none;
+}
+body:not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: var(--ba-vp-bottom, 0px);
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile,
+  body:not(.ba-vault-always):not(.is-mobile) .workspace-split.mod-left-split > .workspace-sidedock-vault-profile:is(:hover, :has(.has-active-menu)) {
+    transition-duration: 0s;
+  }
+}
+/* 状态栏(Style Settings「状态栏」三选一，第四十一版，用户：一直隐藏(默认) / 悬停出现 / 一直出现)。
+   一直隐藏 = 不显示。悬停显示照上面标题栏自动隐藏的写法，平时往下收到窗口外，只在窗口底边留一条透明感应条(状态栏的上沿)；
+   鼠标停上去 0.12s 后升起，离开 0.3s 后收回(短暂划过不弹出)，状态栏里的菜单开着时不收。
+   感应条高 --ba-sensor = 16px(一稿 6px，用户：悬停判定太靠下)。收起时状态栏整条透明、不接鼠标(pointer-events: none)，
+   只有 ::before 那条感应条接——露在窗口里的那 16px 本来盖着按钮的上半截，不这样就是一片看不见、点得到的按钮；
+   升起后感应条不再接鼠标，免得挡住按钮。
+   下移量 = 自身高度 + 离窗口底边的距离(--ba-sb-bottom：简洁布局 0，书签卡片布局右栏开着时 6px) − 感应条高 */
+body {
+  --ba-sensor: 16px;
+}
+body:not(.ba-status-hover, .ba-status-always):not(.is-mobile) .status-bar {
+  display: none;
+}
+body.ba-status-hover:not(.is-mobile) .status-bar {
+  transform: translateY(calc(100% + var(--ba-sb-bottom, 0px) - var(--ba-sensor)));
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 160ms ease-in 300ms, opacity 160ms ease-in 300ms;
+}
+body.ba-status-hover:not(.is-mobile) .status-bar:is(:hover, :has(.has-active-menu)) {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  transition: transform 200ms ease-out 120ms, opacity 200ms ease-out 120ms;
+}
+body.ba-status-hover:not(.is-mobile) .status-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--ba-sensor);
+  pointer-events: auto;
+}
+body.ba-status-hover:not(.is-mobile) .status-bar:is(:hover, :has(.has-active-menu))::before {
+  pointer-events: none;
+}
+/* 书签卡片布局下状态栏离窗口底边 6px：升起来以后，停在底边感应条上的鼠标就落到了它下面那道空隙里，状态栏立刻收回、
+   又碰到鼠标再升起来，来回跳(实机测出来的)。往下垫一条 --ba-sb-bottom 高的透明桥(::after)，悬停一直算在状态栏上 */
+body.ba-status-hover:not(.is-mobile) .status-bar::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: var(--ba-sb-bottom, 0px);
+}
+@media (prefers-reduced-motion: reduce) {
+  body.ba-status-hover:not(.is-mobile) .status-bar,
+  body.ba-status-hover:not(.is-mobile) .status-bar:is(:hover, :has(.has-active-menu)) {
+    transition-duration: 0s;
+  }
+}
+
+button.mod-cta {
+  font-family: var(--ba-font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+/* 第四十五版：打开的开关、主按钮的标签红填色叠标签同款磨损质感(和标签、书签丝带、表头一个质地)。
+   普通贴图、不是 fixed(callout 当年卡在 fixed 纸纹上：滚动每帧都要重画)，画一次跟着内容滚：
+   设置窗口 13 个打开的开关来回滚动，帧间隔、主线程耗时都和不加一样(6.1ms / 帧，_red_perf.py)。
+   拖动时被拖的那一整条不加：它每帧都要重算样式，实测多 0.3~0.9ms(在波动范围内)，拖的那一下也看不出质感，保险起见只换颜色 */
+.checkbox-container.is-enabled,
+button.mod-cta {
+  background-image: var(--ba-tag-grain);
+  background-size: 256px 256px;
+}
+/* 日历插件(Calendar)的年份、今天的日期和下面的圆点是字，取的是 --interactive-accent：填色换标签红后它们也跟着变了，
+   在日历里指回圣血红，和别处的文字红一致(主窗口逐元素对比，第四十五版只有这三处不是填色) */
+#calendar-container {
+  --interactive-accent: var(--ba-crimson);
+}
+.modal,
+.prompt,
+.menu {
+  background-image: @@RASTER:grain@@;
+  background-size: 320px 320px;
+}
+/* 弹窗花边(第四十四版，Style Settings「弹窗花边」默认开；用户：类似永夜，弹窗也加和侧栏相同的边框)：弹窗、命令面板、悬浮预览
+   叠一副侧栏卡片同款花边(ornaments.card_frame 那 8 张 SVG，32px)，画在 ::after 上、鼠标穿透。
+   preview/弹窗花边/ 比过 M1 留原来的 1px 浅金边 / M2 去掉，用户定 M2(同卡片贴纸边，最外那道线就是弹窗的边)。
+   让开角花：弹窗内边距 26px、右上角关闭按钮挪到角花左边，命令面板的结果列表右缩 6px(滚动条落在内线里面)，
+   悬浮预览右上角的展开图标(.markdown-embed-link)挪到角花左边(用户要求)。位置 / 内边距用 :where() 压低，设置页这类自带布局的照旧 */
+body:is(.ba-modal-frame, :not(.css-settings-manager)) :is(.modal, .prompt, .popover.hover-popover) {
+  --ba-mf: 32px;
+  border-color: transparent;
+}
+:where(body:is(.ba-modal-frame, :not(.css-settings-manager))) .modal {
+  position: relative;
+  padding: 26px;
+}
+body:is(.ba-modal-frame, :not(.css-settings-manager)) :is(.modal, .prompt, .popover.hover-popover)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image: @@ORN:card-frame-tl@@, @@ORN:card-frame-tr@@, @@ORN:card-frame-bl@@, @@ORN:card-frame-br@@,
+                    @@ORN:card-frame-top@@, @@ORN:card-frame-bottom@@, @@ORN:card-frame-left@@, @@ORN:card-frame-right@@;
+  background-position: left top, right top, left bottom, right bottom,
+                       left var(--ba-mf) top, left var(--ba-mf) bottom, left top var(--ba-mf), right top var(--ba-mf);
+  background-size: var(--ba-mf) var(--ba-mf), var(--ba-mf) var(--ba-mf), var(--ba-mf) var(--ba-mf), var(--ba-mf) var(--ba-mf),
+                   calc(100% - 2 * var(--ba-mf)) var(--ba-mf), calc(100% - 2 * var(--ba-mf)) var(--ba-mf),
+                   var(--ba-mf) calc(100% - 2 * var(--ba-mf)), var(--ba-mf) calc(100% - 2 * var(--ba-mf));
+  background-repeat: no-repeat;
+}
+body:is(.ba-modal-frame, :not(.css-settings-manager)) .modal > :is(.modal-close-button, .modal-header-button):not(.mod-start) {
+  top: 10px;
+  inset-inline-end: 30px;
+}
+body:is(.ba-modal-frame, :not(.css-settings-manager)) .modal > :is(.modal-close-button, .modal-header-button).mod-start {
+  top: 10px;
+  inset-inline-start: 30px;
+}
+body:is(.ba-modal-frame, :not(.css-settings-manager)) .prompt > .prompt-results {
+  margin-inline-end: 6px;
+}
+:where(body:is(.ba-modal-frame, :not(.css-settings-manager))) .prompt-instructions {
+  padding-bottom: 14px;
+}
+body:is(.ba-modal-frame, :not(.css-settings-manager)) .popover.hover-popover > .markdown-embed > .markdown-embed-link {
+  top: 8px;
+  inset-inline-end: 30px;
+}
+/* 设置、插件市场在 1.14 里是单独弹出的窗口(body.is-popout-modal)：标题栏(窗口标题、最小化 / 最大化 / 关闭)在窗口最上面，
+   设置面板是 body 下的 .modal、排在标题栏下面——花边画在面板上会把标题栏那一行漏在框外(用户指出)。
+   同永夜：这种窗口改成整窗一副花边(body::after 固定铺满窗口)，面板自己的不画；标题栏加高 10px，标题和按钮往下挪进框里，
+   按钮再左移 --ba-cf-shift 同款的 21px 让出右上角花(同主窗口右上卡片)；设置内容的滚动区右缩 6px，滚动条落在内线里面。
+   macOS 的红绿灯由系统摆放、没法验证，照旧画在面板上 */
+body.is-popout-modal:is(.ba-modal-frame, :not(.css-settings-manager)):not(.mod-macos)::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  --ba-mf: 32px;
+  background-image: @@ORN:card-frame-tl@@, @@ORN:card-frame-tr@@, @@ORN:card-frame-bl@@, @@ORN:card-frame-br@@,
+                    @@ORN:card-frame-top@@, @@ORN:card-frame-bottom@@, @@ORN:card-frame-left@@, @@ORN:card-frame-right@@;
+  background-position: left top, right top, left bottom, right bottom,
+                       left var(--ba-mf) top, left var(--ba-mf) bottom, left top var(--ba-mf), right top var(--ba-mf);
+  background-size: var(--ba-mf) var(--ba-mf), var(--ba-mf) var(--ba-mf), var(--ba-mf) var(--ba-mf), var(--ba-mf) var(--ba-mf),
+                   calc(100% - 2 * var(--ba-mf)) var(--ba-mf), calc(100% - 2 * var(--ba-mf)) var(--ba-mf),
+                   var(--ba-mf) calc(100% - 2 * var(--ba-mf)), var(--ba-mf) calc(100% - 2 * var(--ba-mf));
+  background-repeat: no-repeat;
+}
+body.is-popout-modal:is(.ba-modal-frame, :not(.css-settings-manager)):not(.mod-macos) > .modal::after {
+  content: none;
+}
+body.is-popout-modal:is(.ba-modal-frame, :not(.css-settings-manager)):not(.mod-macos) > .modal .vertical-tab-content-container {
+  margin-inline-end: 6px;
+}
+body.is-popout-modal.is-frameless.is-hidden-frameless:is(.ba-modal-frame, :not(.css-settings-manager)):not(.is-fullscreen, .mod-macos) {
+  --titlebar-height: 40px;
+}
+/* 标题文字和按钮是标题栏里的绝对定位元素：整体下移 10px(落在框内线下面)、高度减同样多 */
+body.is-popout-modal.is-hidden-frameless:is(.ba-modal-frame, :not(.css-settings-manager)):not(.is-fullscreen, .mod-macos) .titlebar :is(.titlebar-text, .titlebar-button-container) {
+  top: 10px;
+  height: calc(100% - 10px);
+}
+body.is-popout-modal.is-hidden-frameless:is(.ba-modal-frame, :not(.css-settings-manager)):not(.is-fullscreen, .mod-macos) .titlebar .titlebar-button-container.mod-right {
+  inset-inline-end: 21px;
+}
+.modal-title {
+  font-family: var(--ba-font-display);
+  color: var(--ba-crimson);
+}
+.suggestion-item.is-selected,
+.menu-item.selected:not(.is-disabled):not(.is-label) {
+  background-color: color-mix(in srgb, var(--ba-gold) 16%, transparent);
+}
+.search-result-file-matched-text,
+.markdown-rendered .search-highlight > div {
+  color: inherit;
+  background-color: color-mix(in srgb, var(--ba-gold-light) 55%, transparent);
+}
+/* 关系图谱右上角收起时的设置按钮：原版 .graph-controls.is-close 铺一块 --background-primary 的底(侧栏里另有一条
+   .workspace-split:not(.mod-root) … 改铺 --background-secondary)，卡片的纸纹透不出来(用户指出)。收起时底色透明，
+   悬停照旧是按钮自己的悬停底；展开的设置面板不动。选择器要和原版侧栏那条一样具体(4 个类)才压得住 */
+.workspace-split .view-content > .graph-controls.is-close {
+  background-color: transparent;
+}
+
+/* ==========================================================================
+   11. New tab — 一整枚徽章：圣杯居中(自绘，杯身嵌一组巴尔宝石)、战团徽的双翼从杯后伸出、血滴落在杯口正中，
+   圣吉列斯的太阳光环衬在最后面(杯身以下渐隐)；各层之间留一圈空隙分开；
+   题铭写在用户给的 f0215 绶带正中(加长版)。
+   题铭取自原著的拉丁文：《恐惧之行》(Fear to Tread) 第十六章，凯诺称之为「吾等忠诚的箴言」
+   ========================================================================== */
+.workspace-leaf-content[data-type="empty"] .empty-state-container::before {
+  /* 绶带位图 1520×226(2 倍)显示成 760×113：缩放 = 0.6875 × 原图单位；正中宽带上下沿(位图正中一列实测)161 / 224 → 显示 80.5–112，中线 96.2。
+     哥特体 27px：hhea 1100/−340(1200 一个 em)，行高 31 时基线在 79 − 0.7 + 24.75 = 103；墨迹大写顶 18.7、下伸 5.2，
+     墨迹中线在基线上 6.75 = 96.3，正好落在宽带中线。
+     第七版(用户：绶带离圣杯太远、字体不够古典要连笔字)：绶带往上提，宽带上沿离杯脚约 20px
+     (两端的 S 形环比宽带高，但在杯脚两侧很远处，碰不到徽章)。
+     第八版(用户：连笔字太花哨，换成午夜领主的哥特字体，字要在宽带上下正中)：Manufacturing Consent(Textura)，
+     大小写混排(哥特体全大写认不出来)；字号、行高按字形实际墨迹算到宽带正中(见 DEVELOPMENT.md)。
+     第九版(用户：文字没有质感、要模仿印章墨水的渐变；绶带太平，曲度加大、文字一起弯)：文字烘进题铭位图
+     (build.py inscription_webp，同一字体、字号、位置)，连同绶带弯成圆弧、叠印刷颗粒；这里只放图。
+     弯曲后位图上面多出 inscr-pad 给两端抬起，绶带正中仍在原来的位置(宽带上沿离杯脚约 20px)。
+     第二十七版(用户：左边一个词、中间两个词、右边一个词，缎带缩短、更自然地环绕圣杯)：三段式题铭(build.py inscription_webp)，
+     绶带不再加长，显示宽 760 → 700；宽带正中上沿仍在 ::before 顶下 318.5px(inscr-band = 它离位图顶多远) */
+  --ba-inscr-top: calc(@@SIZE:inscr-band-top@@ - @@SIZE:inscr-band@@);
+  content: "";
+  display: block;
+  width: @@SIZE:inscr-w@@;
+  max-width: 100%;
+  margin: 0 auto;
+  height: calc(var(--ba-inscr-top) + @@SIZE:inscr-h@@);
+  background:
+    @@ORN:newtab@@ center top / auto @@SIZE:newtab-crest-h@@ no-repeat,
+    @@RASTER:inscription@@ center top var(--ba-inscr-top) / @@SIZE:inscr-w@@ auto no-repeat;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-container {
+  max-height: none;
+}
+/* 夜间：喷溅血渍(第五十二版，黑怒 / 血渴)——冲击点在杯口，往四面溅开。tools/spatter.py 画的位图(build.spatter_webp，构图 = 小样 A)，
+   单独一层 ::after 垫在徽章后面(容器自成层叠上下文，z-index −1 在徽章 ::before 之下)，比徽章那 700px 的框大，往上超出 150px；
+   .empty-state 横向裁掉免得出横向滚动条。静态图，新标签页本来就不怎么重绘。
+   血渍让开徽章(用户：避开图案的精确范围，包括描边)：构建时把夜间徽章 + 题铭照上面 ::before 的位置排进血渍框截轮廓，
+   轮廓里和外扩 3px(= 徽章各层之间留白描边的宽)以内抠掉(build.spatter_webp)——徽章有印刷磨损、半透明，原来血渍会从底下透出来。
+   ::before 的徽章高 / 题铭位置、这里的 top 都走 SIZE 键，和构建算轮廓用的是同一组数 */
+.theme-dark .workspace-leaf-content[data-type="empty"] .empty-state {
+  overflow-x: hidden;
+}
+.theme-dark .workspace-leaf-content[data-type="empty"] .empty-state-container {
+  position: relative;
+  isolation: isolate;
+}
+.theme-dark .workspace-leaf-content[data-type="empty"] .empty-state-container::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: calc(-1 * @@SIZE:spatter-top@@);
+  width: @@SIZE:spatter-w@@;
+  height: @@SIZE:spatter-h@@;
+  margin-left: calc(@@SIZE:spatter-w@@ / -2);
+  pointer-events: none;
+  background: @@RASTER:spatter-dk@@ center / 100% 100% no-repeat;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-title {
+  font-family: var(--ba-font-display);
+  letter-spacing: 0.06em;
+  color: var(--ba-ink-2);
+  margin-top: 1.4em;
+}
+/* 四个按钮(新建笔记 / 新建数据库 / 新建白板 / 打开文件，第四十五版，用户：一竖列不动，只把原版 .mod-pill 细边胶囊换掉)：
+   换成「哥特窗」外框(ornaments.newtab_btn_frame)：上下两道平行双线，两端顺着切线进修长的尖拱；起拱处一道双线竖梁把尖头封成窗头；
+   窗头里圆窗、四叶、中心小环都是细一档的双线。按窗棂「石条」画：每道双线是一条带，求并集只画轮廓，相切处融成一整块、不交叉，
+   只剩窗洞(尖顶三角洞、竖梁两侧角洞、四叶周围小洞、四叶洞、中心小环)。
+   平时配色照原版胶囊(用户：参照原本胶囊的外框配色和透明底)：线 = --background-modifier-border、透明底。
+   外框画在 ::before 的 mask 上(颜色由 CSS 给)；悬停层画在 ::after(只铺在双线中间，见下)。
+   经过：金线双框 / 燕尾签条 / 印章框 → T1 象牙衬签(装过，用户嫌底色和标题栏比白一截、改深后又太暗)→ 素材分隔花饰 / 燕尾横幅 →
+   带两级台阶的尖头 → 平行线直进尖拱 + 三叶尖瓣 / 窗头圆窗 → B′锐 精修四叶、竖梁双线 → 圆洞缩小 → B‴双(装过，各道线独立套着)
+   → 全部双线相切融合(石条 3px 嫌粗，圆窗 / 四叶改细一档 1.8)，定 E2(中心细双环)。preview/新标签页按钮/外框*。
+   静态页面上四个元素的 mask，没有 :has()，不影响性能。键盘焦点框沿用原版 */
+.workspace-leaf-content[data-type="empty"] .empty-state-action-list {
+  gap: 10px;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  height: @@SIZE:newtab-btn-h@@;
+  justify-content: flex-start;   /* 用户：文字和图标居左(四个按钮等宽，左对齐时图标排成一竖列) */
+  padding: 0 @@SIZE:newtab-btn-pad@@;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action:hover {
+  background: none;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action::before,
+.workspace-leaf-content[data-type="empty"] .empty-state-action::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action::before {
+  z-index: -1;
+  background-color: var(--background-modifier-border);
+  -webkit-mask: @@ORN:newtab-btn-frame@@ 0 0 / 100% 100% no-repeat;
+  mask: @@ORN:newtab-btn-frame@@ 0 0 / 100% 100% no-repeat;
+  transition: background-color 0.15s;
+}
+/* 悬停层：所有双线(外框、竖梁、圆窗、四叶、中心小环)中间铺满上方题铭缎带的正面色(ribbons.STAMP face #e2cb98)，
+   悬停线换缎带卷边色(STAMP curl #bf9f68)；双线以外的地方悬停不改色(用户)。整层淡入。
+   经过：H3 悬停边框色(低饱和的褐，用户嫌发灰)→ K1 主题金(装过)→ 缎带色 R1 单色 / R2 正背两色 / R3 线也换，定 R3 并去掉框里的淡底。
+   preview/新标签页按钮/悬停填色/、悬停换金/、悬停缎带色/ */
+.workspace-leaf-content[data-type="empty"] .empty-state-action::after {
+  z-index: -2;
+  background-color: #e2cb98;
+  -webkit-mask: @@ORN:newtab-btn-fill@@ 0 0 / 100% 100% no-repeat;
+  mask: @@ORN:newtab-btn-fill@@ 0 0 / 100% 100% no-repeat;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action:hover::before {
+  background-color: #bf9f68;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action:hover::after {
+  opacity: 1;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action .text-button-label {
+  font-family: var(--ba-font-display);
+  font-size: 14.7px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action :is(.text-button-icon, .text-button-label) {
+  transition: color 0.15s;
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action:hover :is(.text-button-icon, .text-button-label) {
+  color: var(--ba-crimson);
+}
+.workspace-leaf-content[data-type="empty"] .empty-state-action .empty-state-hotkey {
+  margin-inline: 4px 0;
+  padding: 0;
+  background: none;
+  font-family: var(--ba-font-latin);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ba-ink-3);
+}
+
+/* ==========================================================================
+   Style Settings「设置语言」(规则由 build.py settings_lang_css 生成)
+   ========================================================================== */
+/*@@SETTINGS-LANG@@*/
+/* Style Settings「书签卡片」分组(卡片花边、卡片间距)只在书签卡片布局下有效：别的布局下变灰、点不动(用户：非卡片布局下应该不可用)。
+   Style Settings 给每个设置项写 data-id；设置窗口是弹出窗口，Obsidian 会把主窗口 body 的类同步过去，照样能按 .ba-sidebar-ribbon 判断 */
+body.ba-sidebar-plain .style-settings-container .setting-item:is([data-id="ba-card-frame"], [data-id="ba-card-gap"]) {
+  opacity: 0.45;
+  pointer-events: none;
+}
+/* 设置行垂直居中(第五十版，用户：没有小字的选项行没在框里垂直居中、偏上)：Obsidian 1.14 的 app.css 把 .setting-item 改成
+   align-items: flex-start(说明有好几行时控件对齐第一行)，没有说明的行名称就贴着控件顶边，比控件中线高 3~6px(下拉框 30px 高的那几行最明显)。
+   本主题的设置说明都只有一行，统一居中；分组标题行不动 */
+.style-settings-container .setting-item:not(.setting-item-heading) {
+  align-items: center;
+}
+/* 设置项名称的下伸部被裁(用户：Style Settings 里「Sangreal」大标题的 g 最下端被切了)：app.css 的 .setting-item-name 是
+   overflow: hidden + 紧凑行高(1.35)，EB Garamond 的 g / y / p 下伸比行盒深，伸出去的部分被裁掉(英文模式下所有带下伸的设置名都一样)。
+   改成 clip + 0.25em 裁切余量：字形可以画出盒子一点，版面和左右裁切不变 */
+.setting-item-name {
+  overflow: clip;
+  overflow-clip-margin: 0.25em;
+}
