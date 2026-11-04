@@ -5456,9 +5456,12 @@ inset-inline-end: calc(var(--ba-gap) + var(--ba-cf-shift, 0px));
 background-color: transparent;
 }
 }
+body.is-hidden-frameless:not(.is-fullscreen, .mod-macos, .is-mobile) .titlebar .titlebar-button-container.mod-right {
+background-color: transparent;
+}
 body.mod-windows .titlebar .titlebar-button.mod-close:hover {
-background-color: color-mix(in srgb, var(--ba-crimson) 14%, transparent);
-color: var(--ba-crimson);
+background-color: color-mix(in srgb, var(--ba-crimson) 14%, transparent) !important;
+color: var(--ba-crimson) !important;
 }
 body.mod-windows .titlebar .titlebar-button.mod-close:hover svg {
 stroke: currentColor;

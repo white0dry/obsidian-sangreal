@@ -23,7 +23,7 @@ import ornaments as O  # noqa: E402
 import ribbons as RB  # noqa: E402
 
 THEME_NAME = "Sangreal"      # 2026-11-02 定名(原工作名 Blood Angels)；Style Settings id blood-angels、类名 / 变量前缀 ba- 不改，免得用户存的设置丢
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 DIST = ROOT
 # 缎带画法(第八版对比用)：True = 套色印章版(色块 + 纸色留白缝 + 印刷颗粒，见 ribbons.STAMP)；False = 第七版的深色描边版。
 # 环境变量 BA_RIBBON=line / stamp 可临时切换(截对比图用)

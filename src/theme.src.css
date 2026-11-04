@@ -3104,12 +3104,20 @@ body.is-hidden-frameless:not(.ba-sidebar-plain):not(.is-fullscreen, .mod-macos, 
     background-color: transparent;
   }
 }
+/* 1.0.3(用户：主库里设置窗口右上角三个按钮有底色)：上面只在「主窗口、右栏开着」时去底色，设置 / 社区浏览器这类弹出窗口、右栏收起的主窗口
+   都还是原版的标题栏底色(--titlebar-background)。平时和标题栏同色看不出来，Live Wallpaper 插件把 .titlebar 改成透明(!important)以后
+   按钮那块就单独露出一块底。同永夜：所有隐藏标题栏的窗口都去底色(原版底色规则带 .is-focused，选择器多加 .titlebar 一级压住) */
+body.is-hidden-frameless:not(.is-fullscreen, .mod-macos, .is-mobile) .titlebar .titlebar-button-container.mod-right {
+  background-color: transparent;
+}
 /* 关闭按钮悬停：原版警示红 --background-modifier-error 铺满、叉还是灰褐(原版白叉规则只管 .svg-icon，这个 svg 没有那个类)，用户：太红、看不清图标。
    preview/窗口按钮/关闭悬停_对比.png 比过 C0–C3，用户定 C1：淡朱红底(同最小化 / 最大化那种淡悬停底) + 朱红叉。
-   叉的 path 是 fill="currentColor"，改 color 就变色；svg 再描一圈 currentColor，叉粗一点(样稿就是这样) */
+   叉的 path 是 fill="currentColor"，改 color 就变色；svg 再描一圈 currentColor，叉粗一点(样稿就是这样)。
+   1.0.3：Live Wallpaper 插件给所有 .titlebar-button 写了 color / :hover 底色(都带 !important)，把这里盖掉了(用户在主库发现)——
+   这两条也加 !important，选择器比插件的具体，压得住 */
 body.mod-windows .titlebar .titlebar-button.mod-close:hover {
-  background-color: color-mix(in srgb, var(--ba-crimson) 14%, transparent);
-  color: var(--ba-crimson);
+  background-color: color-mix(in srgb, var(--ba-crimson) 14%, transparent) !important;
+  color: var(--ba-crimson) !important;
 }
 body.mod-windows .titlebar .titlebar-button.mod-close:hover svg {
   stroke: currentColor;
