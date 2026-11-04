@@ -19,7 +19,7 @@ from fontTools import subset
 from fontTools.ttLib import TTFont
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(r"C:\Users\DELL\Downloads\寒蝉活宋体\ChillHuoSong_F_Regular.otf")
+SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(r"E:\AI工作\素材库\字体\寒蝉活宋体\ChillHuoSong_F_Regular.otf")
 DST = ROOT / "fonts" / "heading-song"
 FAMILY, PS = "BA Heading Song", "BAHeadingSong-Regular"
 EXTRA = "祂牠祇菈瞭祕"                # 和 make_cjk_serif.py 同一组

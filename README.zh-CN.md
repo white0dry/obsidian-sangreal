@@ -139,7 +139,7 @@ Style Settings「界面 → 侧栏布局」换成简洁：
 - 只支持桌面端，移动端未测试。
 - 中文正文用本机安装的思源宋体（Noto Serif SC / Source Han Serif）或正文片段，都没有时用系统宋体。
 - 常用的 Mermaid 图会改成主题配色，图里用 `classDef` 或 `style` 自定义的颜色依然优先。
-- `theme.css` 约 7 MB，因为西文字体和装饰图全部内嵌。
+- `theme.css` 约 5 MB，因为西文字体和装饰图全部内嵌。
 
 ## 致谢
 

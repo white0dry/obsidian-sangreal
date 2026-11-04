@@ -141,7 +141,7 @@ These styles can be switched in Style Settings. In each image, the top row is da
 - Desktop only. Mobile has not been tested.
 - Chinese body text uses Noto Serif SC / Source Han Serif if installed, or the body snippet; otherwise the system Song font.
 - Common Mermaid diagram types are recoloured. Colours you set with `classDef` or `style` still take precedence.
-- `theme.css` is about 7 MB because the Latin fonts and ornaments are embedded.
+- `theme.css` is about 5 MB because the Latin fonts and ornaments are embedded.
 
 ## Credits
 

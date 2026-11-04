@@ -14,7 +14,7 @@ from PIL import Image
 
 sys.stdout.reconfigure(encoding="utf-8")
 ROOT = Path(__file__).resolve().parent.parent
-SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(r"C:\Users\DELL\Downloads\Bloodangelsymbol.webp")
+SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(r"E:\AI工作\素材库\参考图\Bloodangelsymbol.webp")
 UP = 4            # 放大后再描，曲线更顺
 EPS = 1.2         # 折线容差(放大后的像素)
 

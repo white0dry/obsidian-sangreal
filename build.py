@@ -11,6 +11,7 @@ import json
 import re
 import shutil
 import sys
+import urllib.parse
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8")
@@ -22,7 +23,7 @@ import ornaments as O  # noqa: E402
 import ribbons as RB  # noqa: E402
 
 THEME_NAME = "Sangreal"      # 2026-11-02 定名(原工作名 Blood Angels)；Style Settings id blood-angels、类名 / 变量前缀 ba- 不改，免得用户存的设置丢
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 DIST = ROOT
 # 缎带画法(第八版对比用)：True = 套色印章版(色块 + 纸色留白缝 + 印刷颗粒，见 ribbons.STAMP)；False = 第七版的深色描边版。
 # 环境变量 BA_RIBBON=line / stamp 可临时切换(截对比图用)
@@ -31,7 +32,8 @@ RIBBON_STAMP = os.environ.get("BA_RIBBON", "stamp") == "stamp"
 
 # 内嵌字体: (Google family, 主题内别名, size-adjust, 只收这些子集, 只收这些字重)
 FONT_MAP = {
-    "EB Garamond": ("BA Garamond", "112%", None, None),
+    # 第五十三版(上架体积)：希腊字母两个分片(greek / greek-ext，约 84 KB)不再内嵌，希腊文落到后备字体
+    "EB Garamond": ("BA Garamond", "112%", ("latin", "latin-ext"), None),
     "Cormorant Garamond": ("BA Cormorant", "116%", None, None),
     # 第十八版：标题西文(替换第十五版的 Cormorant SC)。92% = 大写 H 和 Cormorant SC 等高(标题字号是按它调的)
     "IM Fell English SC": ("BA Heading Latin", "92%", None, None),
@@ -66,14 +68,39 @@ def b64(data: bytes) -> str:
     return base64.b64encode(data).decode("ascii")
 
 
+# SVG 内嵌不用 base64(第五十三版，上架体积：社区目录自动审查 theme.css 超过约 5 MiB 报错)：base64 比原文大三分之一，
+# 里面再套的 base64 位图还会被编码第二遍。改成 URL 编码，只转义 % # " < > \ 和控制字符 / 非 ASCII，解出来就是原 SVG
+SVG_SAFE = "".join(chr(c) for c in range(0x20, 0x7f) if chr(c) not in '%#"<>\\')
+# 浮点误差拖出来的长小数(12.300000000000001)：6 位以上小数四舍五入到 4 位(SVG 单位里差不到万分之一)
+FLOAT_NOISE = re.compile(r"-?\d+\.\d{6,}")
+
+
+def _round4(m: re.Match) -> str:
+    t = f"{float(m.group(0)):.4f}".rstrip("0").rstrip(".")
+    return "0" if t in ("-0", "") else t
+
+
 def svg_uri(svg: str) -> str:
     if DK.ON:      # 夜间那一遍(dark.mode)：装饰图里的颜色换成夜间色
         svg = DK.recolor_svg(svg)
-    return f'url("data:image/svg+xml;base64,{b64(svg.encode("utf-8"))}")'
+    svg = FLOAT_NOISE.sub(_round4, svg)
+    return f'url("data:image/svg+xml,{urllib.parse.quote(svg, safe=SVG_SAFE)}")'
 
 
 def webp_uri(data: bytes) -> str:
     return f'url("data:image/webp;base64,{b64(data)}")'
+
+
+def tone_webp(svg: str) -> bytes:
+    """纸面色调(第五十三版，上架体积)：照旧按 1024 渲染，缩成 512 存，CSS 里照旧铺 1024px(浏览器放大回去)。
+    低频斑驳、不透明度最高 9% / 18%，叠到页面上和 1024 原图最多差 3~4 级(0–255)，日夜两张各省一半多"""
+    import io
+    import raster as R
+    from PIL import Image
+    im = Image.open(io.BytesIO(R.render_webp(svg, 1024, 1024, lossless=True))).resize((512, 512), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "WEBP", quality=70, alpha_quality=70, method=6)
+    return buf.getvalue()
 
 
 def font_faces() -> str:
@@ -419,7 +446,7 @@ def ornaments() -> dict:
         "SIZE:newtab-btn-h": f"{ntb_h}px",
         "RASTER:grain": webp_uri(DK.grain_webp(*(DK.GRAIN_DARK if DK.ON else DK.GRAIN_DAY))),   # 不用 SVG 滤镜：摩尔纹(dark.grain_webp)
         "RASTER:tag-grain": webp_uri(tag_grain()),
-        "RASTER:tone": webp_uri(R.render_webp(DK.tex_tone() if DK.ON else O.tex_tone(1024), 1024, 1024, quality=70)),
+        "RASTER:tone": webp_uri(tone_webp(DK.tex_tone() if DK.ON else O.tex_tone(1024))),
         "SIZE:spatter-w": f"{SPATTER['W']}px",
         "SIZE:spatter-h": f"{SPATTER['H']}px",
         "SIZE:spatter-top": f"{SPATTER_TOP}px",
@@ -1367,6 +1394,29 @@ def dedupe_uris(css: str, min_len: int = 2048) -> str:
     return css + "\n/* 重复用到的内嵌图，只嵌一次(build.dedupe_uris) */\n:root {\n" + "".join(f"  {n}: {u};\n" for u, n in names.items()) + "}\n"
 
 
+def minify_css(css: str) -> str:
+    """第五十三版(上架体积)：去掉注释、缩进和空行。开头的署名 / 许可注释、Style Settings 的 /* @settings */ 块
+    (插件按注释读设置，块里是 YAML，缩进不能动)和字符串(含所有 data URI)原样照抄"""
+    tok = re.compile(r'"[^"\\]*(?:\\.[^"\\]*)*"|\'[^\'\\]*(?:\\.[^\'\\]*)*\'|/\*[\s\S]*?\*/')
+    pieces, code, pos = [], [], 0          # pieces: 原样照抄的段 / 待压缩的代码段交替
+    for m in tok.finditer(css):
+        code.append(css[pos:m.start()])
+        t = m.group(0)
+        if t.startswith("/*") and not (m.start() == 0 or t[2:].lstrip().startswith("@settings")):
+            code.append(" ")               # 丢掉的注释留一个空格，免得两边的字粘在一起
+        else:
+            pieces += ["".join(code), t]
+            code = []
+        pos = m.end()
+    code.append(css[pos:])
+    pieces.append("".join(code))
+
+    def squeeze(s):
+        s = re.sub(r"[ \t]+", " ", s)
+        return re.sub(r" ?\n[\n ]*", "\n", s)
+    return "".join(squeeze(p) if i % 2 == 0 else p for i, p in enumerate(pieces))
+
+
 def build() -> Path:
     src = (ROOT / "src" / "theme.src.css").read_text(encoding="utf-8")
     lit = re.compile(r"@@LIT:([A-Z]+:[a-z0-9-]+)@@")
@@ -1415,6 +1465,7 @@ def build() -> Path:
         raise SystemExit(f"unreplaced placeholders: {left}")
     css = dedupe_uris(css)
     css = lit.sub(sub, css)
+    css = minify_css(css)
     (DIST / "theme.css").write_text(css, encoding="utf-8")
     manifest = {"name": THEME_NAME, "version": VERSION, "minAppVersion": "1.6.0",
                 "author": "whitedry", "authorUrl": "https://github.com/white0dry"}
