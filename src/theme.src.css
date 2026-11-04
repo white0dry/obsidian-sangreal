@@ -1376,13 +1376,15 @@ body:not(.ba-no-heading-orn) :is(.markdown-rendered h1, .markdown-source-view.mo
   padding: calc(6px + var(--ba-sag)) 22px calc(var(--ba-td) - var(--ba-sag) + 7px);
   /* 宽带盒：两个下角在标题底边往上 --ba-td 处(两端卷边接在这里)，正中下沿再往下垂 --ba-sag。
      两端燕尾(第三十七版，用户：一级标题占了多行，两边的缎带也要一起加高)：在宽带下沿切成两段，上段(燕尾旗面)从框顶纵向拉到宽带下角，
-     宽带几行高它就多高；下段(卷边)原尺寸贴在框底，高正好 = 卷边区 --ba-td，接缝就在宽带下角。单行时上段比原图高不到 1px */
+     宽带几行高它就多高；下段(卷边)原尺寸贴在框底，高正好 = 卷边区 --ba-td，接缝就在宽带下角。单行时上段比原图高不到 1px。
+     1.0.2(用户：缎带左右两边有横线裂缝)：接缝落在半个物理像素上时两段边缘各画一半透明，透出底色。下段图往上多带 1px 的图形
+     (ribbons.TAIL_OVERLAP)、高度 + 1px，垫在上段后面补住接缝 */
   background:
     @@ORN:band@@ left var(--ba-tz) top 0 / calc(100% - 2 * var(--ba-tz)) calc(100% - var(--ba-td) + var(--ba-sag)),
     @@ORN:tail-l-top@@ left top / var(--ba-tw) calc(100% - var(--ba-td)),
-    @@ORN:tail-l-bot@@ left bottom / var(--ba-tw) var(--ba-td),
+    @@ORN:tail-l-bot@@ left bottom / var(--ba-tw) calc(var(--ba-td) + 1px),
     @@ORN:tail-r-top@@ right top / var(--ba-tw) calc(100% - var(--ba-td)),
-    @@ORN:tail-r-bot@@ right bottom / var(--ba-tw) var(--ba-td);
+    @@ORN:tail-r-bot@@ right bottom / var(--ba-tw) calc(var(--ba-td) + 1px);
   background-repeat: no-repeat;
   background-origin: border-box;
   background-clip: border-box;
@@ -3934,6 +3936,12 @@ body.is-popout-modal:is(.ba-modal-frame, :not(.css-settings-manager)):not(.mod-m
   content: none;
 }
 body.is-popout-modal:is(.ba-modal-frame, :not(.css-settings-manager)):not(.mod-macos) > .modal .vertical-tab-content-container {
+  margin-inline-end: 6px;
+}
+/* 1.0.2(用户：社区主题窗口右边的滚动条缎带没有让开花边)：社区主题 / 插件浏览器也是单独弹出的窗口，结构是
+   .modal.mod-community-modal > .modal-content > .modal-sidebar(主题：卡片网格占满整宽) / + .community-modal-details(插件：右边详情)，
+   滚动区一直伸到窗口右边。整个内容区右缩 6px，两种布局的滚动条都落在内线里面 */
+body.is-popout-modal:is(.ba-modal-frame, :not(.css-settings-manager)):not(.mod-macos) > .modal.mod-community-modal > .modal-content {
   margin-inline-end: 6px;
 }
 body.is-popout-modal.is-frameless.is-hidden-frameless:is(.ba-modal-frame, :not(.css-settings-manager)):not(.is-fullscreen, .mod-macos) {

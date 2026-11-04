@@ -69,6 +69,7 @@ F0208_H = 123.8
 TAIL_W = 200          # 端头图宽(原图单位)
 TAIL_BAND_X = 151     # 宽带左端在端头图里的 x
 TAIL_BAND_Y = 83.5    # 宽带下沿
+TAIL_OVERLAP = 1      # 下段卷边往上多带的高度(CSS px)，和 theme.src.css 里 tail-*-bot 的 + 1px 一致
 
 
 def _tex_defs(tex, speck, k=1.0):
@@ -101,9 +102,14 @@ def tail(side="left", tex=None, speck=None, ts=0.55, ink=None, part=None):
                 f'<g mask="url(#mk)"><svg width="100%" height="100%" viewBox="{x0} 0 {TAIL_W} {TAIL_BAND_Y}" preserveAspectRatio="none">'
                 f'{_body("f0208_0", skip=(9,), stamp=True)}</svg></g></svg>')
     if ink and part == "bottom":
+        # 接缝(1.0.2，用户：一级标题缎带左右两边有横线裂缝)：上下两段正好在宽带下沿碰头，125% 缩放下接缝落在半个物理像素上时
+        # 两段边缘各画一半透明，透出底色成一道横线。下段往上多带 TAIL_OVERLAP 个 CSS px 的图形(CSS 里高度同样加这么多，比例不变)，
+        # 垫在上段后面(背景叠放上段在上)，接缝处有缝也透不出底色
         h = round(F0208_H - TAIL_BAND_Y, 2)
-        return (f'<svg {SVG} viewBox="{x0} {TAIL_BAND_Y} {TAIL_W} {h}"><defs>'
-                f'<clipPath id="c"><rect x="{x0}" y="{TAIL_BAND_Y}" width="{TAIL_W}" height="{h}"/></clipPath>'
+        ov = round(TAIL_OVERLAP / ts, 3)
+        y0, hh = round(TAIL_BAND_Y - ov, 3), round(h + ov, 3)
+        return (f'<svg {SVG} viewBox="{x0} {y0} {TAIL_W} {hh}"><defs>'
+                f'<clipPath id="c"><rect x="{x0}" y="{y0}" width="{TAIL_W}" height="{hh}"/></clipPath>'
                 f'{_ink_mask(ink, x0, 0, TAIL_W, F0208_H, 256 / ts)}</defs>'
                 f'<g clip-path="url(#c)"><g mask="url(#mk)">{_body("f0208_0", skip=(9,), stamp=True)}</g></g></svg>')
     if ink:
