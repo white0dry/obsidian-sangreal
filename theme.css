@@ -1649,6 +1649,10 @@ border: none;
 pointer-events: none;
 background: var(--ba-q-wax) center top / 38px 62px no-repeat;
 }
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::before,
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::after {
+left: calc(var(--ba-q-seal-x) - var(--ba-q-gap));
+}
 .markdown-rendered blockquote::before,
 .markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::after {
 background-image: var(--ba-q-strips);
@@ -1660,9 +1664,12 @@ bottom: calc(1lh + var(--ba-q-pad) - 27px);
 max-height: 62px;
 }
 .markdown-source-view.mod-cm6 .HyperMD-quote {
+--ba-q-gap: calc(var(--ba-q-seal-x) + 38px - 0.125em);
 background: var(--ba-q-rules);
-padding-inline-start: calc(var(--ba-q-seal-x) + 38px + 0.75em) !important;
-text-indent: -0.875em !important;
+background-origin: border-box;
+border-inline-start: var(--ba-q-gap) solid transparent;
+padding-inline-start: 0.875em;
+text-indent: -0.875em;
 }
 .markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote) {
 position: relative;

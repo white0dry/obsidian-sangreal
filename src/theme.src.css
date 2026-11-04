@@ -1636,6 +1636,11 @@ li.is-collapsed .list-bullet::after,
   pointer-events: none;
   background: var(--ba-q-wax) center top / 38px 62px no-repeat;
 }
+/* 编辑视图：绝对定位从内边距边算起，退回行上透明左边框的宽度 */
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::before,
+.markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::after {
+  left: calc(var(--ba-q-seal-x) - var(--ba-q-gap));
+}
 /* 纸条层：高度跟着引文走(最多整枚 62px)，一行时被裁光 */
 .markdown-rendered blockquote::before,
 .markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote)::after {
@@ -1648,11 +1653,17 @@ li.is-collapsed .list-bullet::after,
   max-height: 62px;
 }
 .markdown-source-view.mod-cm6 .HyperMD-quote {
+  /* 封印让出的位置 = 阅读视图的左内边距 − 行首「> 」的宽(> 透明 + 一个空格，约 0.875em) */
+  --ba-q-gap: calc(var(--ba-q-seal-x) + 38px - 0.125em);
   background: var(--ba-q-rules);
-  /* 原版把悬挂缩进写在行内样式里(text-indent: -74px; padding-inline-start: 74px)，要 !important 才盖得住。
-     行首的「> 」(> 透明 + 一个空格)还占着约 0.875em：首行往左缩回这么多，首行正文和折行对齐，「>」落进左边留白 */
-  padding-inline-start: calc(var(--ba-q-seal-x) + 38px + 0.75em) !important;
-  text-indent: -0.875em !important;
+  background-origin: border-box;
+  /* 原版把悬挂缩进写在每一行的行内样式里，按这一行实际的「> 」+ 行首缩进算(没缩进 -14px / 14px，缩进四格 -50px / 50px)。
+     第五十六版(用户：编辑视图里引文行首缩进的那几行，折下来的字被左边的缩进竖线划穿)：之前用 !important 统一盖成
+     内边距 60px / 首行 -14px，缩进行的折行退回最左，正好落在缩进竖线(整行高、绝对定位)上。
+     现在不碰原版的行内值，封印让出的位置改用透明左边框加：没缩进的行和之前分毫不差，缩进行的折行恢复原版的悬挂 */
+  border-inline-start: var(--ba-q-gap) solid transparent;
+  padding-inline-start: 0.875em;     /* 原版没写行内样式时的兜底 */
+  text-indent: -0.875em;
 }
 .markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-quote + .HyperMD-quote) {
   position: relative;
